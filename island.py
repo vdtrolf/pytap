@@ -5,6 +5,7 @@ import json
 from penguin import *
 from cell import *
 from fish import *
+from gem import *
 from util import *
 
 class Island :
@@ -19,6 +20,8 @@ class Island :
             return self.penguins[vpos*100+hpos].get_ascii()
         elif self.fishes.get(vpos*100+hpos) :
             return self.fishes[vpos*100+hpos].get_ascii()
+        elif self.gems.get(vpos*100+hpos) :
+            return self.gems[vpos*100+hpos].get_ascii()
         else:   
             return self.cells[vpos][hpos].get_ascii()
       
@@ -94,6 +97,7 @@ class Island :
         self.cells = []
         self.penguins = {}
         self.fishes = {}
+        self.gems = {}
         self.counter = 0
         self.build_island(size)   
         weather = random_weather(0,0,True)    
@@ -144,7 +148,19 @@ class Island :
                 tmppenguins[penguin.vpos*100+penguin.hpos]=penguin
         self.penguins = tmppenguins
         
-        
+        tmpgems = {}
+        for gem in self.gems.values():
+            gem.become_older()
+            if gem.age > 0:
+                tmpgems[gem.vpos*100+gem.hpos]=gem
+        self.gems = tmpgems
+
+        if random.randint(0,2) == 0:
+            v = random.randint(0,self.size-1)
+            h = random.randint(0,self.size-1)
+            if self.cells[v][h].isGround() and not self.penguins.get(v*100+h) and not self.gems.get(v*100+h):
+                append_event_to_log("new gem at " + str(v) + "/" + str(h))
+                self.gems[v*100+h]=Gem(v,h)
         
         # dump_island(IslandEncoder().encode(self))
 

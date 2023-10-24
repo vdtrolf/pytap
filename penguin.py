@@ -27,6 +27,8 @@ class Penguin:
         self.name = generate_penguin_name(self.gender)
         self.activity = ACTIVITY_NONE
         self.orders = []
+        self.hasFish = False
+        self.hasGem = False
 
     def become_older(self,cells,size,penguins,newpenguins,weather):
         """makes the penguin move and become older"""
@@ -86,7 +88,7 @@ class Penguin:
         elif self.temp > 50 or self.hunger > 50:
             color = COLOR_PENGUIN_BAD
         if self.alive:
-            return [asciiImg1[self.gender] + asciiEyes[self.id] + asciiImg2[self.gender],f" \\/{convert_to_alpha(self.id)}",color,color]
+            return [asciiImg1[self.gender] + asciiEyes[self.id] + asciiImg2[self.gender],f"±\\/{convert_to_alpha(self.id)}",color,color]
         elif self.deadAge < 6:
             return ["(xx)",f" \\/{convert_to_alpha(self.id)}",15,15]
             

@@ -75,16 +75,16 @@ def initiate_names():
 
 def get_direction(vpos,hpos,order):
     """Returns a direction based on an order - in the form of vpos/hpos coords"""
-    if order.title()[0:1] == "L":
+    if order.title()[0:1] == "U":
         dir = directions[0]
         return [vpos+dir[0],hpos+dir[1]]
-    elif order.title()[0:1] == "R":
+    elif order.title()[0:1] == "D":
         dir = directions[1]
         return [vpos+dir[0],hpos+dir[1]]
-    elif order.title()[0:1] == "U":
+    elif order.title()[0:1] == "L":
         dir = directions[2]
         return [vpos+dir[0],hpos+dir[1]]
-    elif order.title()[0:1] == "D":
+    elif order.title()[0:1] == "R":
         dir = directions[3]
         return [vpos+dir[0],hpos+dir[1]]
 
