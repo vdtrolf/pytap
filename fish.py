@@ -16,10 +16,10 @@ class Fish:
         
     def become_older(self,cells,size):
         """makes the fish move and become older"""
-        dir = random_direction(self.vpos,self.hpos)
-        if dir[0] > 0 and dir[0] < size and dir[1] > 0 and dir[1] < size and cells[dir[0]][dir[1]].isSea():
-            self.vpos = dir[0]
-            self.hpos = dir[1]
+        direction = random_direction(self.vpos,self.hpos)
+        if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and cells[direction['vpos']][direction['hpos']].isSea():
+            self.vpos = direction['vpos']
+            self.hpos = direction['hpos']
             
 class FishEncoder(JSONEncoder):
     def default(self,object):

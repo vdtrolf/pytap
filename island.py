@@ -150,16 +150,16 @@ class Island :
         
         tmpgems = {}
         for gem in self.gems.values():
-            gem.become_older()
+            gem.become_older(self.cells)
             if gem.age > 0:
                 tmpgems[gem.vpos*100+gem.hpos]=gem
         self.gems = tmpgems
 
-        if random.randint(0,2) == 0:
+        if len(self.gems) < self.size:
             v = random.randint(0,self.size-1)
             h = random.randint(0,self.size-1)
             if self.cells[v][h].isGround() and not self.penguins.get(v*100+h) and not self.gems.get(v*100+h):
-                append_event_to_log("new gem at " + str(v) + "/" + str(h))
+                # append_event_to_log("new gem at " + str(v) + "/" + str(h))
                 self.gems[v*100+h]=Gem(v,h)
         
         # dump_island(IslandEncoder().encode(self))
@@ -180,7 +180,7 @@ class Island :
         """Search a penguin by id and return the two lines info"""
         for penguin in self.penguins.values():
             if penguin.id == penguin_id:
-                penguin.receive_order([order])
+                penguin.receive_order(order)
                 break   
     
     def show_penguin_details(self,penguin_id):

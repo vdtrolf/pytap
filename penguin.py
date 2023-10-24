@@ -61,23 +61,27 @@ class Penguin:
 
             # Is there an order to execute
             if len(self.orders) > 0:
-                dir = get_direction(self.vpos,self.hpos,self.orders[0])
-                coord = dir[0]*100 + dir[1]
-                if dir[0] > 0 and dir[0] < size and dir[1] > 0 and dir[1] < size and not penguins.get(coord) and not newpenguins.get(coord):
-                    self.vpos = dir[0]
-                    self.hpos = dir[1]
+                direction = get_direction(self.vpos,self.hpos,self.orders[1])
+                action = get_action(self.orders[0])
+                coord = direction['vpos']*100 + direction['hpos']
+                if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and not penguins.get(coord) and not newpenguins.get(coord):
+                    self.vpos = direction['vpos']
+                    self.hpos = direction['hpos']
+                self.orders = []
+            # if not and if the penguin is on smelting ice: try to escape
             elif cells[self.vpos][self.hpos].cellType < 3 :
-                dir = random_direction(self.vpos,self.hpos)
-                coord = dir[0]*100 + dir[1]
-                if dir[0] > 0 and dir[0] < size and dir[1] > 0 and dir[1] < size and cells[dir[0]][dir[1]].cellType > cells[self.vpos][self.hpos].cellType and not penguins.get(coord) and not newpenguins.get(coord):
-                    self.vpos = dir[0]
-                    self.hpos = dir[1]
+                direction = random_direction(self.vpos,self.hpos)
+                coord = direction['vpos']*100 + direction['hpos']
+                if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and cells[direction['vpos']][direction['hpos']].cellType > cells[self.vpos][self.hpos].cellType and not penguins.get(coord) and not newpenguins.get(coord):
+                    self.vpos = direction['vpos']
+                    self.hpos = direction['hpos']
         else :
             self.deadAge += 1
 
     def receive_order(self,orders) :
         """Receives an order to move or perform an activity"""
         for order in orders:
+            append_event_to_log(order)
             self.orders.append(order)
      
     def get_ascii(self):
@@ -88,7 +92,14 @@ class Penguin:
         elif self.temp > 50 or self.hunger > 50:
             color = COLOR_PENGUIN_BAD
         if self.alive:
-            return [asciiImg1[self.gender] + asciiEyes[self.id] + asciiImg2[self.gender],f"±\\/{convert_to_alpha(self.id)}",color,color]
+            carries = " "
+            if self.hasFish and self.hasGem:
+                carries = "±"
+            elif self.hasFish:
+                carries = "-"
+            elif self.hasGem:
+                carries = "+"
+            return [asciiImg1[self.gender] + asciiEyes[self.id] + asciiImg2[self.gender],f"{carries}\\/{convert_to_alpha(self.id)}",color,color]
         elif self.deadAge < 6:
             return ["(xx)",f" \\/{convert_to_alpha(self.id)}",15,15]
             
@@ -101,38 +112,46 @@ class Penguin:
         """Returns the two lines info of the penguin (name,age...)"""
         if self.alive or self.deadAge < 6:
             tempColor = COLOR_SPOT_GOOD
-            tempText = "++"
+            tempText = "T++"
             if self.temp > 80:
                 tempColor = COLOR_SPOT_CRITIC
-                tempText = "--"
+                tempText = "T--"
             elif self.temp > 60:
                 tempColor = COLOR_SPOT_BAD 
-                tempText = "- " 
+                tempText = "T- " 
             elif self.temp > 40:
                 tempColor = COLOR_SPOT_MID 
-                tempText = "+-" 
+                tempText = "T+-" 
             elif self.temp > 20:
                 tempColor = COLOR_SPOT_OK 
-                tempText = "+ " 
+                tempText = "T+ " 
             hungerColor = COLOR_SPOT_GOOD
-            hungerText = "++"
+            hungerText = "H++"
             if self.hunger > 80:
                 hungerColor = COLOR_SPOT_CRITIC
-                hungerText = "--"
+                hungerText = "H--"
             elif self.hunger > 60:
                 hungerColor = COLOR_SPOT_BAD
-                hungerText = "- "  
+                hungerText = "H- "  
             elif self.hunger > 40:
                 hungerColor = COLOR_SPOT_MID
-                hungerText = "+-"  
+                hungerText = "H+-"  
             elif self.hunger > 20:
                 hungerColor = COLOR_SPOT_OK
-                hungerText = "+ "  
+                hungerText = "H+ "  
+            carries = "   "
+            if self.hasFish and self.hasGem:
+                carries = " ^~"
+            elif self.hasFish:
+                carries = " ~ "
+            elif self.hasGem:
+                carries = " ^ "
+        
 
             if self.alive:
-                return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activities[self.activity]}                    ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],f'{tempText}',f'{hungerText}',tempColor, hungerColor]     
+                return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activities[self.activity]}                    ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],tempText,hungerText,carries,tempColor, hungerColor]     
             else:
-                return [f'{convert_to_alpha(self.id)}:{self.name.title()} - Dead                  ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],f'{tempText}',f'{hungerText}',tempColor, hungerColor]     
+                return [f'{convert_to_alpha(self.id)}:{self.name.title()} - Dead                  ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],tempText,hungerText,carries,COLOR_TEXT, COLOR_TEXT]     
         else:
             return ["","","","","",""]  
 

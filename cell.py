@@ -33,10 +33,10 @@ class Cell:
         return self.cellType == 0
         
     def become_older(self,weather):
-        """makes the fish move and become older"""
-        if weather == 0 and self.cellType > 0 and self.cellType < 9 :
+        """makes the ice smelt or reconstruct move and become older"""
+        if weather == 0 and self.cellType > 0 and self.cellType < 9 and random.randint(0,PROBABILITY_SMELT)==0:
             self.cellType -= 1
-        elif weather == 2 and self.cellType > 0 and self.cellType < 8 :
+        elif weather == 2 and self.cellType > 0 and self.cellType < 8 and random.randint(0,PROBABILITY_RISE)==0:
             self.cellType += 1    
 
 class CellEncoder(JSONEncoder):

@@ -2,7 +2,7 @@ import random
 from json import JSONEncoder
 import json
 
-from util import random_direction
+from util import *
 
 class Gem:
 
@@ -14,12 +14,14 @@ class Gem:
     def get_ascii(self):
         """ returns the ascii image of the gem """
         if self.age > 5:
-            return ["//\\\\","\\\\//",15,15]
+            return [f"{DL_DR}{DL_DR}{DL_DL}{DL_DL}",f"{DL_UR}{DL_UR}{DL_UL}{DL_UL}",231,231]
         else :
-            return [" /\\ ", " \\/ ", 15,15]
+            return [f" {DL_DR}{DL_DL} ",f" {DL_UR}{DL_UL} ",231,231]
 
-    def become_older(self):
+    def become_older(self,cells):
         """makes the gem becoming older"""
-        if self.age > 0:
+        if cells[self.vpos][self.hpos].isSea():
+            self.age = 0
+        elif self.age > 0:
             self.age -= 1
         

@@ -1,11 +1,12 @@
 from pathlib import Path
 import json
 import random
+from xtermcolor import colorize
 
 # CONSTANTS
 
-PROBABILITY_SMELT = 2
-PROBABILITY_RISE = 3
+PROBABILITY_SMELT = 3
+PROBABILITY_RISE = 4
 
 COLOR_GROUND1 = 250
 COLOR_GROUND2 = 248
@@ -17,7 +18,10 @@ COLOR_ICE3 = 153
 COLOR_ICE4 = 195
 
 COLOR_BG_LIGHT = 255
-COLOR_BG_DARK = 240
+COLOR_BG_DARK = 232
+
+COLOR_TEXT = 245
+COLOR_BG=232
 
 COLOR_SPOT_GOOD = 76
 COLOR_SPOT_OK = 79
@@ -49,7 +53,7 @@ DL_UL = "\u255d"
 DL_VR = "\u2560"
 DL_HU = "\u2569"
 
-DL_H_STR = '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550'
+DL_H_STR = '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550'
 
 directions = {0:[-1,0],1:[1,0],2:[0,-1],3:[0,1]}
 weathers = {0:'Sun',1:'Rain',2:'Snow',3:'Cold'}
@@ -76,22 +80,29 @@ def initiate_names():
 def get_direction(vpos,hpos,order):
     """Returns a direction based on an order - in the form of vpos/hpos coords"""
     if order.title()[0:1] == "U":
-        dir = directions[0]
-        return [vpos+dir[0],hpos+dir[1]]
+        direction = directions[0]
+        append_event_to_log("go up")
+        return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
     elif order.title()[0:1] == "D":
-        dir = directions[1]
-        return [vpos+dir[0],hpos+dir[1]]
+        direction = directions[1]
+        append_event_to_log("go down")
+        return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
     elif order.title()[0:1] == "L":
-        dir = directions[2]
-        return [vpos+dir[0],hpos+dir[1]]
+        direction = directions[2]
+        append_event_to_log("go left")
+        return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
     elif order.title()[0:1] == "R":
-        dir = directions[3]
-        return [vpos+dir[0],hpos+dir[1]]
+        direction = directions[3]
+        append_event_to_log("go right")
+        return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
+
+def get_action(order):
+    """returns the givan action as a CONSTANT value"""
 
 def random_direction(vpos,hpos):
     """Returns a random direction in the form of vpos/hpos coords"""
-    dir = directions[random.randint(0,3)]
-    return [vpos+dir[0],hpos+dir[1]]
+    direction = directions[random.randint(0,3)]
+    return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
     
 def random_weather(weather,weather_age, force = False):
     """Returns a random season in the form of season number + name"""
