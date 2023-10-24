@@ -2,6 +2,8 @@ from pathlib import Path
 import json
 import random
 
+# CONSTANTS
+
 PROBABILITY_SMELT = 2
 PROBABILITY_RISE = 3
 
@@ -48,7 +50,6 @@ DL_VR = "\u2560"
 DL_HU = "\u2569"
 
 DL_H_STR = '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550'
-
 
 directions = {0:[-1,0],1:[1,0],2:[0,-1],3:[0,1]}
 weathers = {0:'Sun',1:'Rain',2:'Snow',3:'Cold'}
