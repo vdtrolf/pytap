@@ -6,7 +6,7 @@ genders=("M","F")
 asciiEyes = ("**","oo","öö","ōō","øø","ôô","òó","óò","@@")
 asciiImg1 = {"M":"[","F":"("}
 asciiImg2 = {"M":"]","F":")"}
-activities = {ACTIVITY_NONE:"",ACTIVITY_EATING:"Eating",ACTIVITY_FISHING:"Fishing",ACTIVITY_LOVING:"Loving",ACTIVITY_DIGING:"Diging",ACTIVITY_BUILDING:"Build"}
+activities = {ACTIVITY_NONE:"",ACTIVITY_EATING:"Eating",ACTIVITY_FISHING:"Fishing",ACTIVITY_LOVING:"Loving",ACTIVITY_DIGING:"Diging",ACTIVITY_BUILDING:"Build",ACTIVTY_MOVING:"Moe"}
 figures = {0:"Slim", 1:"Fit", 2:"Fat"}
 
 
@@ -26,6 +26,7 @@ class Penguin:
         self.gender = genders[random.randint(0,1)]
         self.name = generate_penguin_name(self.gender)
         self.activity = ACTIVITY_NONE
+        self.activityTime = 0
         self.orders = []
         self.hasFish = False
         self.hasGem = False
@@ -60,13 +61,16 @@ class Penguin:
                 return
 
             # Is there an order to execute
-            if len(self.orders) > 0:
-                direction = get_direction(self.vpos,self.hpos,self.orders[1])
-                action = get_action(self.orders[0])
-                coord = direction['vpos']*100 + direction['hpos']
-                if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and not penguins.get(coord) and not newpenguins.get(coord):
-                    self.vpos = direction['vpos']
-                    self.hpos = direction['hpos']
+            if self.activityTime > 0:
+                self.activityTime -= 1
+            elif len(self.orders) > 0:
+                activity = get_activity(self.orders)
+                if activity = ACTIVTY_MOVING:
+	             	direction = get_direction(self.vpos,self.hpos,self.orders[1])
+                	coord = direction['vpos']*100 + direction['hpos']
+                	if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and not penguins.get(coord) and not newpenguins.get(coord):
+                    	self.vpos = direction['vpos']
+                    	self.hpos = direction['hpos']
                 self.orders = []
             # if not and if the penguin is on smelting ice: try to escape
             elif cells[self.vpos][self.hpos].cellType < 3 :
@@ -105,7 +109,6 @@ class Penguin:
             
     def get_details(self):
         """Returns the details of the penguin (name,age...)"""
-
         return f'{self.name.title()} ({self.gender}/{self.age})'
         
     def get_info(self):
@@ -147,7 +150,6 @@ class Penguin:
             elif self.hasGem:
                 carries = " ^ "
         
-
             if self.alive:
                 return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activities[self.activity]}                    ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],tempText,hungerText,carries,tempColor, hungerColor]     
             else:

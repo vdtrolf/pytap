@@ -41,6 +41,7 @@ ACTIVITY_FISHING = 2
 ACTIVITY_LOVING = 3
 ACTIVITY_DIGING =4
 ACTIVITY_BUILDING = 5
+ACTIVITY_MOVING = 6
 
 DL_V = '\u2551'
 DL_DR = "\u2554"
@@ -96,8 +97,14 @@ def get_direction(vpos,hpos,order):
         append_event_to_log("go right")
         return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
 
-def get_action(order):
+def get_activity(orders):
     """returns the givan action as a CONSTANT value"""
+    if len(orders) == 2: 
+        return ACTIVTY_MOVING
+    elif orders[1].title[0] == "F":
+        return ACTIVITY_FISHING
+	elif orders[1].title[0] == "D"
+    	return ACTIVITY_DIGING
 
 def random_direction(vpos,hpos):
     """Returns a random direction in the form of vpos/hpos coords"""
