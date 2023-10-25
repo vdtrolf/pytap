@@ -101,10 +101,10 @@ def get_activity(orders):
     """returns the givan action as a CONSTANT value"""
     if len(orders) == 2: 
         return ACTIVTY_MOVING
-    elif orders[1].title[0] == "F":
+    elif orders[1].title()[0] == "F":
         return ACTIVITY_FISHING
-	elif orders[1].title[0] == "D"
-    	return ACTIVITY_DIGING
+    elif orders[1].title()[0] == "D":
+        return ACTIVITY_DIGING
 
 def random_direction(vpos,hpos):
     """Returns a random direction in the form of vpos/hpos coords"""

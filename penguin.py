@@ -6,7 +6,7 @@ genders=("M","F")
 asciiEyes = ("**","oo","öö","ōō","øø","ôô","òó","óò","@@")
 asciiImg1 = {"M":"[","F":"("}
 asciiImg2 = {"M":"]","F":")"}
-activities = {ACTIVITY_NONE:"",ACTIVITY_EATING:"Eating",ACTIVITY_FISHING:"Fishing",ACTIVITY_LOVING:"Loving",ACTIVITY_DIGING:"Diging",ACTIVITY_BUILDING:"Build",ACTIVTY_MOVING:"Moe"}
+activities = {ACTIVITY_NONE:"",ACTIVITY_EATING:"Eating",ACTIVITY_FISHING:"Fishing",ACTIVITY_LOVING:"Loving",ACTIVITY_DIGING:"Diging",ACTIVITY_BUILDING:"Build",ACTIVITY_MOVING:"Move"}
 figures = {0:"Slim", 1:"Fit", 2:"Fat"}
 
 
@@ -65,12 +65,12 @@ class Penguin:
                 self.activityTime -= 1
             elif len(self.orders) > 0:
                 activity = get_activity(self.orders)
-                if activity = ACTIVTY_MOVING:
-	             	direction = get_direction(self.vpos,self.hpos,self.orders[1])
-                	coord = direction['vpos']*100 + direction['hpos']
-                	if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and not penguins.get(coord) and not newpenguins.get(coord):
-                    	self.vpos = direction['vpos']
-                    	self.hpos = direction['hpos']
+                if activity == ACTIVITY_MOVING:
+                    direction = get_direction(self.vpos,self.hpos,self.orders[1])
+                    coord = direction['vpos']*100 + direction['hpos']
+                    if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and not penguins.get(coord) and not newpenguins.get(coord):
+                        self.vpos = direction['vpos']
+                        self.hpos = direction['hpos']
                 self.orders = []
             # if not and if the penguin is on smelting ice: try to escape
             elif cells[self.vpos][self.hpos].cellType < 3 :
