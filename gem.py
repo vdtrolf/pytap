@@ -10,6 +10,7 @@ class Gem:
         self.vpos = vpos
         self.hpos = hpos
         self.age = 10
+        self.isTaken = False
     
     def get_ascii(self):
         """ returns the ascii image of the gem """

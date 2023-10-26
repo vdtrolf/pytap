@@ -138,13 +138,14 @@ class Island :
         tmpfishes = {}
         for fish in self.fishes.values():
             fish.become_older(self.cells,self.size)
-            tmpfishes[fish.vpos*100+fish.hpos]=fish
+            if not fish.isDead:
+                tmpfishes[fish.vpos*100+fish.hpos]=fish
         self.fishes = tmpfishes
         		
         tmpgems = {}
         for gem in self.gems.values():
             gem.become_older(self.cells)
-            if gem.age > 0:
+            if gem.age > 0 and not gem.isTaken:
                 tmpgems[gem.vpos*100+gem.hpos]=gem
         self.gems = tmpgems
 

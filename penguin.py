@@ -7,6 +7,7 @@ asciiEyes = ("**","oo","öö","ōō","øø","ôô","òó","óò","@@")
 asciiImg1 = {"M":"[","F":"("}
 asciiImg2 = {"M":"]","F":")"}
 activities = {ACTIVITY_NONE:"",ACTIVITY_EATING:"Eating",ACTIVITY_FISHING:"Fishing",ACTIVITY_LOVING:"Loving",ACTIVITY_DIGING:"Diging",ACTIVITY_BUILDING:"Build",ACTIVITY_MOVING:"Move"}
+activities_ascii = {ACTIVITY_NONE: "\\/",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "/|", ACTIVITY_LOVING: "<3", ACTIVITY_DIGING: "-^",ACTIVITY_BUILDING : "-#", ACTIVITY_MOVING:"\\/"}
 figures = {0:"Slim", 1:"Fit", 2:"Fat"}
 
 
@@ -27,6 +28,7 @@ class Penguin:
         self.name = generate_penguin_name(self.gender)
         self.activity = ACTIVITY_NONE
         self.activityTime = 0
+        self.activityTarget = 0
         self.orders = []
         self.hasFish = False
         self.hasGem = False
@@ -63,6 +65,15 @@ class Penguin:
             # Is there an order to execute
             if self.activityTime > 0:
                 self.activityTime -= 1
+                if self.activityTime == 0:
+                    if self.activity == ACTIVITY_FISHING:
+                        self.hasFish = True
+                        self.activity = ACTIVITY_NONE
+                        fishes[self.acivityTarget].isDead = True
+                    elif self.activity == ACTIVITY_DIGING:
+                        self.hasGem = True
+                        self.activity = ACTIVITY_NONE
+                        gems[self.acivityTarget].isTaken = True
             elif len(self.orders) > 0:
                 activity = get_activity(self.orders)
                 if activity == ACTIVITY_MOVING:
@@ -75,15 +86,17 @@ class Penguin:
                     direction = get_direction(self.vpos,self.hpos,self.orders[1],"fishing ")
                     coord = direction['vpos']*100 + direction['hpos']
                     if fishes.get(coord):
+                        fishes[coord].onHook=True
                         self.activityTime = 3
                         self.activity = activity
+                        self.acivityTarget = coord
                 elif activity == ACTIVITY_DIGING:
                     direction = get_direction(self.vpos,self.hpos,self.orders[1],"diging ")
                     coord = direction['vpos']*100 + direction['hpos']
                     if gems.get(coord):
                         self.activityTime = 3  
                         self.activity = activity      
-
+                        self.acivityTarget = coord
                 self.orders = []
             # if not and if the penguin is on smelting ice: try to escape
             elif cells[self.vpos][self.hpos].cellType < 3 :
@@ -98,7 +111,6 @@ class Penguin:
     def receive_order(self,orders) :
         """Receives an order to move or perform an activity"""
         for order in orders:
-            append_event_to_log(order)
             self.orders.append(order)
      
     def get_ascii(self):
@@ -116,7 +128,7 @@ class Penguin:
                 carries = "-"
             elif self.hasGem:
                 carries = "+"
-            return [asciiImg1[self.gender] + asciiEyes[self.id] + asciiImg2[self.gender],f"{carries}\\/{convert_to_alpha(self.id)}",color,color]
+            return [asciiImg1[self.gender] + asciiEyes[self.id] + asciiImg2[self.gender],f"{carries}{activities_ascii[self.activity]}{convert_to_alpha(self.id)}",color,color]
         elif self.deadAge < 6:
             return ["(xx)",f" \\/{convert_to_alpha(self.id)}",15,15]
             
@@ -164,7 +176,7 @@ class Penguin:
                 carries = " ^ "
         
             if self.alive:
-                return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activities[self.activity]}                    ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],tempText,hungerText,carries,tempColor, hungerColor]     
+                return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activities[self.activity]}-{str(self.activityTime)}                    ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],tempText,hungerText,carries,tempColor, hungerColor]     
             else:
                 return [f'{convert_to_alpha(self.id)}:{self.name.title()} - Dead                  ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],tempText,hungerText,carries,COLOR_TEXT, COLOR_TEXT]     
         else:
