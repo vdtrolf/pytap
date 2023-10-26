@@ -78,33 +78,35 @@ def initiate_names():
     for entry in islands_file:
         names_islands.append(entry.rstrip())
 
-def get_direction(vpos,hpos,order):
+def get_direction(vpos,hpos,order,activity_name):
     """Returns a direction based on an order - in the form of vpos/hpos coords"""
     if order.title()[0:1] == "U":
         direction = directions[0]
-        append_event_to_log("go up")
+        append_event_to_log(f"{activity_name} up")
         return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
     elif order.title()[0:1] == "D":
         direction = directions[1]
-        append_event_to_log("go down")
+        append_event_to_log(f"{activity_name} down")
         return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
     elif order.title()[0:1] == "L":
         direction = directions[2]
-        append_event_to_log("go left")
+        append_event_to_log(f"{activity_name} left")
         return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
     elif order.title()[0:1] == "R":
         direction = directions[3]
-        append_event_to_log("go right")
+        append_event_to_log(f"{activity_name} right")
         return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
 
 def get_activity(orders):
-    """returns the givan action as a CONSTANT value"""
-    if len(orders) == 2: 
-        return ACTIVTY_MOVING
-    elif orders[1].title()[0] == "F":
-        return ACTIVITY_FISHING
-    elif orders[1].title()[0] == "D":
-        return ACTIVITY_DIGING
+    """returns the given activity as a CONSTANT value"""
+    if len(orders) == 1: 
+        return ACTIVITY_MOVING
+    elif len(orders) == 2:
+        if orders[0].title()[0:1] == "F":
+            return ACTIVITY_FISHING
+        elif orders[0].title()[0:1] == "D":
+            return ACTIVITY_DIGING
+    return ACTIVITY_NONE
 
 def random_direction(vpos,hpos):
     """Returns a random direction in the form of vpos/hpos coords"""

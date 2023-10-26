@@ -31,7 +31,7 @@ class Penguin:
         self.hasFish = False
         self.hasGem = False
 
-    def become_older(self,cells,size,penguins,newpenguins,weather):
+    def become_older(self,cells,size,penguins,newpenguins,fishes,gems,weather):
         """makes the penguin move and become older"""
         # check if there is a neighbour
         hasNeighbour =  penguins.get((self.vpos+1)*100 + self.hpos) or penguins.get((self.vpos-1)*100 + self.hpos) or penguins.get(self.vpos*100 + self.hpos -1) or penguins.get(self.vpos*100 + self.hpos +1) 
@@ -66,11 +66,24 @@ class Penguin:
             elif len(self.orders) > 0:
                 activity = get_activity(self.orders)
                 if activity == ACTIVITY_MOVING:
-                    direction = get_direction(self.vpos,self.hpos,self.orders[1])
+                    direction = get_direction(self.vpos,self.hpos,self.orders[0],"move ")
                     coord = direction['vpos']*100 + direction['hpos']
                     if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and not penguins.get(coord) and not newpenguins.get(coord):
                         self.vpos = direction['vpos']
                         self.hpos = direction['hpos']
+                elif activity == ACTIVITY_FISHING:
+                    direction = get_direction(self.vpos,self.hpos,self.orders[1],"fishing ")
+                    coord = direction['vpos']*100 + direction['hpos']
+                    if fishes.get(coord):
+                        self.activityTime = 3
+                        self.activity = activity
+                elif activity == ACTIVITY_DIGING:
+                    direction = get_direction(self.vpos,self.hpos,self.orders[1],"diging ")
+                    coord = direction['vpos']*100 + direction['hpos']
+                    if gems.get(coord):
+                        self.activityTime = 3  
+                        self.activity = activity      
+
                 self.orders = []
             # if not and if the penguin is on smelting ice: try to escape
             elif cells[self.vpos][self.hpos].cellType < 3 :

@@ -141,19 +141,19 @@ class Island :
             tmpfishes[fish.vpos*100+fish.hpos]=fish
         self.fishes = tmpfishes
         		
-        tmppenguins = {}
-        for penguin in self.penguins.values():
-            penguin.become_older(self.cells,self.size,self.penguins,tmppenguins,self.weather)
-            if penguin.alive or penguin.deadAge < 6:
-                tmppenguins[penguin.vpos*100+penguin.hpos]=penguin
-        self.penguins = tmppenguins
-        
         tmpgems = {}
         for gem in self.gems.values():
             gem.become_older(self.cells)
             if gem.age > 0:
                 tmpgems[gem.vpos*100+gem.hpos]=gem
         self.gems = tmpgems
+
+        tmppenguins = {}
+        for penguin in self.penguins.values():
+            penguin.become_older(self.cells,self.size,self.penguins,tmppenguins,self.fishes,self.gems,self.weather)
+            if penguin.alive or penguin.deadAge < 6:
+                tmppenguins[penguin.vpos*100+penguin.hpos]=penguin
+        self.penguins = tmppenguins
 
         if len(self.gems) < self.size:
             v = random.randint(0,self.size-1)
