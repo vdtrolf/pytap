@@ -7,6 +7,7 @@ from cell import *
 from fish import *
 from gem import *
 from util import *
+from interpreter import *
 
 class Island :
 
@@ -177,12 +178,13 @@ class Island :
                 result = penguin.get_info()   
         return result
 
-    def transmit_orders(self,penguin_id,order) :
+    def transmit_commands(self,penguin_id,commands) :
         """Search a penguin by id and return the two lines info"""
         for penguin in self.penguins.values():
             if penguin.id == penguin_id:
-                penguin.receive_order(order)
-                break   
+                penguin.receive_commands(commands)
+                command = interpret_commands(commands[1:])
+                append_event_to_log(f"{penguin.name}: {command['activityName']} {command['directionName']}")    
     
     def show_penguin_details(self,penguin_id):
         """Search a penguin by id and return it's details"""

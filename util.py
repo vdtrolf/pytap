@@ -50,6 +50,11 @@ ACTIVITY_GETING =4
 ACTIVITY_BUILDING = 5
 ACTIVITY_MOVING = 6
 
+DIRECTION_UP = 0
+DIRECTION_DOWN = 1
+DIRECTION_LEFT = 2
+DIRECTION_RIGHT = 3
+
 DL_V = '\u2551'
 DL_DR = "\u2554"
 DL_HD = "\u2566"
@@ -63,9 +68,9 @@ DL_HU = "\u2569"
 
 DL_H_STR = '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550'
 
-
-
-directions = {0:[-1,0],1:[1,0],2:[0,-1],3:[0,1]}
+directions = {DIRECTION_UP:[-1,0],DIRECTION_DOWN:[1,0],DIRECTION_LEFT:[0,-1],DIRECTION_RIGHT:[0,1]}
+direction_names = {DIRECTION_UP:"up",DIRECTION_DOWN:"down",DIRECTION_LEFT:"left",DIRECTION_RIGHT:"right"}
+activity_names = {ACTIVITY_NONE: "", ACTIVITY_EATING: "Eat", ACTIVITY_FISHING: "Fish", ACTIVITY_LOVING: "Love", ACTIVITY_GETING: "Dig", ACTIVITY_BUILDING: "Build", ACTIVITY_MOVING: ""}
 weathers = {0:'Sun',1:'Rain',2:'Snow',3:'Cold'}
 letters = ("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z")
 names_males = []
@@ -86,36 +91,6 @@ def initiate_names():
     islands_file = open('iles.txt','r')
     for entry in islands_file:
         names_islands.append(entry.rstrip())
-
-def get_direction(vpos,hpos,order,activity_name):
-    """Returns a direction based on an order - in the form of vpos/hpos coords"""
-    if order.title()[0:1] == "U":
-        direction = directions[0]
-        append_event_to_log(f"{activity_name} up")
-        return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
-    elif order.title()[0:1] == "D":
-        direction = directions[1]
-        append_event_to_log(f"{activity_name} down")
-        return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
-    elif order.title()[0:1] == "L":
-        direction = directions[2]
-        append_event_to_log(f"{activity_name} left")
-        return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
-    elif order.title()[0:1] == "R":
-        direction = directions[3]
-        append_event_to_log(f"{activity_name} right")
-        return {'vpos':vpos+direction[0],'hpos':hpos+direction[1]}
-
-def get_activity(orders):
-    """returns the given activity as a CONSTANT value"""
-    if len(orders) == 1: 
-        return ACTIVITY_MOVING
-    elif len(orders) == 2:
-        if orders[0].title()[0:1] == "F":
-            return ACTIVITY_FISHING
-        elif orders[0].title()[0:1] == "D":
-            return ACTIVITY_GETING
-    return ACTIVITY_NONE
 
 def random_direction(vpos,hpos):
     """Returns a random direction in the form of vpos/hpos coords"""

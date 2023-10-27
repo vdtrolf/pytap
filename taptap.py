@@ -1,5 +1,6 @@
 import time
 import sys
+import os
 from xtermcolor import colorize
 
 from island import *
@@ -21,6 +22,9 @@ numberedLine += f"{DL_VH}{DL_H_STR}{DL_VL}"
 downLine += f"{DL_HU}{DL_H_STR}{DL_UL}"
 
 def show_island(an_island) :
+
+    os.system('clear')
+
     """Displays an image of the island in ascii format"""
     print(colorize(headerLine,ansi=COLOR_TEXT,ansi_bg=COLOR_BG))
     print(colorize(f"{DL_V} {island.get_info()}"[0:boardSize*4 +1] + f"{DL_V} Penguins             {DL_V}",ansi=COLOR_TEXT,ansi_bg=COLOR_BG))
@@ -74,7 +78,7 @@ while True :
     elif commands[0].isdigit() :
         if int(commands[0]) > 0 :
             if len(commands) > 1:
-                island.transmit_orders(int(commands[0]),commands[1:])
+                island.transmit_commands(int(commands[0]),commands[1:])
                 # island.become_older()
                 # show_island(island)
             else :
