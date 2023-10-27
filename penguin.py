@@ -3,11 +3,11 @@ from json import JSONEncoder
 from util import *
 
 genders=("M","F")
-asciiEyes = ("**","oo","öö","ōō","øø","ôô","òó","óò","@@")
+asciiEyes = ("**","11","22","33","44","55","66","77","88")
 asciiImg1 = {"M":"[","F":"("}
 asciiImg2 = {"M":"]","F":")"}
-activities = {ACTIVITY_NONE:"",ACTIVITY_EATING:"Eating",ACTIVITY_FISHING:"Fishing",ACTIVITY_LOVING:"Loving",ACTIVITY_DIGING:"Diging",ACTIVITY_BUILDING:"Build",ACTIVITY_MOVING:"Move"}
-activities_ascii = {ACTIVITY_NONE: "\\/",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "/|", ACTIVITY_LOVING: "<3", ACTIVITY_DIGING: "-^",ACTIVITY_BUILDING : "-#", ACTIVITY_MOVING:"\\/"}
+activities = {ACTIVITY_NONE:"",ACTIVITY_EATING:"Eating",ACTIVITY_FISHING:"Fishing",ACTIVITY_LOVING:"Loving",ACTIVITY_GETING:"Diging",ACTIVITY_BUILDING:"Build",ACTIVITY_MOVING:"Move"}
+activities_ascii = {ACTIVITY_NONE: "\\/",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "/|", ACTIVITY_LOVING: "<3", ACTIVITY_GETING: "-^",ACTIVITY_BUILDING : "-#", ACTIVITY_MOVING:"\\/"}
 figures = {0:"Slim", 1:"Fit", 2:"Fat"}
 
 
@@ -70,28 +70,28 @@ class Penguin:
                         self.hasFish = True
                         self.activity = ACTIVITY_NONE
                         fishes[self.acivityTarget].isDead = True
-                    elif self.activity == ACTIVITY_DIGING:
+                    elif self.activity == ACTIVITY_GETING:
                         self.hasGem = True
                         self.activity = ACTIVITY_NONE
                         gems[self.acivityTarget].isTaken = True
             elif len(self.orders) > 0:
                 activity = get_activity(self.orders)
                 if activity == ACTIVITY_MOVING:
-                    direction = get_direction(self.vpos,self.hpos,self.orders[0],"move ")
+                    direction = get_direction(self.vpos,self.hpos,self.orders[0],f"{self.id} move")
                     coord = direction['vpos']*100 + direction['hpos']
                     if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and not penguins.get(coord) and not newpenguins.get(coord):
                         self.vpos = direction['vpos']
                         self.hpos = direction['hpos']
                 elif activity == ACTIVITY_FISHING:
-                    direction = get_direction(self.vpos,self.hpos,self.orders[1],"fishing ")
+                    direction = get_direction(self.vpos,self.hpos,self.orders[1],f"{self.id} fish")
                     coord = direction['vpos']*100 + direction['hpos']
                     if fishes.get(coord):
                         fishes[coord].onHook=True
                         self.activityTime = 3
                         self.activity = activity
                         self.acivityTarget = coord
-                elif activity == ACTIVITY_DIGING:
-                    direction = get_direction(self.vpos,self.hpos,self.orders[1],"diging ")
+                elif activity == ACTIVITY_GETING:
+                    direction = get_direction(self.vpos,self.hpos,self.orders[1],f"{self.id} dig")
                     coord = direction['vpos']*100 + direction['hpos']
                     if gems.get(coord):
                         self.activityTime = 3  
@@ -121,16 +121,9 @@ class Penguin:
         elif self.temp > 50 or self.hunger > 50:
             color = COLOR_PENGUIN_BAD
         if self.alive:
-            carries = " "
-            if self.hasFish and self.hasGem:
-                carries = "±"
-            elif self.hasFish:
-                carries = "-"
-            elif self.hasGem:
-                carries = "+"
-            return [asciiImg1[self.gender] + asciiEyes[self.id] + asciiImg2[self.gender],f"{carries}{activities_ascii[self.activity]}{convert_to_alpha(self.id)}",color,color]
+            return [asciiImg1[self.gender] + asciiEyes[self.id] + asciiImg2[self.gender],f" {activities_ascii[self.activity]} ",color,color]
         elif self.deadAge < 6:
-            return ["(xx)",f" \\/{convert_to_alpha(self.id)}",15,15]
+            return ["(xx)",f" \\/ ",15,15]
             
     def get_details(self):
         """Returns the details of the penguin (name,age...)"""
@@ -176,7 +169,7 @@ class Penguin:
                 carries = " ^ "
         
             if self.alive:
-                return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activities[self.activity]}-{str(self.activityTime)}                    ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],tempText,hungerText,carries,tempColor, hungerColor]     
+                return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activities[self.activity]}                    ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],tempText,hungerText,carries,tempColor, hungerColor]     
             else:
                 return [f'{convert_to_alpha(self.id)}:{self.name.title()} - Dead                  ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],tempText,hungerText,carries,COLOR_TEXT, COLOR_TEXT]     
         else:

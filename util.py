@@ -5,23 +5,27 @@ from xtermcolor import colorize
 
 # CONSTANTS
 
+BOARDSIZE = 10
+
 PROBABILITY_SMELT = 3
 PROBABILITY_RISE = 4
 
-COLOR_GROUND1 = 250
-COLOR_GROUND2 = 248
-COLOR_GROUND3 = 246
+FISH_LETARGY = 3
+
+COLOR_GROUND1 = 153
+COLOR_GROUND2 = 153
+COLOR_GROUND3 = 151
 
 COLOR_ICE1 = 68
 COLOR_ICE2 = 69
-COLOR_ICE3 = 153
-COLOR_ICE4 = 195
+COLOR_ICE3 = 250
+COLOR_ICE4 = 248
 
 COLOR_BG_LIGHT = 255
 COLOR_BG_DARK = 232
 
 COLOR_TEXT = 245
-COLOR_BG=232
+COLOR_BG = 232
 
 COLOR_SPOT_GOOD = 76
 COLOR_SPOT_OK = 79
@@ -42,7 +46,7 @@ ACTIVITY_NONE = 0
 ACTIVITY_EATING = 1
 ACTIVITY_FISHING = 2
 ACTIVITY_LOVING = 3
-ACTIVITY_DIGING =4
+ACTIVITY_GETING =4
 ACTIVITY_BUILDING = 5
 ACTIVITY_MOVING = 6
 
@@ -58,6 +62,8 @@ DL_VR = "\u2560"
 DL_HU = "\u2569"
 
 DL_H_STR = '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550'
+
+
 
 directions = {0:[-1,0],1:[1,0],2:[0,-1],3:[0,1]}
 weathers = {0:'Sun',1:'Rain',2:'Snow',3:'Cold'}
@@ -108,7 +114,7 @@ def get_activity(orders):
         if orders[0].title()[0:1] == "F":
             return ACTIVITY_FISHING
         elif orders[0].title()[0:1] == "D":
-            return ACTIVITY_DIGING
+            return ACTIVITY_GETING
     return ACTIVITY_NONE
 
 def random_direction(vpos,hpos):
@@ -163,10 +169,5 @@ def print_format_table():
             colorStr += colorize(str(1000 + fg)[1:4],ansi=233,ansi_bg=fg) + " "
         print(colorStr) 
 
-
-
-def dump_island(island):
-    path = Path('island.json')
-    path.write_text(island_dump)
     
     

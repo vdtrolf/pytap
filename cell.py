@@ -4,8 +4,8 @@ import json
 
 from util import *
 
-cellTypes1 = ("~~~~","~~ ~"," ~ ~","  ~ ","  ~ ","  ~ ","    ","    ","    ","    ","    ","    ","    ","    ")
-cellTypes2 = ("~~~~","~ ~~","~ ~ "," ~  "," ~  ","    "," ~  ","    ","    ","    ","    ","    ","    ","    ")
+cellTypes1 = ("~~~~","~~ ~"," ~ ~","  ~ ","  ~ ","  ~ ","    ","    ","    ","    ","    ","  ^ ","  ^ "," ^ ^")
+cellTypes2 = ("~~~~","~ ~~","~ ~ "," ~  "," ~  ","    "," ~  ","    ","    ","    ","    ","    "," ^  ","^ ^ ")
 
 cellfg = (239,239,239,0,0,0,0,0,0,0,0,0,0,0,0)
 cellbg = (COLOR_WATER,COLOR_ICE1,COLOR_ICE1,COLOR_ICE1,COLOR_ICE2,COLOR_ICE2,COLOR_ICE3,COLOR_ICE3,COLOR_ICE4,COLOR_ICE4,COLOR_GROUND1,COLOR_GROUND2,COLOR_GROUND3)

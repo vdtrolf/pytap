@@ -35,7 +35,7 @@ class Island :
             tmpland.append(lane)
         
         # add some mountains     
-        for i in range(int(size / 3)):
+        for i in range(int(size / 4)):
             v = 1 + random.randint(0,size-3)
             h = 1 + random.randint(0,size-3)
             tmpland[v][h] = 12
@@ -83,7 +83,7 @@ class Island :
                 
         # add some fishes
         cntfishes=0
-        while cntfishes < size / 2 :
+        while cntfishes < size :
             v = random.randint(0,size-1)
             h = random.randint(0,size-1)
             if self.cells[v][h].isSea():

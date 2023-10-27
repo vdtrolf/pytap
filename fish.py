@@ -25,7 +25,7 @@ class Fish:
             return
         else :
             direction = random_direction(self.vpos,self.hpos)
-            if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and cells[direction['vpos']][direction['hpos']].isSea():
+            if random.randint(0,FISH_LETARGY) == 0 and direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and cells[direction['vpos']][direction['hpos']].isSea():
                 self.vpos = direction['vpos']
                 self.hpos = direction['hpos']
             

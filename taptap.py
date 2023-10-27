@@ -5,8 +5,7 @@ from xtermcolor import colorize
 from island import *
 from util import *
 
-boardSize = 12
-# int(input("size ? :"))
+boardSize = BOARDSIZE
 
 initiate_names()						
 
@@ -76,8 +75,10 @@ while True :
         if int(commands[0]) > 0 :
             if len(commands) > 1:
                 island.transmit_orders(int(commands[0]),commands[1:])
+                # island.become_older()
+                # show_island(island)
             else :
-                island.show_penguin_details(int(commands[0]))        
+                island.show_penguin_details(int(commands[0]))            
     else:
         island.become_older()
         show_island(island)
