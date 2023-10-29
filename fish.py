@@ -31,8 +31,8 @@ class Fish:
             
     def get_data(self):
         return {
-            "vpos" : self.vpos,
-            "hpos" : self.hpos,
-            "onHook" : self.onHook,
-            "isDead" : self.isDead
+            'vpos' : self.vpos,
+            'hpos' : self.hpos,
+            'onHook' : self.onHook,
+            'isDead' : self.isDead
         }

@@ -92,9 +92,9 @@ def show_island(an_island):
 # print_format_table()
 
 island = Island(boardSize)
-print(island.get_data())
+# print(island.get_data())
 
-# show_island(island)
+show_island(island)
 
 while True:
     command = input("? ")

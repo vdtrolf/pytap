@@ -28,9 +28,9 @@ class Gem:
             
     def get_data(self):
         return {
-            "vpos" : self.vpos,
-            "hpos" : self.hpos,
-            "age" : self.age,
-            "isTaken" : self.isTaken
+            'vpos' : self.vpos,
+            'hpos' : self.hpos,
+            'age' : self.age,
+            'isTaken' : self.isTaken
         }
         

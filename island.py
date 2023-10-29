@@ -203,4 +203,4 @@ class Island :
             'gems' : gemsData,
             'cells' : cellsData    
         }
-        return json.dumps(islandData)
+        return islandData

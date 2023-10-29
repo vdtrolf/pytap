@@ -61,8 +61,8 @@ class Cell:
             
     def get_data(self):
         return {
-            "vpos" : self.vpos,
-            "hpos" : self.hpos,
-            "cellType" : self.cellType
+            'vpos' : self.vpos,
+            'hpos' : self.hpos,
+            'cellType' : self.cellType
         }
 

@@ -204,24 +204,24 @@ class Penguin:
 
     def get_data(self):
         return {
-            "vpos" : self.vpos,
-            "hpos" : self.hpos,
-            "id" : self.id,
-            "alive" : self.alive,
-            "age" : self.age,
-            "deadAge" : self.deadAge,
-            "hunger" : self.hunger,
-            "temp" : self.temp,
-            "figure" : self.figure,
-            "gender" : self.gender,
-            "name" : self.name,
-            "activity" : self.activity,
-            "activityTime" : self.activityTime,
-            "activityTarget" : self.activityTarget,
-            "activityVMove" : self.activityVMove,
-            "activityHMove" : self.activityHMove,
-            "hasFish" : self.hasFish,
-            "hasGem" : self.hasGem            
+            'vpos' : self.vpos,
+            'hpos' : self.hpos,
+            'id' : self.id,
+            'alive' : self.alive,
+            'age' : self.age,
+            'deadAge' : self.deadAge,
+            'hunger' : self.hunger,
+            'temp' : self.temp,
+            'figure' : self.figure,
+            'gender' : self.gender,
+            'name' : self.name.title(),
+            'activity' : self.activity,
+            'activityTime' : self.activityTime,
+            'activityTarget' : self.activityTarget,
+            'activityVMove' : self.activityVMove,
+            'activityHMove' : self.activityHMove,
+            'hasFish' : self.hasFish,
+            'hasGem' : self.hasGem            
         }
 
            # self.commands = []
