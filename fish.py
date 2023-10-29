@@ -13,11 +13,11 @@ class Fish:
         self.isDead = False
 
     def get_ascii(self):
-        """ returns the ascii image of thr fish """
+        """ returns the ascii image of the fish """
         if self.onHook :
-            return ["><x>","~~~~",COLOR_FISH_ONHOOK,239]
+            return ["><x>","    ",COLOR_FISH_ONHOOK,239]
         else :
-            return ["><ò>","~~~~",COLOR_FISH_OK,239]
+            return ["><ò>","    ",COLOR_FISH_OK,239]
         
     def become_older(self,cells,size):
         """makes the fish move and become older"""
@@ -29,9 +29,10 @@ class Fish:
                 self.vpos = direction['vpos']
                 self.hpos = direction['hpos']
             
-class FishEncoder(JSONEncoder):
-    def default(self,object):
-        if isinstance(object,Fish):
-            return object.__dict__
-        else:
-            return json.JSONEncoder.default(self,object)
+    def get_data(self):
+        return {
+            "vpos" : self.vpos,
+            "hpos" : self.hpos,
+            "onHook" : self.onHook,
+            "isDead" : self.isDead
+        }

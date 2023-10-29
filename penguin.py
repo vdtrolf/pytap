@@ -29,6 +29,8 @@ class Penguin:
         self.activity = ACTIVITY_NONE
         self.activityTime = 0
         self.activityTarget = 0
+        self.activityVMove = 0
+        self.activityHMove = 0
         self.commands = []
         self.hasFish = False
         self.hasGem = False
@@ -73,9 +75,19 @@ class Penguin:
                     elif self.activity == ACTIVITY_GETING:
                         self.hasGem = True
                         self.activity = ACTIVITY_NONE
-                        gems[self.acivityTarget].isTaken = True
+                        if gems.get(self.acivityTarget):
+                            gems[self.acivityTarget].isTaken = True
+                    elif self.activity == ACTIVITY_EATING:
+                        self.hunger = 0
+                        self.hasFish = False
+                        self.activity = ACTIVITY_NONE
+                    elif self.activity == ACTIVITY_BUILDING:
+                        self.temp = 0
+                        self.hasGem = False
+                        cells[self.activityVPos][self.activityHPos].endBuilding()
+                        self.activity = ACTIVITY_NONE            
             elif len(self.commands) > 0:
-                command = interpret_commands(self.commands)
+                command = interpret_commands(self.commands,self.vpos,self.hpos,fishes,gems)
                 direction = {'vpos':self.vpos + command['vmove'],'hpos':self.hpos + command['hmove']}
                 coord = direction['vpos']*100 + direction['hpos']
                 if command['activity'] == ACTIVITY_MOVING:
@@ -88,12 +100,31 @@ class Penguin:
                         self.activityTime = 3
                         self.activity = command['activity']
                         self.acivityTarget = coord
+                    else:      
+                        self.activity = ACTIVITY_NONE                
                 elif command['activity'] == ACTIVITY_GETING:
                     if gems.get(coord):
                         self.activityTime = 3  
                         self.activity = command['activity']      
                         self.acivityTarget = coord
-                self.orders = []
+                    else:      
+                        self.activity = ACTIVITY_NONE
+                elif command['activity'] == ACTIVITY_EATING:
+                    if self.hasFish :        
+                        self.activityTime = 2  
+                        self.activity = command['activity']
+                    else:      
+                        self.activity = ACTIVITY_NONE
+                elif command['activity'] == ACTIVITY_BUILDING:
+                    if self.hasGem and cells[direction['vpos']][direction['hpos']].isSea() :        
+                        self.activityTime = 3  
+                        self.activityVPos = direction['vpos']
+                        self.activityHPos = direction['hpos']
+                        cells[self.activityVPos][self.activityHPos].startBuilding()
+                        self.activity = command['activity']
+                    else:      
+                        self.activity = ACTIVITY_NONE                
+                self.commands = []
             # if not and if the penguin is on smelting ice: try to escape
             elif cells[self.vpos][self.hpos].cellType < 3 :
                 direction = random_direction(self.vpos,self.hpos)
@@ -109,7 +140,7 @@ class Penguin:
         for command in commands:
             self.commands.append(command)
      
-    def get_ascii(self):
+    def get_ascii(self,cell_bg):
         """Returns the ascii image of the penguin """
         color = COLOR_PENGUIN_OK
         if self.temp > 70 or self.hunger > 70:
@@ -117,9 +148,9 @@ class Penguin:
         elif self.temp > 50 or self.hunger > 50:
             color = COLOR_PENGUIN_BAD
         if self.alive:
-            return [asciiImg1[self.gender] + asciiEyes[self.id] + asciiImg2[self.gender],f" {activities_ascii[self.activity]} ",color,color]
+            return [asciiImg1[self.gender] + asciiEyes[self.id] + asciiImg2[self.gender],f"{cell_bg[2]}{activities_ascii[self.activity]}{cell_bg[3]}",color,color]
         elif self.deadAge < 6:
-            return ["(xx)",f" \\/ ",15,15]
+            return ["(xx)",f"{cell_bg[2]}\\/{cell_bg[3]}",15,15]
             
     def get_details(self):
         """Returns the details of the penguin (name,age...)"""
@@ -171,9 +202,28 @@ class Penguin:
         else:
             return ["","","","","",""]  
 
-class PenguinEncoder(JSONEncoder):
-    def default(self,object):
-        if isinstance(object,Penguin):
-            return object.__dict__
-        else:
-            return json.JSONEncoder.default(self,object)
+    def get_data(self):
+        return {
+            "vpos" : self.vpos,
+            "hpos" : self.hpos,
+            "id" : self.id,
+            "alive" : self.alive,
+            "age" : self.age,
+            "deadAge" : self.deadAge,
+            "hunger" : self.hunger,
+            "temp" : self.temp,
+            "figure" : self.figure,
+            "gender" : self.gender,
+            "name" : self.name,
+            "activity" : self.activity,
+            "activityTime" : self.activityTime,
+            "activityTarget" : self.activityTarget,
+            "activityVMove" : self.activityVMove,
+            "activityHMove" : self.activityHMove,
+            "hasFish" : self.hasFish,
+            "hasGem" : self.hasGem            
+        }
+
+           # self.commands = []
+ 
+

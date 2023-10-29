@@ -1,7 +1,17 @@
-# Created on iPad.
 from flask import Flask
-app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+from island import *
+from util import *
+
+Flaskapp = Flask(__name__)
+boardSize = 12
+initiate_names()
+
+@Flaskapp.route('/')
+def helloWorld():
+    island = Island(boardSize)
+    return island.get_data()
+  
+if __name__ == '__main__':
+    Flaskapp.run(use_reloader=False, debug=True)
+

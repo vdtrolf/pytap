@@ -1,5 +1,4 @@
 import random
-from json import JSONEncoder
 import json
 
 from penguin import *
@@ -17,12 +16,13 @@ class Island :
 
     def get_cell_ascii(self,vpos,hpos):
         """get the ascii value at a given position"""
+        cell_bg = self.cells[vpos][hpos].get_bg()   
         if self.penguins.get(vpos*100+hpos) :
-            return self.penguins[vpos*100+hpos].get_ascii()
+            return self.penguins[vpos*100+hpos].get_ascii(cell_bg)
         elif self.fishes.get(vpos*100+hpos) :
             return self.fishes[vpos*100+hpos].get_ascii()
         elif self.gems.get(vpos*100+hpos) :
-            return self.gems[vpos*100+hpos].get_ascii()
+            return self.gems[vpos*100+hpos].get_ascii(cell_bg)
         else:   
             return self.cells[vpos][hpos].get_ascii()
       
@@ -70,7 +70,7 @@ class Island :
         for i in range(size):   
             tmplane = []
             for j in range(size):
-                tmplane.append(Cell(tmpland[i][j]))
+                tmplane.append(Cell(i,j,tmpland[i][j]))
             self.cells.append(tmplane)
                 
         # add some penguins
@@ -110,23 +110,6 @@ class Island :
         """Makes the island and artifacts older"""
         self.counter += 1
         
-        # check the surrounding for each penguin
-        for peng in self.penguins.values():
-            fish_dist,mount_dist = 9,9
-            fish_v,fish_h,mount_v,mount_h = 0,0,0,0
-            for v in range(peng.vpos-2,peng.vpos+2):
-                for h in range(peng.hpos-2,peng.hpos+2):
-                    if v>=0 and h>=0 and v<self.size and h<self.size and not self.penguins.get(v*100+h):
-                        dist = abs(v-peng.vpos) + abs(h-peng.hpos)
-                        if self.fishes.get(v*100+h) and fish_dist > dist:
-                            fish_dist = dist
-                            fish_v = v
-                            fish_h = h
-                        if self.cells[v][h].isMount() and mount_dist > dist:
-                            mount_dist = dist
-                            mount_v = v
-                            mount_h = h
-
         weather = random_weather(self.weather,self.weather_age)    
         self.weather = weather[0]
         self.weather_age = weather[1]
@@ -161,14 +144,11 @@ class Island :
             v = random.randint(0,self.size-1)
             h = random.randint(0,self.size-1)
             if self.cells[v][h].isGround() and not self.penguins.get(v*100+h) and not self.gems.get(v*100+h):
-                # append_event_to_log("new gem at " + str(v) + "/" + str(h))
                 self.gems[v*100+h]=Gem(v,h)
         
-        # dump_island(IslandEncoder().encode(self))
-
     def get_info(self):
         """Returns the name and status of the island"""
-        return f'{self.name} - run {self.counter} - {self.weather_name}                                                  '
+        return f'{self.name} - run {self.counter} - {self.weather_name} !                                                 '
         
     def get_penguin_info(self,penguin_id):
         """Search a penguin by id and return the two lines info"""
@@ -183,8 +163,8 @@ class Island :
         for penguin in self.penguins.values():
             if penguin.id == penguin_id:
                 penguin.receive_commands(commands)
-                command = interpret_commands(commands[1:])
-                append_event_to_log(f"{penguin.name}: {command['activityName']} {command['directionName']}")    
+                command = interpret_commands(commands,0,0,self.fishes,self.gems)
+                append_event_to_log(f"{penguin.name.title()}: {command['activityName']} {command['directionName']}")    
     
     def show_penguin_details(self,penguin_id):
         """Search a penguin by id and return it's details"""
@@ -192,11 +172,33 @@ class Island :
             if penguin.id == penguin_id:
                 print(penguin.get_details())
                 
-                
-class IslandEncoder(JSONEncoder):
-    def default(self,object):
-        if isinstance(object,Island):
-            return object.__dict__
-        else:
-            return json.JSONEncoder.default(self,object)
+    def get_data(self):
+        
+        penguinsData = []
+        for penguin in self.penguins.values():
+            penguinsData.append(penguin.get_data())
 
+        fishesData = []
+        for fish in self.fishes.values():
+            fishesData.append(fish.get_data())
+            
+        gemsData = []
+        for gem in self.gems.values():
+            gemsData.append(gem.get_data())
+            
+        cellsData = []
+        for vpos in range(self.size):
+            for hpos in range(self.size):
+                cellsData.append(self.cells[vpos][hpos].get_data())
+                        
+        islandData = {
+            'size': self.size,
+            'name' : self.name,
+            'counter' : self.counter,
+            'weather_name' : self.weather_name,
+            'penguins' : penguinsData,
+            'fishes' : fishesData,
+            'gems' : gemsData,
+            'cells' : cellsData    
+        }
+        return json.dumps(islandData)
