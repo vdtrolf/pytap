@@ -93,6 +93,7 @@ class Island :
                 
     def __init__(self,size):
         """Initiate an island instance"""
+        self.id = random.randint(0,99999)
         self.size = size
         self.name = generate_island_name()
         self.cells = []
@@ -192,6 +193,7 @@ class Island :
                 cellsData.append(self.cells[vpos][hpos].get_data())
                         
         islandData = {
+            'id' : self.id,
             'size': self.size,
             'name' : self.name,
             'counter' : self.counter,
