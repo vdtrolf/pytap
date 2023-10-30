@@ -9,10 +9,15 @@ initiate_names()
 
 @Flaskapp.route('/refresh/<islandId>')
 def refresh(islandId):
+
+    islandList = []
+    for island in islands.values() :
+        islandList.append({'name':island.name, 'id':island.id, 'running': True, 'poimts' : island.year})
+
     if islands.get(int(islandId)) :
         island = islands[int(islandId)]
         island.become_older()
-        response = jsonify(island.get_data())
+        response = jsonify(island.get_data(islandList))
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
     else:
@@ -39,9 +44,14 @@ def command(islandId):
         
 @Flaskapp.route('/create')
 def create():
+
+    islandList = []
+    for island in islands.values() :
+        islandList.append({'name':island.name, 'id':island.id, 'running': True, 'poimts' : island.year})
+
     island = Island(BOARDSIZE)
     islands[island.id] = island
-    response = jsonify(island.get_data())
+    response = jsonify(island.get_data(islandList))
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 

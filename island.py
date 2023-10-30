@@ -200,7 +200,7 @@ class Island :
             if penguin.id == penguin_id:
                 print(penguin.get_details())
                 
-    def get_data(self):
+    def get_data(self,islandList):
         
         penguinsData = []
         for penguin in self.penguins.values():
@@ -237,6 +237,7 @@ class Island :
             'fishes' : fishesData,
             'gems' : gemsData,
             'garbages' : garbagesData,
-            'cells' : cellsData
+            'cells' : cellsData,
+            'islands' : islandList
         }
         return islandData
