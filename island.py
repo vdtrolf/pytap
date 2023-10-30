@@ -39,7 +39,7 @@ class Island :
         for i in range(int(size / 4)):
             v = 1 + random.randint(0,size-3)
             h = 1 + random.randint(0,size-3)
-            tmpland[v][h] = 12
+            tmpland[v][h] = 15
        
         # add some land around the mountains 
         for i in range(6) :
@@ -47,7 +47,7 @@ class Island :
                 v = 1 + random.randint(0,size-3)
                 h = 1 + random.randint(0,size-3)
                 if tmpland[v][h] == 0 and (tmpland[v][h+1] > 0 or tmpland[v][h-1] > 0 or tmpland[v+1][h] > 0 or tmpland[v-1][h] > 0 ) :
-                     tmpland[v][h] = 12-i
+                     tmpland[v][h] = 15-i
                 
         # remove the lakes and the istmes        
         for i in range(size -2):
@@ -93,6 +93,7 @@ class Island :
                 
     def __init__(self,size):
         """Initiate an island instance"""
+        self.key = get_next_key()
         self.id = random.randint(0,99999)
         self.size = size
         self.name = generate_island_name()
@@ -106,10 +107,16 @@ class Island :
         self.weather = weather[0]
         self.weather_age = weather[1]
         self.weather_name = weather[2]
+        self.temperature = 0.4
+        self.oceanTemperature = 20.3
+        self.year = 2000
         
     def become_older(self):
         """Makes the island and artifacts older"""
         self.counter += 1
+        self.year += 0.5
+        self.temperature += 0.05
+        self.oceanTemperature += 0.05
         
         weather = random_weather(self.weather,self.weather_age)    
         self.weather = weather[0]
@@ -193,14 +200,18 @@ class Island :
                 cellsData.append(self.cells[vpos][hpos].get_data())
                         
         islandData = {
+            'key' : self.key,
             'id' : self.id,
             'size': self.size,
             'name' : self.name,
             'counter' : self.counter,
-            'weather_name' : self.weather_name,
+            'weather' : self.weather,
+            'temperature' : self.temperature,
+            'oceanTemperature' : self.oceanTemperature,
+            'year' : self.year,
             'penguins' : penguinsData,
             'fishes' : fishesData,
             'gems' : gemsData,
-            'cells' : cellsData    
+            'cells' : cellsData,  
         }
         return islandData

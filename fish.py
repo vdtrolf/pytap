@@ -7,10 +7,12 @@ from util import *
 class Fish:
 
     def __init__(self,vpos,hpos):
+        self.key = get_next_key()
         self.vpos = vpos
         self.hpos = hpos
         self.onHook = False
         self.isDead = False
+        self.direction = DIRECTION_NONE
 
     def get_ascii(self):
         """ returns the ascii image of the fish """
@@ -24,15 +26,20 @@ class Fish:
         if self.onHook :
             return
         else :
-            direction = random_direction(self.vpos,self.hpos)
-            if random.randint(0,FISH_LETARGY) == 0 and direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and cells[direction['vpos']][direction['hpos']].isSea():
-                self.vpos = direction['vpos']
-                self.hpos = direction['hpos']
+            move = random_direction(self.vpos,self.hpos)
+            if random.randint(0,FISH_LETARGY) == 0 and move['vpos'] > 0 and move['vpos'] < size and move['hpos'] > 0 and move['hpos'] < size and cells[move['vpos']][move['hpos']].isSea():
+                self.vpos = move['vpos']
+                self.hpos = move['hpos']
+                self.direction = move['direction']
+            else:
+                self.direction = DIRECTION_NONE
             
     def get_data(self):
         return {
+            'key' : self.key,
             'vpos' : self.vpos,
             'hpos' : self.hpos,
             'onHook' : self.onHook,
-            'isDead' : self.isDead
+            'isDead' : self.isDead,
+            'direction' : self.direction
         }

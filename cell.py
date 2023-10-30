@@ -4,20 +4,24 @@ import json
 
 from util import *
 
-cellTypes1 = ('    ', f'{SHADE_L} {SHADE_L} ', f'{SHADE_L} {SHADE_L} ', SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
-cellTypes2 = ('    ', f' {SHADE_L} {SHADE_L}', f' {SHADE_L} {SHADE_L}', SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
+cellTypes1 = ('    ', f'{SHADE_L} {SHADE_L} ', f'{SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} ', SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
+cellTypes2 = ('    ', f' {SHADE_L} {SHADE_L}', f' {SHADE_L} {SHADE_L}',f' {SHADE_L} {SHADE_L}', SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
 
-cellfg = (239, 239, 239, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-cellbg = (COLOR_WATER, COLOR_ICE1, COLOR_ICE1, COLOR_ICE1, COLOR_ICE2,
-          COLOR_ICE2, COLOR_ICE3, COLOR_ICE3, COLOR_ICE4, COLOR_ICE4,
+cellfg = (239, 239, 239, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+cellbg = (COLOR_WATER, COLOR_ICE1, COLOR_ICE1, COLOR_ICE1, COLOR_ICE1, COLOR_ICE2, COLOR_ICE2,
+          COLOR_ICE2, COLOR_ICE3, COLOR_ICE3, COLOR_ICE3, COLOR_ICE4, COLOR_ICE4, COLOR_ICE4, 
           COLOR_GROUND1, COLOR_GROUND2, COLOR_GROUND3)
+angles = ('a','b')
+
 
 class Cell:
 
     def __init__(self, vpos, hpos, cellType):
+        self.key = get_next_key()
         self.vpos = vpos
         self.hpos = hpos
         self.cellType = cellType
+        self.angle = angles[random.randint(0,1)]
 
     def startBuilding(self):
         """Sets the cell attributes related to the begin of a 'building' proces"""
@@ -61,8 +65,10 @@ class Cell:
             
     def get_data(self):
         return {
+            'key' : self.key,
             'vpos' : self.vpos,
             'hpos' : self.hpos,
-            'cellType' : self.cellType
+            'cellType' : self.cellType,
+            'angle' : self.angle
         }
 

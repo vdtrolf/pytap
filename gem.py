@@ -7,14 +7,15 @@ from util import *
 class Gem:
 
     def __init__(self,vpos,hpos):
+        self.key = get_next_key()
         self.vpos = vpos
         self.hpos = hpos
-        self.age = 10
+        self.age = 12
         self.isTaken = False
     
     def get_ascii(self,cell_bg):
         """ returns the ascii image of the gem """
-        if self.age > 5:
+        if self.age > 6:
             return [f"{DL_DR}{DL_DR}{DL_DL}{DL_DL}",f"{DL_UR}{DL_UR}{DL_UL}{DL_UL}",231,231]
         else :
             return [f"{cell_bg[0]}{DL_DR}{DL_DL}{cell_bg[1]}",f"{cell_bg[2]}{DL_UR}{DL_UL}{cell_bg[3]}",231,231]
@@ -28,6 +29,7 @@ class Gem:
             
     def get_data(self):
         return {
+            'key' : self.key,
             'vpos' : self.vpos,
             'hpos' : self.hpos,
             'age' : self.age,

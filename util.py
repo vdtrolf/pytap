@@ -54,11 +54,13 @@ ACTIVITY_LOVING = 3
 ACTIVITY_GETING = 4
 ACTIVITY_BUILDING = 5
 ACTIVITY_MOVING = 6
+ACTIVITY_DEAD = 7
 
-DIRECTION_UP = 0
-DIRECTION_DOWN = 1
-DIRECTION_LEFT = 2
-DIRECTION_RIGHT = 3
+DIRECTION_NONE = 0
+DIRECTION_LEFT = 1
+DIRECTION_RIGHT = 2
+DIRECTION_UP = 3
+DIRECTION_DOWN = 4
 
 DL_V = '\u2551'
 DL_DR = "\u2554"
@@ -82,10 +84,11 @@ SHADES_H = "\u2593\u2593\u2593\u2593"
 DL_H_STR = '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550'
 
 moves = {
-    DIRECTION_UP: [-1, 0],
-    DIRECTION_DOWN: [1, 0],
+    DIRECTION_NONE: [0,0],
     DIRECTION_LEFT: [0, -1],
-    DIRECTION_RIGHT: [0, 1]
+    DIRECTION_RIGHT: [0, 1],
+    DIRECTION_UP: [-1, 0],
+    DIRECTION_DOWN: [1, 0]
 }
 direction_names = {
     DIRECTION_UP: "up",
@@ -100,7 +103,8 @@ activity_names = {
     ACTIVITY_LOVING: "Love",
     ACTIVITY_GETING: "Dig",
     ACTIVITY_BUILDING: "Build",
-    ACTIVITY_MOVING: "Go"
+    ACTIVITY_MOVING: "Go",
+    ACTIVITY_DEAD: "Dead"
 }
 weathers = {
     WEATHER_SUN: 'Sun',
@@ -114,7 +118,7 @@ names_males = []
 names_females = []
 names_islands = []
 events_log = []
-
+keys = []
 
 def initiate_names():
     """Reads the names into the _male, _female and _islands lists"""
@@ -137,8 +141,9 @@ def initiate_names():
 
 def random_direction(vpos, hpos):
     """Returns a random direction in the form of vpos/hpos coords"""
-    move = moves[random.randint(0, 3)]
-    return {'vpos': vpos + move[0], 'hpos': hpos + move[1]}
+    direction = random.randint(0, 3) + 1
+    move = moves[direction]
+    return {'vpos': vpos + move[0], 'hpos': hpos + move[1], 'direction': direction}
 
 
 def random_weather(weather, weather_age, force=False):
@@ -161,6 +166,15 @@ def generate_penguin_name(gender):
 def generate_island_name():
     """Generates and returns an island name"""
     return names_islands[random.randint(0, len(names_islands) - 1)]
+
+
+def get_next_key():
+    """Returns the next available key"""
+    while True :
+        key = random.randint(0,999999) 
+        if not key in keys:
+            keys.append(key)
+            return key
 
 
 def convert_to_alpha(number):
@@ -193,4 +207,5 @@ def print_format_table():
             fg = i * 16 + j
             # colorStr += colorize(str(1000 + fg)[1:4],ansi=233,ansi_bg=fg) + " "
         print(colorStr)
+
 
