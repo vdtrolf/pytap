@@ -44,6 +44,17 @@ def create():
     response = jsonify(island.get_data())
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
+
+@Flaskapp.route('/islands')
+def island():
+    islandList = []
+    for island in islands.values() :
+        islandList.append({'name':island.name, 'id':island.id, 'running': True, 'poimts' : island.year})
+    response = jsonify({'islands':islandList})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
   
 if __name__ == '__main__':
     Flaskapp.run(use_reloader=False, debug=True)

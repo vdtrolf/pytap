@@ -4,6 +4,7 @@ import json
 from penguin import *
 from cell import *
 from fish import *
+from garbage import *
 from gem import *
 from util import *
 from interpreter import *
@@ -21,6 +22,8 @@ class Island :
             return self.penguins[vpos*100+hpos].get_ascii(cell_bg)
         elif self.fishes.get(vpos*100+hpos) :
             return self.fishes[vpos*100+hpos].get_ascii()
+        elif self.garbages.get(vpos*100+hpos) :
+            return self.garbages[vpos*100+hpos].get_ascii()
         elif self.gems.get(vpos*100+hpos) :
             return self.gems[vpos*100+hpos].get_ascii(cell_bg)
         else:   
@@ -81,6 +84,15 @@ class Island :
             if self.cells[v][h].isGround() and not self.penguins.get(v*100+h):
                 self.penguins[v*100+h]=Penguin(cntpenguins + 1,v,h)
                 cntpenguins +=1
+
+        # add some fishes
+        cntgarbages=0
+        while cntgarbages < size/5 :
+            v = random.randint(0,size-1)
+            h = random.randint(0,size-1)
+            if self.cells[v][h].isSea() and (v == 0 or v == size-1 or h==0 or h == size-1):
+                self.garbages[v*100+h]=Garbage(v,h)
+                cntgarbages +=1
                 
         # add some fishes
         cntfishes=0
@@ -101,6 +113,7 @@ class Island :
         self.penguins = {}
         self.fishes = {}
         self.gems = {}
+        self.garbages = {}
         self.counter = 0
         self.build_island(size)   
         weather = random_weather(0,0,True)    
@@ -140,6 +153,13 @@ class Island :
             if gem.age > 0 and not gem.isTaken:
                 tmpgems[gem.vpos*100+gem.hpos]=gem
         self.gems = tmpgems
+
+        tmpgarbages = {}
+        for garbage in self.garbages.values():
+            garbage.become_older()
+            if not garbage.isTaken:
+                tmpgarbages[garbage.vpos*100+garbage.hpos]=garbage
+        self.garbages = tmpgarbages
 
         tmppenguins = {}
         for penguin in self.penguins.values():
@@ -193,7 +213,11 @@ class Island :
         gemsData = []
         for gem in self.gems.values():
             gemsData.append(gem.get_data())
-            
+
+        garbagesData = []
+        for garbage in self.garbages.values():
+            garbagesData.append(garbage.get_data())
+
         cellsData = []
         for vpos in range(self.size):
             for hpos in range(self.size):
@@ -212,6 +236,7 @@ class Island :
             'penguins' : penguinsData,
             'fishes' : fishesData,
             'gems' : gemsData,
-            'cells' : cellsData,  
+            'garbages' : garbagesData,
+            'cells' : cellsData
         }
         return islandData
