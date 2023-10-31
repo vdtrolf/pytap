@@ -3,8 +3,9 @@ import random
 from util import *
 
 
-garbageTypes1 = ('    ', '  %^', '&%-', '  %#',' &&-')
-garbageTypes2 = ('    ', ' %# ', ' &#', ' -*&','#$- ') 
+garbageTypes1 = ('      ', '   %^ ', ' &%- ', '   %# ','  &&- ')
+garbageTypes2 = ('      ', '  %#  ', '  &# ', '  -*& ',' #$-  ') 
+garbageTypes3 = ('      ', '   %^ ', ' &%- ', '   %# ','  &&- ')
 
 class Garbage:
 
@@ -17,7 +18,7 @@ class Garbage:
     
     def get_ascii(self):
         """ returns the ascii image of the garbage """
-        return [garbageTypes1[self.kind],garbageTypes2[self.kind],231,231]
+        return [garbageTypes1[self.kind],garbageTypes2[self.kind],garbageTypes3[self.kind],231,231]
         
     def become_older(self):
         """makes the gem becoming older"""

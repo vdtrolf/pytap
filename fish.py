@@ -17,9 +17,9 @@ class Fish:
     def get_ascii(self):
         """ returns the ascii image of the fish """
         if self.onHook :
-            return ["><x>","    ",COLOR_FISH_ONHOOK,239]
+            return ["|\\/ x\\","|/\\__/","      ",COLOR_FISH_ONHOOK,239]
         else :
-            return ["><ò>","    ",COLOR_FISH_OK,239]
+            return ["|\\/ o\\","|/\\__/","      ",COLOR_FISH_OK,239]
         
     def become_older(self,cells,size):
         """makes the fish move and become older"""

@@ -4,8 +4,9 @@ import json
 
 from util import *
 
-cellTypes1 = ('    ', f'{SHADE_L} {SHADE_L} ', f'{SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} ', SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
-cellTypes2 = ('    ', f' {SHADE_L} {SHADE_L}', f' {SHADE_L} {SHADE_L}',f' {SHADE_L} {SHADE_L}', SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
+cellTypes1 = ('      ', f'{SHADE_L} {SHADE_L} {SHADE_L} ', f'{SHADE_L} {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
+cellTypes2 = ('      ', f' {SHADE_L} {SHADE_L} {SHADE_L}', f' {SHADE_L} {SHADE_L} {SHADE_L}',f'{SHADE_L} {SHADE_L} {SHADE_L}', SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
+cellTypes3 = ('      ', f'{SHADE_L} {SHADE_L} {SHADE_L} ', f'{SHADE_L} {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
 
 cellfg = (239, 239, 239, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 cellbg = (COLOR_WATER, COLOR_ICE1, COLOR_ICE1, COLOR_ICE1, COLOR_ICE1, COLOR_ICE2, COLOR_ICE2,
@@ -34,13 +35,13 @@ class Cell:
     def get_ascii(self):
         """ returns the ascii image of the cell """
         return [
-            cellTypes1[self.cellType], cellTypes2[self.cellType],
+            cellTypes1[self.cellType], cellTypes2[self.cellType], cellTypes3[self.cellType],
             cellfg[self.cellType], cellfg[self.cellType]
         ]
 
     def get_bg(self):
         """Returns the left and right characters to be used as background"""
-        return [cellTypes1[self.cellType][0:1],cellTypes1[self.cellType][3:4],cellTypes2[self.cellType][0:1],cellTypes2[self.cellType][3:4]]
+        return [cellTypes1[self.cellType][0:1],cellTypes1[self.cellType][5:4],cellTypes2[self.cellType][0:1],cellTypes2[self.cellType][5:4],cellTypes3[self.cellType][0:1],cellTypes3[self.cellType][5:4]]
 
     def isGround(self):
         """Returns true if the content of the cell is ground (celltype > 0)"""

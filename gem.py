@@ -16,9 +16,9 @@ class Gem:
     def get_ascii(self,cell_bg):
         """ returns the ascii image of the gem """
         if self.age > 6:
-            return [f"{DL_DR}{DL_DR}{DL_DL}{DL_DL}",f"{DL_UR}{DL_UR}{DL_UL}{DL_UL}",231,231]
+            return [f"{cell_bg[0]}{DL_DR}{DL_DR}{DL_DL}{DL_DL}{cell_bg[1]}",f"{cell_bg[2]}{DL_V}{DL_V}{DL_V}{DL_V}{cell_bg[3]}",f"{cell_bg[4]}{DL_UR}{DL_UR}{DL_UL}{DL_UL}{cell_bg[5]}",231,231]
         else :
-            return [f"{cell_bg[0]}{DL_DR}{DL_DL}{cell_bg[1]}",f"{cell_bg[2]}{DL_UR}{DL_UL}{cell_bg[3]}",231,231]
+            return [f"{cell_bg[0]}{cell_bg[0]}{DL_DR}{DL_DL}{cell_bg[1]}{cell_bg[1]}",f"{cell_bg[2]}{cell_bg[2]}{DL_V}{DL_V}{cell_bg[3]}{cell_bg[3]}",f"{cell_bg[4]}{cell_bg[4]}{DL_UR}{DL_UL}{cell_bg[5]}{cell_bg[5]}",231,231]
 
     def become_older(self,cells):
         """makes the gem becoming older"""
