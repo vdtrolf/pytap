@@ -121,7 +121,7 @@ class Island :
         self.weather_age = weather[1]
         self.weather_name = weather[2]
         self.temperature = 0.4
-        self.oceanTemperature = 20.3
+        self.ocean_temperature = 20.3
         self.year = 2000
         
     def become_older(self):
@@ -129,7 +129,7 @@ class Island :
         self.counter += 1
         self.year += 0.5
         self.temperature += 0.05
-        self.oceanTemperature += 0.05
+        self.ocean_temperature += 0.05
         
         weather = random_weather(self.weather,self.weather_age)    
         self.weather = weather[0]
@@ -188,8 +188,12 @@ class Island :
 
     def transmit_commands(self,penguin_id,commands) :
         """Search a penguin by id and return the two lines info"""
+
+        print(f'---{penguin_id}---')
+        print(commands)
+
         for penguin in self.penguins.values():
-            if penguin.id == penguin_id:
+            if penguin.id == penguin_id or penguin.key == penguin_id:
                 penguin.receive_commands(commands)
                 command = interpret_commands(commands,0,0,self.fishes,self.gems)
                 append_event_to_log(f"{penguin.name.title()}: {command['activityName']} {command['directionName']}")    
@@ -231,7 +235,7 @@ class Island :
             'counter' : self.counter,
             'weather' : self.weather,
             'temperature' : self.temperature,
-            'oceanTemperature' : self.oceanTemperature,
+            'oceanTemperature' : self.ocean_temperature,
             'year' : self.year,
             'penguins' : penguinsData,
             'fishes' : fishesData,

@@ -12,7 +12,7 @@ def get_direction(command, activity):
         return {
             'activity': activity,
             'activityName': activity_names[activity],
-            'direction': DIRECTION_UP,
+            'directionNum': DIRECTION_UP,
             'vmove': move[0],
             'hmove': move[1],
             'directionName': direction_names[DIRECTION_UP]
@@ -22,7 +22,7 @@ def get_direction(command, activity):
         return {
             'activity': activity,
             'activityName': activity_names[activity],
-            'direction': DIRECTION_DOWN,
+            'directionNum': DIRECTION_DOWN,
             'vmove': move[0],
             'hmove': move[1],
             'directionName': direction_names[DIRECTION_DOWN]
@@ -32,7 +32,7 @@ def get_direction(command, activity):
         return {
             'activity': activity,
             'activityName': activity_names[activity],
-            'direction': DIRECTION_LEFT,
+            'directionNum': DIRECTION_LEFT,
             'vmove': move[0],
             'hmove': move[1],
             'directionName': direction_names[DIRECTION_LEFT]
@@ -42,7 +42,7 @@ def get_direction(command, activity):
         return {
             'activity': activity,
             'activityName': activity_names[activity],
-            'direction': DIRECTION_RIGHT,
+            'directionNum': DIRECTION_RIGHT,
             'vmove': move[0],
             'hmove': move[1],
             'directionName': direction_names[DIRECTION_RIGHT]
@@ -67,7 +67,8 @@ def interpret_commands(commands,vpos,hpos,fishes,gems):
                 'activityName': activity_names[ACTIVITY_EATING],
                 'vmove': 0,
                 'hmove': 0,
-                'directionName': ''
+                'directionName': '',
+                'directionNum' : DIRECTION_NONE
             }
         elif commands[0].title()[0:1] == "F":
             foundDirection = findItem(vpos,hpos,fishes)
@@ -76,7 +77,7 @@ def interpret_commands(commands,vpos,hpos,fishes,gems):
                 return {
                     'activity': ACTIVITY_FISHING,
                     'activityName': activity_names[ACTIVITY_EATING],
-                    'direction': foundDirection,
+                    'directionNum': foundDirection,
                     'vmove': move[0],
                     'hmove': move[1],
                     'directionName': direction_names[foundDirection]
@@ -95,6 +96,7 @@ def interpret_commands(commands,vpos,hpos,fishes,gems):
         'activityName': '',
         'vmove': 0,
         'hmove': 0,
-        'directionName': ''
+        'directionName': '',
+        'directionNum' : DIRECTION_NONE
     }
 

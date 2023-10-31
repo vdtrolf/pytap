@@ -143,7 +143,7 @@ def random_direction(vpos, hpos):
     """Returns a random direction in the form of vpos/hpos coords"""
     direction = random.randint(0, 3) + 1
     move = moves[direction]
-    return {'vpos': vpos + move[0], 'hpos': hpos + move[1], 'direction': direction}
+    return {'vpos': vpos + move[0], 'hpos': hpos + move[1], 'direction': direction, 'directionNum' : direction}
 
 
 def random_weather(weather, weather_age, force=False):

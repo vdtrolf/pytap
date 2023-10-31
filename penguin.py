@@ -28,12 +28,10 @@ class Penguin:
         self.gender = genders[random.randint(0,1)]
         self.name = generate_penguin_name(self.gender)
         self.activity = ACTIVITY_NONE
-        self.activityTime = 0
-        self.activityDirection = 0
-        self.activityTarget = 0
-        self.activityVMove = 0
-        self.activityHMove = 0
-        self.activityText = ""
+        self.activity_time = 0
+        self.activity_direction = 0
+        self.activity_target = 0
+        self.activity_text = ""
         self.canMove = 0
         self.canFish = 0
         self.canGrab = 0
@@ -59,52 +57,56 @@ class Penguin:
             if self.age > 20: 
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
-                self.activityText = f'died (age)'
+                self.activity_text = f'died (age)'
                 append_event_to_log(f'{self.name.title()} died (age)')
                 return
             elif self.temp > 99:
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
-                self.activityText = f'died (cold)'
+                self.activity_text = f'died (cold)'
                 append_event_to_log(f'{self.name.title()} died (cold)')
                 return
             elif self.hunger > 99:
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
-                self.activityText = f'died (hunger)'
+                self.activity_text = f'died (hunger)'
                 append_event_to_log(f'{self.name.title()} died (hunger)')    
                 return
             elif cells[self.vpos][self.hpos].cellType == 0:
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
-                self.activityText = f'died (sunk)'
+                self.activity_text = f'died (sunk)'
                 append_event_to_log(f'{self.name.title()} died (sunk)')
                 return
 
             # Is there an order to execute
-            if self.activityTime > 0:
-                self.activityTime -= 1
-                if self.activityTime == 0:
+            if self.activity_time > 0:
+                self.activity_time -= 1
+                if self.activity_time == 0:
                     if self.activity == ACTIVITY_FISHING:
                         self.hasFish = True
                         self.activity = ACTIVITY_NONE
+                        self.activity_direction = DIRECTION_NONE
                         fishes[self.acivityTarget].isDead = True
                     elif self.activity == ACTIVITY_GETING:
                         self.hasGem = True
                         self.activity = ACTIVITY_NONE
+                        self.activity_direction = DIRECTION_NONE
                         if gems.get(self.acivityTarget):
                             gems[self.acivityTarget].isTaken = True
                     elif self.activity == ACTIVITY_EATING:
                         self.hunger = 0
                         self.hasFish = False
                         self.activity = ACTIVITY_NONE
+                        self.activity_direction = DIRECTION_NONE
                     elif self.activity == ACTIVITY_BUILDING:
                         self.temp = 0
                         self.hasGem = False
                         cells[self.activityVPos][self.activityHPos].endBuilding()
-                        self.activity = ACTIVITY_NONE    
+                        self.activity = ACTIVITY_NONE 
+                        self.activity_direction = DIRECTION_NONE  
                 self.goal = ACTIVITY_NONE       
-                self.activityText = activity_names[self.activity]      
+                self.activity_text = activity_names[self.activity]      
             elif len(self.commands) > 0:
                 command = interpret_commands(self.commands,self.vpos,self.hpos,fishes,gems)
                 direction = {'vpos':self.vpos + command['vmove'],'hpos':self.hpos + command['hmove']}
@@ -113,41 +115,55 @@ class Penguin:
                     if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and not penguins.get(coord) and not newpenguins.get(coord):
                         self.vpos = direction['vpos']
                         self.hpos = direction['hpos']
+                        self.activity = command['activity']
+                        self.activity_direction = command['directionNum']
                 elif command['activity'] == ACTIVITY_FISHING:
                     if fishes.get(coord):
                         fishes[coord].onHook=True
-                        self.activityTime = 3
+                        self.activity_time = 3
                         self.activity = command['activity']
                         self.goal = command['activity']
                         self.acivityTarget = coord
+                        self.activity_direction = command['directionNum']
                     else:      
-                        self.activity = ACTIVITY_NONE                
+                        self.activity = ACTIVITY_NONE  
+                        self.activity_direction = DIRECTION_NONE              
                 elif command['activity'] == ACTIVITY_GETING:
                     if gems.get(coord):
-                        self.activityTime = 3  
+                        self.activity_time = 3  
                         self.activity = command['activity']      
                         self.goal = command['activity']
                         self.acivityTarget = coord
+                        self.activity_direction = command['directionNum']
                     else:      
                         self.activity = ACTIVITY_NONE
+                        self.activity_direction = DIRECTION_NONE
                 elif command['activity'] == ACTIVITY_EATING:
                     if self.hasFish :        
-                        self.activityTime = 2  
+                        self.activity_time = 2  
                         self.activity = command['activity']
                         self.goal = command['activity']
+                        self.activity_direction = command['directionNum']
                     else:      
                         self.activity = ACTIVITY_NONE
+                        self.activity_direction = DIRECTION_NONE
                 elif command['activity'] == ACTIVITY_BUILDING:
                     if self.hasGem and cells[direction['vpos']][direction['hpos']].isSea() :        
-                        self.activityTime = 3  
+                        self.activity_time = 3  
                         self.activityVPos = direction['vpos']
                         self.activityHPos = direction['hpos']
                         cells[self.activityVPos][self.activityHPos].startBuilding()
                         self.activity = command['activity']
                         self.goal = command['activity']
+                        self.activity_direction = command['directionNum']
                     else:      
                         self.activity = ACTIVITY_NONE    
-                self.activityText = activity_names[self.activity]                    
+                        self.activity_direction = DIRECTION_NONE
+                else:
+                    self.activity = ACTIVITY_NONE    
+                    self.activity_direction = DIRECTION_NONE
+
+                self.activity_text = activity_names[self.activity]                    
                 self.commands = []
             # if not and if the penguin is on smelting ice: try to escape
             elif cells[self.vpos][self.hpos].cellType < 3 :
@@ -156,6 +172,7 @@ class Penguin:
                 if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and cells[direction['vpos']][direction['hpos']].cellType > cells[self.vpos][self.hpos].cellType and not penguins.get(coord) and not newpenguins.get(coord):
                     self.vpos = direction['vpos']
                     self.hpos = direction['hpos']
+                    self.activity_direction = direction['directionNum']
                     
         else :
             self.deadAge += 1
@@ -163,7 +180,8 @@ class Penguin:
     def receive_commands(self,commands) :
         """Receives an order to move or perform an activity"""
         for command in commands:
-            self.commands.append(command)
+            if len(command) > 0:
+                self.commands.append(command)
      
     def get_ascii(self,cell_bg):
         """Returns the ascii image of the penguin """
@@ -242,11 +260,10 @@ class Penguin:
             'gender' : self.gender,
             'name' : self.name.title(),
             'activity' : self.activity,
-            'activityTime' : self.activityTime,
-            'activityTarget' : self.activityTarget,
-            'activityDirection' : self.activityDirection,
-            'activityVMove' : self.activityVMove,
-            'activityText' : self.activityText,
+            'activityTime' : self.activity_time,
+            'activityTarget' : self.activity_target,
+            'activityDirection' : self.activity_direction,
+            'activityText' : self.activity_text,
             'goal' : self.goal,
             'canMove' : self.canMove,
             'canFish' : self.canFish, 

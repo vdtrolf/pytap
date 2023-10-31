@@ -28,17 +28,27 @@ def command(islandId):
     if islands.get(int(islandId)) :
         island = islands[int(islandId)]
         if request.method == 'POST':
-            penguin_id = request.form['penguinid']
+            penguin_id = request.form['penguinId']
             command1 = request.form['command1']
             command2 = request.form['command2']
             island.transmit_commands(int(penguin_id), [command1,command2])      
-            return redirect(url_for('refresh',islandid = islandid))
+
+            response = jsonify({"done":"ok"})
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response
+
+            # return redirect(url_for('refresh',islandid = islandid))
         else:
-            penguin_id = request.args.get('penguinid')
+            penguin_id = request.args.get('penguinId')
             command1 = request.args.get('command1')
             command2 = request.args.get('command2')      
             island.transmit_commands(int(penguin_id), [command1,command2])                  
-            return redirect(url_for('refresh',islandid = islandid))
+
+            response = jsonify({"done":"ok"})
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response
+
+            # return redirect(url_for('refresh',islandid = islandid))
     else:
         return "{unknown island}"
         
