@@ -45,7 +45,7 @@ class Island :
             tmpland[v][h] = 15
        
         # add some land around the mountains 
-        for i in range(6) :
+        for i in range(4) :
             for j in range(size * i):
                 v = 1 + random.randint(0,size-3)
                 h = 1 + random.randint(0,size-3)
@@ -87,7 +87,7 @@ class Island :
 
         # add some fishes
         cntgarbages=0
-        while cntgarbages < size/5 :
+        while cntgarbages < size / 4 :
             v = random.randint(0,size-1)
             h = random.randint(0,size-1)
             if self.cells[v][h].isSea() and (v == 0 or v == size-1 or h==0 or h == size-1):
@@ -96,7 +96,7 @@ class Island :
                 
         # add some fishes
         cntfishes=0
-        while cntfishes < size :
+        while cntfishes < size / 2 :
             v = random.randint(0,size-1)
             h = random.randint(0,size-1)
             if self.cells[v][h].isSea():
@@ -188,10 +188,6 @@ class Island :
 
     def transmit_commands(self,penguin_id,commands) :
         """Search a penguin by id and return the two lines info"""
-
-        print(f'---{penguin_id}---')
-        print(commands)
-
         for penguin in self.penguins.values():
             if penguin.id == penguin_id or penguin.key == penguin_id:
                 penguin.receive_commands(commands)

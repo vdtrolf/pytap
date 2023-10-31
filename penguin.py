@@ -191,9 +191,9 @@ class Penguin:
         elif self.temp > 50 or self.hunger > 50:
             color = COLOR_PENGUIN_BAD
         if self.alive:
-            return [f'{cell_bg[0]}{asciiImg1[self.gender]}{asciiEyes[self.id]}{asciiImg2[self.gender]}{cell_bg[1]}',f"/|{activities_ascii[self.activity]}|\\",f"{cell_bg[4]}|  |{cell_bg[5]}",color,color]
+            return [f'{cell_bg[0]}{asciiImg1[self.gender]}{asciiEyes[self.id]}{asciiImg2[self.gender]}{cell_bg[0]}',f"/|{activities_ascii[self.activity]}|\\",f"{cell_bg[4]}|  |{cell_bg[4]}",color,color]
         elif self.deadAge < 6:
-            return [f'{cell_bg[0]}{asciiImg1[self.gender]}xx{asciiImg2[self.gender]}{cell_bg[1]}',"/|\\/|\\",f"{cell_bg[4]}|  |{cell_bg[5]}{cell_bg[3]}",color,color]
+            return [f'{cell_bg[0]}{asciiImg1[self.gender]}xx{asciiImg2[self.gender]}{cell_bg[0]}',"/|\\/|\\",f"{cell_bg[4]}|  |{cell_bg[4]}",color,color]
             
     def get_details(self):
         """Returns the details of the penguin (name,age...)"""

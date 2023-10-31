@@ -27,7 +27,7 @@ def show_island(an_island):
     """Displays an image of the island in ascii format"""
     print(colorize(headerLine, ansi=COLOR_TEXT, ansi_bg=COLOR_BG))
     print(
-        colorize(f"{DL_V} {island.get_info()}"[0:boardSize * 4 + 1] +
+        colorize(f"{DL_V} {island.get_info()}"[0:boardSize * 6 + 1] +
                  f"{DL_V} Penguins             {DL_V}",
                  ansi=COLOR_TEXT,
                  ansi_bg=COLOR_BG))

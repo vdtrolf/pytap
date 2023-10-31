@@ -3,9 +3,9 @@ import random
 from util import *
 
 
-garbageTypes1 = ('      ', '   %^ ', ' &%- ', '   %# ','  &&- ')
-garbageTypes2 = ('      ', '  %#  ', '  &# ', '  -*& ',' #$-  ') 
-garbageTypes3 = ('      ', '   %^ ', ' &%- ', '   %# ','  &&- ')
+garbageTypes1 = ('      ', '   ## ', ' ###  ', '   ## ','  ### ')
+garbageTypes2 = ('      ', '  ##  ', '  ##  ', '  ### ',' ###  ') 
+garbageTypes3 = ('      ', '   ## ', ' ##   ', '   #  ','  # # ')
 
 class Garbage:
 
