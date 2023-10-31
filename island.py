@@ -39,18 +39,18 @@ class Island :
             tmpland.append(lane)
         
         # add some mountains     
-        for i in range(int(size / 4)):
+        for i in range(int(size / 3)):
             v = 1 + random.randint(0,size-3)
             h = 1 + random.randint(0,size-3)
             tmpland[v][h] = 15
        
         # add some land around the mountains 
         for i in range(4) :
-            for j in range(size * i):
+            for j in range(int(size * i)):
                 v = 1 + random.randint(0,size-3)
                 h = 1 + random.randint(0,size-3)
                 if tmpland[v][h] == 0 and (tmpland[v][h+1] > 0 or tmpland[v][h-1] > 0 or tmpland[v+1][h] > 0 or tmpland[v-1][h] > 0 ) :
-                     tmpland[v][h] = 15-i
+                     tmpland[v][h] = 15-i*3
                 
         # remove the lakes and the istmes        
         for i in range(size -2):
@@ -85,7 +85,7 @@ class Island :
                 self.penguins[v*100+h]=Penguin(cntpenguins + 1,v,h)
                 cntpenguins +=1
 
-        # add some fishes
+        # add some garbage
         cntgarbages=0
         while cntgarbages < size / 4 :
             v = random.randint(0,size-1)
@@ -161,6 +161,13 @@ class Island :
                 tmpgarbages[garbage.vpos*100+garbage.hpos]=garbage
         self.garbages = tmpgarbages
 
+        # add some extra garbage - must be next another garbage
+        for i in range(int(self.size / 4)) :
+            v = random.randint(0,self.size-1)
+            h = random.randint(0,self.size-1)
+            if self.cells[v][h].isSea() and (self.garbages.get((v+1)*100+h) or self.garbages.get((v-1)*100+h) or self.garbages.get(v*100+h+1) or self.garbages.get(v*100+h-1)):
+                self.garbages[v*100+h]=Garbage(v,h)
+                
         tmppenguins = {}
         for penguin in self.penguins.values():
             penguin.become_older(self.cells,self.size,self.penguins,tmppenguins,self.fishes,self.gems,self.weather)

@@ -12,14 +12,15 @@ class Fish:
         self.hpos = hpos
         self.onHook = False
         self.isDead = False
+        self.angle = random.randint(0,1)
         self.direction = DIRECTION_NONE
 
     def get_ascii(self):
         """ returns the ascii image of the fish """
         if self.onHook :
-            return ["|\\/ x\\","|/\\__/","      ",COLOR_FISH_ONHOOK,239]
+            return [["   __ ","|\\/ x\\","|/\\__/",COLOR_FISH_ONHOOK,239],[" __   ","/x \\/|","\\__/\\|",COLOR_FISH_ONHOOK,239]][self.angle]
         else :
-            return ["|\\/ o\\","|/\\__/","      ",COLOR_FISH_OK,239]
+            return [["   __ ","|\\/ o\\","|/\\__/",COLOR_FISH_OK,239],[" __   ","/o \\/|","\\__/\\|",COLOR_FISH_ONHOOK,239]][self.angle]
         
     def become_older(self,cells,size):
         """makes the fish move and become older"""

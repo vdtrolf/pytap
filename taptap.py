@@ -19,80 +19,48 @@ numberedLine += f"{DL_VH}{DL_H_STR}{DL_VL}"
 downLine += f"{DL_HU}{DL_H_STR}{DL_UL}"
 
 
-def colorize(text, ansi, ansi_bg):
-		"""Fake method to bypass xtermcolor colorize"""
-		return text
+# def colorize(text, ansi, ansi_bg):
+# 		"""Fake method to bypass xtermcolor colorize"""
+# 		return text
 
 def show_island(an_island):
     """Displays an image of the island in ascii format"""
-    print(colorize(headerLine, ansi=COLOR_TEXT, ansi_bg=COLOR_BG))
-    print(
-        colorize(f"{DL_V} {island.get_info()}"[0:boardSize * 6 + 1] +
-                 f"{DL_V} Penguins             {DL_V}",
-                 ansi=COLOR_TEXT,
-                 ansi_bg=COLOR_BG))
-    print(colorize(numberedLine, ansi=COLOR_TEXT, ansi_bg=COLOR_BG))
-    isInList = True
-    penguinList = []
+    print(headerLine)
+    print(f"{DL_V} {island.get_info()}"[0:boardSize * 6 + 1] +
+                 f"{DL_V} Penguins             {DL_V}")
+    print(numberedLine)
+    infoList = []
+    penguinCnt = 0
     for penguin in an_island.penguins.values():
         if penguin.alive or penguin.deadAge < 6:
-            penguinList.append(penguin)
-    cntlog = 0
+            infoList.append(f'{DL_V}{penguin.get_info()[0][0:22]}{DL_V}')
+            infoList.append(f'{DL_V}{penguin.get_info()[1][0:11]}{(penguin.get_info()[2]+ "             ")[0:11]}{DL_V}')
+            penguinCnt += 1
+    infoList.append(f"{DL_VR}{DL_H_STR}{DL_VL}")
+    cntlog = 1
+    while cntlog < 27 - penguinCnt * 2 :
+        infoList.append(f'{DL_V}{get_event_log(cntlog)[0:22]}{DL_V}')
+        cntlog += 1
+    
     for i in range(boardSize):
-        lane1 = colorize(DL_V, ansi=COLOR_TEXT, ansi_bg=COLOR_BG)
-        lane2 = colorize(f'{convert_to_alpha(i)}',
-                         ansi=COLOR_TEXT,
-                         ansi_bg=COLOR_BG)
-        lane3 = colorize(DL_V, ansi=COLOR_TEXT, ansi_bg=COLOR_BG)
+        lane1 = DL_V
+        lane2 = f'{convert_to_alpha(i)}'
+        lane3 = DL_V
         for j in range(boardSize):
             bg = an_island.get_cell_bg(i, j)
-            lane1 += colorize(an_island.get_cell_ascii(i, j)[0],
-                              ansi=an_island.get_cell_ascii(i, j)[3],
-                              ansi_bg=bg)
-            lane2 += colorize(an_island.get_cell_ascii(i, j)[1],
-                              ansi=an_island.get_cell_ascii(i, j)[3],
-                              ansi_bg=bg)
-            lane3 += colorize(an_island.get_cell_ascii(i, j)[2],
-                              ansi=an_island.get_cell_ascii(i, j)[4],
-                              ansi_bg=bg)                              
+            lane1 += an_island.get_cell_ascii(i, j)[0]
+            lane2 += an_island.get_cell_ascii(i, j)[1]
+            lane3 += an_island.get_cell_ascii(i, j)[2]                     
                               
-        if i < len(penguinList):
-            lane1 += colorize(
-                f'{DL_V}{penguinList[i].get_info()[0][0:22]}{DL_V}',
-                ansi=COLOR_TEXT,
-                ansi_bg=COLOR_BG)
-            lane2 += colorize(f'{DL_V}{penguinList[i].get_info()[1]} ',
-                              ansi=COLOR_TEXT,
-                              ansi_bg=COLOR_BG)
-            lane2 += colorize(f'{penguinList[i].get_info()[2]}',
-                              ansi=penguinList[i].get_info()[5],
-                              ansi_bg=COLOR_BG)
-            lane2 += colorize(' ', ansi=COLOR_TEXT, ansi_bg=COLOR_BG)
-            lane2 += colorize(f'{penguinList[i].get_info()[3]}',
-                              ansi=penguinList[i].get_info()[6],
-                              ansi_bg=COLOR_BG)
-            lane2 += colorize(f'{penguinList[i].get_info()[4]}',
-                              ansi=COLOR_TEXT,
-                              ansi_bg=COLOR_BG)
-            lane2 += colorize(DL_V, ansi=COLOR_TEXT, ansi_bg=COLOR_BG)
-        else:
-            if isInList:
-                lane1 += colorize(f"{DL_VR}{DL_H_STR}{DL_VL}",
-                                  ansi=COLOR_TEXT,
-                                  ansi_bg=COLOR_BG)
-                isInList = False
-            else:
-                lane1 += colorize(f'{DL_V}{get_event_log(cntlog)[0:22]}{DL_V}',
-                                  ansi=COLOR_TEXT,
-                                  ansi_bg=COLOR_BG)
-            lane2 += colorize(f'{DL_V}{get_event_log(cntlog+1)[0:22]}{DL_V}',
-                              ansi=COLOR_TEXT,
-                              ansi_bg=COLOR_BG)
-            cntlog += 2
+        
+        lane1 += f'{infoList[i*3]}'
+        lane2 += f'{infoList[i*3 +1]}'
+        lane3 += f'{infoList[i*3 +2]}'
+
         print(lane1)
         print(lane2)
         print(lane3)
-    print(colorize(downLine, ansi=COLOR_TEXT, ansi_bg=COLOR_BG))
+    print(downLine)
 
 
 # print_format_table()

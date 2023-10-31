@@ -4,7 +4,7 @@ from util import *
 from interpreter import *
 
 genders=("M","F")
-asciiEyes = ("**","11","22","33","44","55","66","77","88")
+asciiEyes = ("**","oo","öö","ôô","õõ","óò","òó","øø","ōō")
 asciiImg1 = {"M":"[","F":"("}
 asciiImg2 = {"M":"]","F":")"}
 activities_ascii = {ACTIVITY_NONE: "\\/",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "/|", ACTIVITY_LOVING: "<3", ACTIVITY_GETING: "-^",ACTIVITY_BUILDING : "-#", ACTIVITY_MOVING:"\\/"}
@@ -185,15 +185,10 @@ class Penguin:
      
     def get_ascii(self,cell_bg):
         """Returns the ascii image of the penguin """
-        color = COLOR_PENGUIN_OK
-        if self.temp > 70 or self.hunger > 70:
-            color = COLOR_PENGUIN_CRITIC
-        elif self.temp > 50 or self.hunger > 50:
-            color = COLOR_PENGUIN_BAD
         if self.alive:
-            return [f'{cell_bg[0]}{asciiImg1[self.gender]}{asciiEyes[self.id]}{asciiImg2[self.gender]}{cell_bg[0]}',f"/|{activities_ascii[self.activity]}|\\",f"{cell_bg[4]}|  |{cell_bg[4]}",color,color]
+            return [f'{cell_bg[0]}{asciiImg1[self.gender]}{asciiEyes[self.id]}{asciiImg2[self.gender]}{cell_bg[0]}',f"/|{activities_ascii[self.activity]}|\\",f"{cell_bg[4]}|{self.id} |{cell_bg[4]}"]
         elif self.deadAge < 6:
-            return [f'{cell_bg[0]}{asciiImg1[self.gender]}xx{asciiImg2[self.gender]}{cell_bg[0]}',"/|\\/|\\",f"{cell_bg[4]}|  |{cell_bg[4]}",color,color]
+            return [f'{cell_bg[0]}{asciiImg1[self.gender]}xx{asciiImg2[self.gender]}{cell_bg[0]}',"/|\\/|\\",f"{cell_bg[4]}|{self.id} |{cell_bg[4]}"]
             
     def get_details(self):
         """Returns the details of the penguin (name,age...)"""
@@ -202,33 +197,23 @@ class Penguin:
     def get_info(self):
         """Returns the two lines info of the penguin (name,age...)"""
         if self.alive or self.deadAge < 6:
-            tempColor = COLOR_SPOT_GOOD
             tempText = "T++"
             if self.temp > 80:
-                tempColor = COLOR_SPOT_CRITIC
                 tempText = "T--"
             elif self.temp > 60:
-                tempColor = COLOR_SPOT_BAD 
                 tempText = "T- " 
             elif self.temp > 40:
-                tempColor = COLOR_SPOT_MID 
                 tempText = "T+-" 
             elif self.temp > 20:
-                tempColor = COLOR_SPOT_OK 
                 tempText = "T+ " 
-            hungerColor = COLOR_SPOT_GOOD
             hungerText = "H++"
             if self.hunger > 80:
-                hungerColor = COLOR_SPOT_CRITIC
                 hungerText = "H--"
             elif self.hunger > 60:
-                hungerColor = COLOR_SPOT_BAD
                 hungerText = "H- "  
             elif self.hunger > 40:
-                hungerColor = COLOR_SPOT_MID
                 hungerText = "H+-"  
             elif self.hunger > 20:
-                hungerColor = COLOR_SPOT_OK
                 hungerText = "H+ "  
             carries = "   "
             if self.hasFish and self.hasGem:
@@ -239,9 +224,9 @@ class Penguin:
                 carries = " ^ "
         
             if self.alive:
-                return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activity_names[self.activity]}                    ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],tempText,hungerText,carries,tempColor, hungerColor]     
+                return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activity_names[self.activity]}                    ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],f'{tempText} {hungerText} {carries}']     
             else:
-                return [f'{convert_to_alpha(self.id)}:{self.name.title()} - Dead                  ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],tempText,hungerText,carries,COLOR_TEXT, COLOR_TEXT]     
+                return [f'{convert_to_alpha(self.id)}:{self.name.title()} - Dead                  ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],f'{tempText} {hungerText} {carries}']     
         else:
             return ["","","","","",""]  
 

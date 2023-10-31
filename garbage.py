@@ -13,7 +13,7 @@ class Garbage:
         self.key = get_next_key()
         self.vpos = vpos
         self.hpos = hpos
-        self.kind = random.randint(0,4)
+        self.kind = random.randint(0,4)+1
         self.isTaken = False
     
     def get_ascii(self):
@@ -23,7 +23,7 @@ class Garbage:
     def become_older(self):
         """makes the gem becoming older"""
         if random.randint(0,8) == 0:
-            self.kind = random.randint(0,4)
+            self.kind = random.randint(0,4)+ 1
             
     def get_data(self):
         return {
