@@ -22,13 +22,13 @@ class Fish:
         else :
             return [["   __ ","|\\/ o\\","|/\\__/",COLOR_FISH_OK,239],[" __   ","/o \\/|","\\__/\\|",COLOR_FISH_ONHOOK,239]][self.angle]
         
-    def become_older(self,cells,size):
+    def become_older(self,cells,garbages,size):
         """makes the fish move and become older"""
         if self.onHook :
             return
         else :
             move = random_direction(self.vpos,self.hpos)
-            if random.randint(0,FISH_LETARGY) == 0 and move['vpos'] > 0 and move['vpos'] < size and move['hpos'] > 0 and move['hpos'] < size and cells[move['vpos']][move['hpos']].isSea():
+            if random.randint(0,FISH_LETARGY) == 0 and move['vpos'] > 0 and move['vpos'] < size and move['hpos'] > 0 and move['hpos'] < size and cells[move['vpos']][move['hpos']].isSea() and not garbages.get(move['vpos']*100 + move['hpos']):
                 self.vpos = move['vpos']
                 self.hpos = move['hpos']
                 self.direction = move['direction']

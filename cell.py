@@ -55,13 +55,21 @@ class Cell:
         """Returns true if the content of the cell is sea (celltype = 0)"""
         return self.cellType == 0
 
-    def become_older(self, weather):
-        """makes the ice smelt or reconstruct according to the weather"""
-        if weather == WEATHER_SUN and self.cellType > 0 and self.cellType < 9 and random.randint(
-                0, PROBABILITY_SMELT) == 0:
+    def become_older(self, weather,evolution_speed):
+        """
+        makes the ice smelt or reconstruct according to the weather
+        smelting goes faster if the evolution_speed is higher and it's sunny
+        smelting goes a bit faster if the evolution_speed is higher and it's raining
+        rasing happens when it snows and goes slowwer if the evolution_speed is higher
+        """
+        if weather == WEATHER_SUN and self.cellType > 0 and self.cellType < 12 and random.randint(
+                0, 6 - evolution_speed) == 0:
             self.cellType -= 1
-        elif weather == WEATHER_SNOW and self.cellType > 0 and self.cellType < 8 and random.randint(
-                0, PROBABILITY_RISE) == 0:
+        elif weather == WEATHER_RAIN and self.cellType > 0 and self.cellType < 12 and random.randint(
+                0, (6 - evolution_speed) * 2) == 0:
+            self.cellType -= 1
+        elif weather == WEATHER_SNOW and self.cellType > 0 and self.cellType < 11 and random.randint(
+                0, int((2 + evolution_speed)/2)) == 0:
             self.cellType += 1
             
     def get_data(self):

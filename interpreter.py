@@ -90,7 +90,9 @@ def interpret_commands(commands,vpos,hpos,fishes,gems):
         elif commands[0].title()[0:1] == "G":
             return get_direction(commands[1], ACTIVITY_GETING)
         elif commands[0].title()[0:1] == "B":
-            return get_direction(commands[1], ACTIVITY_BUILDING)    
+            return get_direction(commands[1], ACTIVITY_BUILDING)  
+        elif commands[0].title()[0:1] == "L":
+            return get_direction(commands[1], ACTIVITY_LOVING)  
     return {
         'activity': ACTIVITY_NONE,
         'activityName': '',
