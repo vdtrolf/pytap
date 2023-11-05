@@ -8,10 +8,6 @@ cellTypes1 = ('      ', f'{SHADE_L}  {SHADE_L}  ',f'{SHADE_L}  {SHADE_L}  ',f'  
 cellTypes2 = ('      ', f'  {SHADE_L}  {SHADE_L}',f'  {SHADE_L}  {SHADE_L}',f' {SHADE_L}   {SHADE_L}',f' {SHADE_L} {SHADE_L} {SHADE_L}', f' {SHADE_L} {SHADE_L} {SHADE_L}',f' {SHADE_L} {SHADE_L} {SHADE_L}', SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
 cellTypes3 = ('      ', f'{SHADE_L}  {SHADE_L}  ',f'{SHADE_L}  {SHADE_L}  ',f'  {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', f'{SHADE_L} {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
 
-cellfg = (239, 239, 239, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-cellbg = (COLOR_WATER, COLOR_ICE1, COLOR_ICE1, COLOR_ICE1, COLOR_ICE1, COLOR_ICE2, COLOR_ICE2,
-          COLOR_ICE2, COLOR_ICE3, COLOR_ICE3, COLOR_ICE3, COLOR_ICE4, COLOR_ICE4, COLOR_ICE4, 
-          COLOR_GROUND1, COLOR_GROUND2, COLOR_GROUND3)
 angles = ('a','b')
 
 
@@ -35,8 +31,7 @@ class Cell:
     def get_ascii(self):
         """ returns the ascii image of the cell """
         return [
-            cellTypes1[self.cellType], cellTypes2[self.cellType], cellTypes3[self.cellType],
-            cellfg[self.cellType], cellfg[self.cellType]
+            cellTypes1[self.cellType], cellTypes2[self.cellType], cellTypes3[self.cellType]
         ]
 
     def get_bg(self):
@@ -55,18 +50,31 @@ class Cell:
         """Returns true if the content of the cell is sea (celltype = 0)"""
         return self.cellType == 0
 
-    def become_older(self, weather,evolution_speed):
+    def become_older(self, cells, board_size, weather,evolution_speed):
         """
         makes the ice smelt or reconstruct according to the weather
         smelting goes faster if the evolution_speed is higher and it's sunny
         smelting goes a bit faster if the evolution_speed is higher and it's raining
-        rasing happens when it snows and goes slowwer if the evolution_speed is higher
+        smelting goes slower if the cell is between other ice blocks
+        raising happens when it snows and goes slowwer if the evolution_speed is higher
         """
+        
+        smelt_factor = 6 - evolution_speed    
+
+        if self.vpos == 0 or cells[self.vpos - 1][self.hpos].cellType > 0:
+            smelt_factor += 1
+        if self.vpos == board_size - 1 or  cells[self.vpos + 1][self.hpos].cellType > 0:
+            smelt_factor += 1
+        if self.hpos == 0 or cells[self.vpos][self.hpos - 1].cellType > 0:
+            smelt_factor += 1
+        if self.hpos == board_size - 1 or  cells[self.vpos][self.hpos + 1].cellType > 0:
+            smelt_factor += 1
+
         if weather == WEATHER_SUN and self.cellType > 0 and self.cellType < 12 and random.randint(
-                0, 6 - evolution_speed) == 0:
+                0, smelt_factor) == 0:
             self.cellType -= 1
         elif weather == WEATHER_RAIN and self.cellType > 0 and self.cellType < 12 and random.randint(
-                0, (6 - evolution_speed) * 2) == 0:
+                0, smelt_factor * 2) == 0:
             self.cellType -= 1
         elif weather == WEATHER_SNOW and self.cellType > 0 and self.cellType < 11 and random.randint(
                 0, int((2 + evolution_speed)/2)) == 0:

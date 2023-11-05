@@ -4,10 +4,8 @@ from util import *
 from interpreter import *
 
 genders=("M","F")
-asciiEyes = ("**","oo","öö","ôô","õõ","óò","òó","øø","ōō")
-asciiImg1 = {"M":"[","F":"("}
-asciiImg2 = {"M":"]","F":")"}
-activities_ascii = {ACTIVITY_NONE: "\\/",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "/|", ACTIVITY_LOVING: "<3", ACTIVITY_GETING: "-^",ACTIVITY_BUILDING : "-#", ACTIVITY_MOVING:"\\/"}
+asciiEyes = {"M":"[oo]","F":"(ôô)"}
+activities_ascii = {ACTIVITY_NONE: "\\/",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "/|", ACTIVITY_LOVING: "<3", ACTIVITY_GETING: "-^",ACTIVITY_BUILDING : "-#",ACTIVITY_CLEANING : "-u", ACTIVITY_MOVING:"\\/"}
 figures = {0:"Slim", 1:"Fit", 2:"Fat"}
 
 
@@ -43,7 +41,7 @@ class Penguin:
         self.hasGem = False
         self.inLove = False
 
-    def become_older(self,cells,size,penguins,newpenguins,fishes,gems,weather,evolution_speed):
+    def become_older(self,cells,size,penguins,newpenguins,fishes,gems,garbages,weather,evolution_speed):
         """
         makes the penguin move and become older
         age, temperature and hunger increase faster if the evolution_speed raises
@@ -53,7 +51,7 @@ class Penguin:
         hasChild = False
 
         if self.alive :
-            self.age += 1 / ((6 - evolution_speed) * 3)
+            self.age += 0.05
             if not hasNeighbour :  
                 self.temp += weather / (6 - evolution_speed)
             self.hunger += (self.figure + 1) / (6 - evolution_speed) 
@@ -103,6 +101,11 @@ class Penguin:
                         self.activity_direction = DIRECTION_NONE
                         if gems.get(self.acivityTarget):
                             gems[self.acivityTarget].isTaken = True
+                    elif self.activity == ACTIVITY_CLEANING:
+                        self.activity = ACTIVITY_NONE
+                        self.activity_direction = DIRECTION_NONE
+                        if garbages.get(self.acivityTarget):
+                            garbages[self.acivityTarget].isTaken = True        
                     elif self.activity == ACTIVITY_EATING:
                         self.hunger = 0
                         self.hasFish = False
@@ -174,6 +177,16 @@ class Penguin:
                     else:      
                         self.activity = ACTIVITY_NONE
                         self.activity_direction = DIRECTION_NONE
+                elif command['activity'] == ACTIVITY_CLEANING:
+                    if garbages.get(coord):
+                        self.activity_time = 2  
+                        self.activity = command['activity']      
+                        self.goal = command['activity']
+                        self.acivityTarget = coord
+                        self.activity_direction = command['directionNum']
+                    else:      
+                        self.activity = ACTIVITY_NONE
+                        self.activity_direction = DIRECTION_NONE        
                 elif command['activity'] == ACTIVITY_EATING:
                     if self.hasFish :        
                         self.activity_time = 2  
@@ -225,10 +238,17 @@ class Penguin:
      
     def get_ascii(self,cell_bg):
         """Returns the ascii image of the penguin """
+        carries = " "
+        if self.hasFish and self.hasGem :
+            carries = "§"
+        elif self.hasFish :
+            carries = "~"
+        elif self.hasGem :
+            carries = "^"
         if self.alive:
-            return [f'{cell_bg[0]}{asciiImg1[self.gender]}{asciiEyes[self.id]}{asciiImg2[self.gender]}{cell_bg[0]}',f"/|{activities_ascii[self.activity]}|\\",f"{cell_bg[4]}|{self.id} |{cell_bg[4]}"]
+            return [f'{cell_bg[0]}{asciiEyes[self.gender]}{cell_bg[0]}',f"/|{activities_ascii[self.activity]}|\\",f"{cell_bg[4]}|{self.id}{carries}|{cell_bg[4]}"]
         elif self.deadAge < 6:
-            return [f'{cell_bg[0]}{asciiImg1[self.gender]}xx{asciiImg2[self.gender]}{cell_bg[0]}',"/|\\/|\\",f"{cell_bg[4]}|{self.id} |{cell_bg[4]}"]
+            return [f'{cell_bg[0]}<xx>{cell_bg[0]}',"/|\\/|\\",f"{cell_bg[4]}|{self.id} |{cell_bg[4]}"]
             
     def get_details(self):
         """Returns the details of the penguin (name,age...)"""

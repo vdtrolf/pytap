@@ -10,42 +10,17 @@ BOARDSIZE = 9
 PROBABILITY_SMELT = 3
 PROBABILITY_RISE = 4
 
-WEATHER_SUN = 0
-WEATHER_RAIN = 1
-WEATHER_SNOW = 2
-WEATHER_COLD = 3
+WEATHER_RAIN = 0
+WEATHER_SUN = 1
+WEATHER_COLD = 2
+WEATHER_SNOW = 3
+
+SEASON_SPRING = 1
+SEASON_SUMMER = 2
+SEASON_AUTUMN = 3
+SEASON_WINTER = 4
 
 FISH_LETARGY = 3
-
-COLOR_GROUND1 = 153
-COLOR_GROUND2 = 153
-COLOR_GROUND3 = 151
-
-COLOR_ICE1 = 68
-COLOR_ICE2 = 69
-COLOR_ICE3 = 250
-COLOR_ICE4 = 248
-
-COLOR_BG_LIGHT = 255
-COLOR_BG_DARK = 232
-
-COLOR_TEXT = 245
-COLOR_BG = 232
-
-COLOR_SPOT_GOOD = 76
-COLOR_SPOT_OK = 79
-COLOR_SPOT_MID = 111
-COLOR_SPOT_BAD = 222
-COLOR_SPOT_CRITIC = 203
-
-COLOR_PENGUIN_OK = 232
-COLOR_PENGUIN_BAD = 175
-COLOR_PENGUIN_CRITIC = 9
-
-COLOR_FISH_OK = 15
-COLOR_FISH_ONHOOK = 9
-
-COLOR_WATER = 4
 
 ACTIVITY_NONE = 0
 ACTIVITY_EATING = 1
@@ -54,7 +29,8 @@ ACTIVITY_LOVING = 3
 ACTIVITY_GETING = 4
 ACTIVITY_BUILDING = 5
 ACTIVITY_MOVING = 6
-ACTIVITY_DEAD = 7
+ACTIVITY_CLEANING = 7
+ACTIVITY_DEAD = 8
 
 DIRECTION_NONE = 0
 DIRECTION_LEFT = 1
@@ -98,12 +74,13 @@ direction_names = {
 }
 activity_names = {
     ACTIVITY_NONE: "",
-    ACTIVITY_EATING: "Eat",
-    ACTIVITY_FISHING: "Fish",
-    ACTIVITY_LOVING: "Love",
-    ACTIVITY_GETING: "Dig",
-    ACTIVITY_BUILDING: "Build",
-    ACTIVITY_MOVING: "Go",
+    ACTIVITY_EATING: "Eating",
+    ACTIVITY_FISHING: "Fishing",
+    ACTIVITY_LOVING: "Loving",
+    ACTIVITY_GETING: "Diging",
+    ACTIVITY_BUILDING: "Building",
+    ACTIVITY_MOVING: "Going",
+    ACTIVITY_CLEANING: "Cleaning",
     ACTIVITY_DEAD: "Dead"
 }
 weathers = {
@@ -146,10 +123,13 @@ def random_direction(vpos, hpos):
     return {'vpos': vpos + move[0], 'hpos': hpos + move[1], 'direction': direction, 'directionNum' : direction}
 
 
-def random_weather(weather, weather_age, force=False):
-    """Returns a random season in the form of season number + name"""
-    if force or (weather_age > 4 and random.randint(0, 3) == 0):
-        new_weather = random.randint(0, 3)
+def random_weather(year, weather, weather_age, force=False):
+    """Returns a random weather inspired by the season in the form of weather number + name"""
+
+    season_weather = int(year * 4) % 4
+
+    if force or (weather != season_weather and (random.randint(0, 3) == 0 or weather_age > 8)):
+        new_weather = season_weather
         return [new_weather, 0, weathers[new_weather]]
     else:
         return [weather, weather_age + 1, weathers[weather]]

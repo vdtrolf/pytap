@@ -120,10 +120,9 @@ class Island :
         self.weather = weather[0]
         self.weather_age = weather[1]
         self.weather_name = weather[2]
-        self.temperature = 0.4
-        self.ocean_temperature = 20.3
         self.year = 2000
         self.evolution_speed = 1
+        self.game_ongoing = True
         
     def become_older(self):
         """
@@ -131,17 +130,13 @@ class Island :
         The speed of the evolution raises according to the variable 'counter'        
         """
         self.counter += 1
-        self.evolution_speed = int(self.counter/30) + 1
+        self.evolution_speed = int(self.counter/40) + 1
         if self.evolution_speed > 5:
             self.evolution_speed = 5
 
-        self.year += 0.05 * self.evolution_speed
-
-        # not used yet
-        self.temperature += 0.025
-        self.ocean_temperature += 0.025
+        self.year += 0.05
         
-        weather = random_weather(self.weather,self.weather_age)    
+        weather = random_weather(self.year,self.weather,self.weather_age)    
         self.weather = weather[0]
         self.weather_age = weather[1]
         self.weather_name = weather[2]    
@@ -149,7 +144,7 @@ class Island :
         # cells become_older, notably to make them smelt over time
         for v in range(1,self.size -1):
             for h in range(1, self.size -1):
-                self.cells[v][h].become_older(self.weather,self.evolution_speed)       
+                self.cells[v][h].become_older(self.cells,self.size,self.weather,self.evolution_speed)       
         
         # fishes become_older, notably to make them move
         tmpfishes = {}
@@ -188,17 +183,18 @@ class Island :
 
         # add some extra garbage - must be next another garbage
         # gets more chances to happen if the evolution speed raises
-        for i in range(self.evolution_speed) :
-            v = random.randint(0,self.size-1)
-            h = random.randint(0,self.size-1)
-            if self.cells[v][h].isSea() and not self.fishes.get(v*100+h) and (self.garbages.get((v+1)*100+h) or self.garbages.get((v-1)*100+h) or self.garbages.get(v*100+h+1) or self.garbages.get(v*100+h-1)):
-                self.garbages[v*100+h]=Garbage(v,h)
+        if self.evolution_speed > 1:
+            for i in range(self.evolution_speed - 1) :
+                v = random.randint(0,self.size-1)
+                h = random.randint(0,self.size-1)
+                if self.cells[v][h].isSea() and not self.fishes.get(v*100+h) and (self.garbages.get((v+1)*100+h) or self.garbages.get((v-1)*100+h) or self.garbages.get(v*100+h+1) or self.garbages.get(v*100+h-1)):
+                    self.garbages[v*100+h]=Garbage(v,h)
                 
         # penguins become_older, notably to make them older, execute commands and get childs
         tmppenguins = {}
         childCounter = len(self.penguins) + 1
         for penguin in self.penguins.values():
-            hasChild = penguin.become_older(self.cells,self.size,self.penguins,tmppenguins,self.fishes,self.gems,self.weather,self.evolution_speed)
+            hasChild = penguin.become_older(self.cells,self.size,self.penguins,tmppenguins,self.fishes,self.gems,self.garbages,self.weather,self.evolution_speed)
             if penguin.alive or penguin.deadAge < 6:
                 tmppenguins[penguin.vpos*100+penguin.hpos]=penguin
             if hasChild: 
@@ -214,6 +210,16 @@ class Island :
 
         self.penguins = tmppenguins
 
+        # quick check to see if any alive penguins -> if not teh game is over
+        self.game_ongoing = False
+        for penguin in self.penguins.values():
+            if penguin.alive : 
+                self.game_ongoing = True
+                break        
+
+        if not self.game_ongoing:
+            print("##### DEAD #####")
+
         if len(self.gems) < self.size:
             v = random.randint(0,self.size-1)
             h = random.randint(0,self.size-1)
@@ -222,7 +228,7 @@ class Island :
         
     def get_info(self):
         """Returns the name and status of the island"""
-        return f'{self.name} - run {self.year} - {self.weather_name} - speed: {self.evolution_speed}                                               '
+        return f'{self.name} - run {int(self.year)} - {self.weather_name} - speed: {self.evolution_speed}                                               '
         
     def get_penguin_info(self,penguin_id):
         """Search a penguin by id and return the two lines info"""
@@ -276,10 +282,9 @@ class Island :
             'name' : self.name,
             'counter' : self.counter,
             'weather' : self.weather,
-            'temperature' : self.temperature,
-            'oceanTemperature' : self.ocean_temperature,
             'year' : self.year,
             'evolutionSpeed' : self.evolution_speed,
+            'onGoing' : self.game_ongoing,
             'penguins' : penguinsData,
             'fishes' : fishesData,
             'gems' : gemsData,
