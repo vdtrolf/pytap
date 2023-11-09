@@ -7,6 +7,7 @@ Flaskapp = Flask(__name__)
 islands = {}
 initiate_names()
 
+    
 @Flaskapp.route('/refresh/<islandId>')
 def refresh(islandId):
 
@@ -23,10 +24,16 @@ def refresh(islandId):
     else:
         return "{unknown island}"
 
+
 @Flaskapp.route('/command/<islandId>',methods = ['POST', 'GET'])
 def command(islandId):
     if islands.get(int(islandId)) :
         island = islands[int(islandId)]
+
+        islandList = []
+        for island in islands.values() :
+            islandList.append({'name':island.name, 'id':island.id, 'running': True, 'poimts' : island.year})
+
         if request.method == 'POST':
             penguin_id = request.form['penguinId']
             command1 = request.form['command1']
@@ -43,8 +50,8 @@ def command(islandId):
             command1 = request.args.get('command1')
             command2 = request.args.get('command2')      
             island.transmit_commands(int(penguin_id), [command1,command2])                  
-
-            response = jsonify({"done":"ok"})
+            island.execute_commands()
+            response = jsonify(island.get_data(islandList))
             response.headers.add('Access-Control-Allow-Origin', '*')
             return response
 

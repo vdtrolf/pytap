@@ -123,6 +123,34 @@ class Island :
         self.year = 2000
         self.evolution_speed = 1
         self.game_ongoing = True
+
+    def cleanGems(self):
+        """ gems become_older, notably to make them smelt over time """
+        tmpgems = {}
+        for gem in self.gems.values():
+            gem.become_older(self.cells)
+            if gem.age > 0 and not gem.isTaken:
+                tmpgems[gem.vpos*100+gem.hpos]=gem
+        self.gems = tmpgems
+
+    def cleanFishes(self):
+        """ fishes become_older, notably to make them move """
+        tmpfishes = {}
+        for fish in self.fishes.values():
+            fish.become_older(self.cells,self.garbages,self.size)
+            if not fish.isDead:
+                tmpfishes[fish.vpos*100+fish.hpos]=fish
+        self.fishes = tmpfishes
+
+    def cleanGarbages(self):
+        """ garabge become_older, notably to make some of them change shape """
+        tmpgarbages = {}
+        for garbage in self.garbages.values():
+            garbage.become_older()
+            if not garbage.isTaken:
+                tmpgarbages[garbage.vpos*100+garbage.hpos]=garbage
+        self.garbages = tmpgarbages
+
         
     def become_older(self):
         """
@@ -145,51 +173,7 @@ class Island :
         for v in range(1,self.size -1):
             for h in range(1, self.size -1):
                 self.cells[v][h].become_older(self.cells,self.size,self.weather,self.evolution_speed)       
-        
-        # fishes become_older, notably to make them move
-        tmpfishes = {}
-        for fish in self.fishes.values():
-            fish.become_older(self.cells,self.garbages,self.size)
-            if not fish.isDead:
-                tmpfishes[fish.vpos*100+fish.hpos]=fish
-        self.fishes = tmpfishes
 
-        # add some fishes
-        cntfishes=len(self.fishes)
-        try_counter = 0
-        while cntfishes < self.size / 2 and try_counter < 20:
-            v = random.randint(0,self.size-1)
-            h = random.randint(0,self.size-1)
-            if self.cells[v][h].isSea() and not self.fishes.get(v*100+h) and not self.garbages.get(v*100+h):
-                self.fishes[v*100+h]=Fish(v,h)
-                cntfishes +=1
-            try_counter += 1
-        		
-        # gems become_older, notably to make them smelt over time
-        tmpgems = {}
-        for gem in self.gems.values():
-            gem.become_older(self.cells)
-            if gem.age > 0 and not gem.isTaken:
-                tmpgems[gem.vpos*100+gem.hpos]=gem
-        self.gems = tmpgems
-
-        # garabge become_older, notably to make some of them change shape
-        tmpgarbages = {}
-        for garbage in self.garbages.values():
-            garbage.become_older()
-            if not garbage.isTaken:
-                tmpgarbages[garbage.vpos*100+garbage.hpos]=garbage
-        self.garbages = tmpgarbages
-
-        # add some extra garbage - must be next another garbage
-        # gets more chances to happen if the evolution speed raises
-        if self.evolution_speed > 1:
-            for i in range(self.evolution_speed - 1) :
-                v = random.randint(0,self.size-1)
-                h = random.randint(0,self.size-1)
-                if self.cells[v][h].isSea() and not self.fishes.get(v*100+h) and (self.garbages.get((v+1)*100+h) or self.garbages.get((v-1)*100+h) or self.garbages.get(v*100+h+1) or self.garbages.get(v*100+h-1)):
-                    self.garbages[v*100+h]=Garbage(v,h)
-                
         # penguins become_older, notably to make them older, execute commands and get childs
         tmppenguins = {}
         childCounter = len(self.penguins) + 1
@@ -210,7 +194,33 @@ class Island :
 
         self.penguins = tmppenguins
 
-        # quick check to see if any alive penguins -> if not teh game is over
+        self.cleanFishes()
+
+        # add some fishes
+        cntfishes=len(self.fishes)
+        try_counter = 0
+        while cntfishes < self.size / 2 and try_counter < 20:
+            v = random.randint(0,self.size-1)
+            h = random.randint(0,self.size-1)
+            if self.cells[v][h].isSea() and not self.fishes.get(v*100+h) and not self.garbages.get(v*100+h):
+                self.fishes[v*100+h]=Fish(v,h)
+                cntfishes +=1
+            try_counter += 1
+        		
+        self.cleanGems()
+        self.cleanGarbages()
+
+        # add some extra garbage - must be next another garbage
+        # gets more chances to happen if the evolution speed raises
+        if self.evolution_speed > 1:
+            for i in range(self.evolution_speed - 1) :
+                v = random.randint(0,self.size-1)
+                h = random.randint(0,self.size-1)
+                if self.cells[v][h].isSea() and not self.fishes.get(v*100+h) and (self.garbages.get((v+1)*100+h) or self.garbages.get((v-1)*100+h) or self.garbages.get(v*100+h+1) or self.garbages.get(v*100+h-1)):
+                    self.garbages[v*100+h]=Garbage(v,h)
+                
+        """"
+        # quick check to see if any alive penguins -> if not then the game is over
         self.game_ongoing = False
         for penguin in self.penguins.values():
             if penguin.alive : 
@@ -219,13 +229,31 @@ class Island :
 
         if not self.game_ongoing:
             print("##### DEAD #####")
+        """
+            
 
         if len(self.gems) < self.size:
             v = random.randint(0,self.size-1)
             h = random.randint(0,self.size-1)
             if self.cells[v][h].isGround() and not self.penguins.get(v*100+h) and not self.gems.get(v*100+h):
                 self.gems[v*100+h]=Gem(v,h)
+
+    def execute_commands(self) :
+        for penguin in self.penguins.values():
+            penguin.execute_commands(self.cells,self.size,self.penguins,self.penguins,self.fishes,self.gems,self.garbages)
         
+        # penguins become_older, notably to make them older, execute commands and get childs
+        tmppenguins = {}
+        for penguin in self.penguins.values():
+            if penguin.alive or penguin.deadAge < 6:
+                tmppenguins[penguin.vpos*100+penguin.hpos]=penguin
+        self.penguins = tmppenguins;
+
+        # self.cleanFishes()
+        # self.cleanGems()
+        # self.cleanGarbages()
+
+
     def get_info(self):
         """Returns the name and status of the island"""
         return f'{self.name} - run {int(self.year)} - {self.weather_name} - speed: {self.evolution_speed}                                               '
