@@ -144,10 +144,9 @@ class Penguin:
         if self.activity_time > 0:
             self.activity_time -= 1
             if self.activity_time == 0:
-                if self.activity == ACTIVITY_MOVING:
+                if self.activity == ACTIVITY_MOVING or self.activity == ACTIVITY_FLEE:
                     self.activity = ACTIVITY_NONE
                     self.activity_direction = DIRECTION_NONE
-                    print("REMOVE MOVING")
                 elif self.activity == ACTIVITY_FISHING:
                     self.hasFish = True
                     self.activity = ACTIVITY_NONE
@@ -228,8 +227,8 @@ class Penguin:
                 if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and cells[direction['vpos']][direction['hpos']].cellType > cells[self.vpos][self.hpos].cellType and not penguins.get(coord) and not newpenguins.get(coord):
                     self.vpos = direction['vpos']
                     self.hpos = direction['hpos']
-                    self.activity = ACTIVITY_MOVING
-                    self.goal = ACTIVITY_MOVING
+                    self.activity = ACTIVITY_FLEE
+                    self.goal = ACTIVITY_FLEE
                     self.activity_time = 1
                     self.activity_direction = direction['directionNum']
                     

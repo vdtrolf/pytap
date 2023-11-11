@@ -64,14 +64,19 @@ def create():
 
     islandList = []
     for island in islands.values() :
-        islandList.append({'name':island.name, 'id':island.id, 'running': True, 'poimts' : island.year})
+        islandList.append({'name':island.name, 'id':island.id, 'running': True, 'poimts' : island.year, 'size' : island.size})
 
-    island = Island(BOARDSIZE)
+    size  = request.args.get('size')
+    # if size and int(size) == 0:
+    island = Island(6)
+        # island = Island(BOARDSIZE)
+    # else:
+    #    island = Island(size)
+
     islands[island.id] = island
     response = jsonify(island.get_data(islandList))
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
-
 
 @Flaskapp.route('/islands')
 def island():
