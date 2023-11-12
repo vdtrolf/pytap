@@ -7,23 +7,18 @@ boardSize = BOARDSIZE
 
 initiate_names()
 
-headerLine = DL_DR
-numberedLine = DL_VR
-downLine = DL_UR
-for i in range(boardSize):
-    headerLine += DL_H_STR[0:6]
-    downLine += DL_H_STR[0:6]
-    numberedLine += f"{DL_H_STR[0:2]}{convert_to_alpha(i)}{DL_H_STR[0:3]}"
-headerLine += f"{DL_HD}{DL_H_STR}{DL_DL}"
-numberedLine += f"{DL_VH}{DL_H_STR}{DL_VL}"
-downLine += f"{DL_HU}{DL_H_STR}{DL_UL}"
-
-
-# def colorize(text, ansi, ansi_bg):
-# 		"""Fake method to bypass xtermcolor colorize"""
-# 		return text
-
 def show_island(an_island):
+    headerLine = DL_DR
+    numberedLine = DL_VR
+    downLine = DL_UR
+    for i in range(boardSize):
+          headerLine += DL_H_STR[0:6]
+          downLine += DL_H_STR[0:6]
+          numberedLine += f"{DL_H_STR[0:2]}{convert_to_alpha(i)}{DL_H_STR[0:3]}"
+    headerLine += f"{DL_HD}{DL_H_STR}{DL_DL}"
+    numberedLine += f"{DL_VH}{DL_H_STR}{DL_VL}"
+    downLine += f"{DL_HU}{DL_H_STR}{DL_UL}"
+
     """Displays an image of the island in ascii format"""
     print(headerLine)
     print(f"{DL_V} {island.get_info()}"[0:boardSize * 6 + 1] +
@@ -63,8 +58,7 @@ def show_island(an_island):
     print(downLine)
 
 
-# print_format_table()
-
+# print_format_table(
 island = Island(boardSize)
 # print(island.get_data())
 
@@ -76,6 +70,8 @@ while True:
     if commands[0] == "q":
         break
     elif commands[0] == "n":
+        if len(commands) > 1 and commands[1].isdigit():
+            boardSize = int(commands[1])
         island = Island(boardSize)
         show_island(island)
     elif commands[0].isdigit():
@@ -86,6 +82,6 @@ while True:
             else:
                 island.show_penguin_details(int(commands[0]))
     else:
-        island.become_older()
+        island.become_older(True)
         show_island(island)
 

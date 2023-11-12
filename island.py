@@ -152,7 +152,7 @@ class Island :
         self.garbages = tmpgarbages
 
         
-    def become_older(self):
+    def become_older(self,force=False):
         """
         Makes the island, penguins and artifacts older
         The speed of the evolution raises according to the variable 'counter'        
@@ -178,7 +178,7 @@ class Island :
         tmppenguins = {}
         childCounter = len(self.penguins) + 1
         for penguin in self.penguins.values():
-            hasChild = penguin.become_older(self.cells,self.size,self.penguins,tmppenguins,self.fishes,self.gems,self.garbages,self.weather,self.evolution_speed)
+            hasChild = penguin.become_older(self.cells,self.size,self.penguins,tmppenguins,self.fishes,self.gems,self.garbages,self.weather,self.evolution_speed,force)
             if penguin.alive or penguin.deadAge < 6:
                 tmppenguins[penguin.vpos*100+penguin.hpos]=penguin
             if hasChild: 
@@ -271,7 +271,7 @@ class Island :
         for penguin in self.penguins.values():
             if penguin.id == penguin_id or penguin.key == penguin_id:
                 penguin.receive_commands(commands)
-                command = interpret_commands(commands,0,0,self.fishes,self.gems)
+                command = interpret_commands(commands,0,0,self.fishes,self.gems,self.garbages)
                 append_event_to_log(f"{penguin.name.title()}: {command['activityName']} {command['directionName']}")    
     
     def show_penguin_details(self,penguin_id):

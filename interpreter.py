@@ -58,7 +58,7 @@ def findItem(vpos,hpos,items):
     return -1
 
 
-def interpret_commands(commands,vpos,hpos,fishes,gems):
+def interpret_commands(commands,vpos,hpos,fishes,gems,garbages):
     """returns the given activity as a CONSTANT value"""
     if len(commands) == 1:
         if commands[0].title()[0:1] == "E":
@@ -83,7 +83,18 @@ def interpret_commands(commands,vpos,hpos,fishes,gems):
                     'directionName': direction_names[foundDirection]
                }
         else:
-            return get_direction(commands[0], ACTIVITY_MOVING)
+            direction = get_direction(commands[0], ACTIVITY_MOVING)
+            if fishes.get((vpos + direction['vmove'])*100 + hpos + direction['hmove']):
+                direction['activity'] = ACTIVITY_FISHING
+                direction['activityName'] = ACTIVITY_FISHING
+            elif gems.get((vpos + direction['vmove'])*100 + hpos + direction['hmove']):
+                direction['activity'] = ACTIVITY_GETING
+                direction['activityName'] = ACTIVITY_GETING    
+            elif garbages.get((vpos + direction['vmove'])*100 + hpos + direction['hmove']):
+                direction['activity'] = ACTIVITY_GETING
+                direction['activityName'] = ACTIVITY_GETING                    
+            return direction
+            
     elif len(commands) == 2:
         if commands[0].title()[0:1] == "F":
             return get_direction(commands[1], ACTIVITY_FISHING)

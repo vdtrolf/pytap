@@ -41,7 +41,7 @@ class Penguin:
         
         # Is there an order to execute
         if len(self.commands) > 0:
-            command = interpret_commands(self.commands,self.vpos,self.hpos,fishes,gems)
+            command = interpret_commands(self.commands,self.vpos,self.hpos,fishes,gems,garbages)
             direction = {'vpos':self.vpos + command['vmove'],'hpos':self.hpos + command['hmove']}
             coord = direction['vpos']*100 + direction['hpos']
             if command['activity'] == ACTIVITY_MOVING:
@@ -131,7 +131,7 @@ class Penguin:
             self.commands = []
 
 
-    def become_older(self,cells,size,penguins,newpenguins,fishes,gems,garbages,weather,evolution_speed):
+    def become_older(self,cells,size,penguins,newpenguins,fishes,gems,garbages,weather,evolution_speed,force):
         """
         makes the penguin move and become older
         age, temperature and hunger increase faster if the evolution_speed raises
@@ -218,7 +218,8 @@ class Penguin:
                 append_event_to_log(f'{self.name.title()} died (sunk)')
                 return
 
-            # self.execute_commands(cells,size,penguins,newpenguins,fishes,gems,garbages)
+            if force:
+                    self.execute_commands(cells,size,penguins,newpenguins,fishes,gems,garbages)
 
             # if not and if the penguin is on smelting ice: try to escape
             if cells[self.vpos][self.hpos].cellType < 3 :
