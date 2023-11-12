@@ -67,11 +67,12 @@ def create():
         islandList.append({'name':island.name, 'id':island.id, 'running': True, 'poimts' : island.year, 'size' : island.size})
 
     size  = request.args.get('size')
-    # if size and int(size) == 0:
-    island = Island(6)
-        # island = Island(BOARDSIZE)
-    # else:
-    #    island = Island(size)
+    if not (size is None) and int(size) in BOARDSIZES :
+        print(f'Size is {size}')
+        island = Island(int(size))
+    else :
+        print('no size or unknown size')
+        island = Island(BOARDSIZE)
 
     islands[island.id] = island
     response = jsonify(island.get_data(islandList))
