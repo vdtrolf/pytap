@@ -91,8 +91,8 @@ def interpret_commands(commands,vpos,hpos,fishes,gems,garbages):
                 direction['activity'] = ACTIVITY_GETING
                 direction['activityName'] = ACTIVITY_GETING    
             elif garbages.get((vpos + direction['vmove'])*100 + hpos + direction['hmove']):
-                direction['activity'] = ACTIVITY_GETING
-                direction['activityName'] = ACTIVITY_GETING                    
+                direction['activity'] = ACTIVITY_CLEANING
+                direction['activityName'] = ACTIVITY_CLEANING                 
             return direction
             
     elif len(commands) == 2:
