@@ -13,7 +13,7 @@ def refresh(islandId):
 
     islandList = []
     for island in islands.values() :
-        islandList.append({'name':island.name, 'id':island.id, 'running': True, 'poimts' : island.year})
+        islandList.append({'name':island.name, 'id':island.id, 'running': island.game_ongoing, 'size' : island.size})
 
     if islands.get(int(islandId)) :
         island = islands[int(islandId)]
@@ -32,7 +32,7 @@ def command(islandId):
 
         islandList = []
         for island in islands.values() :
-            islandList.append({'name':island.name, 'id':island.id, 'running': True, 'poimts' : island.year})
+            islandList.append({'name':island.name, 'id':island.id, 'running': island.game_ongoing, 'poimts' : island.size})
 
         if request.method == 'POST':
             penguin_id = request.form['penguinId']
@@ -64,7 +64,7 @@ def create():
 
     islandList = []
     for island in islands.values() :
-        islandList.append({'name':island.name, 'id':island.id, 'running': True, 'poimts' : island.year, 'size' : island.size})
+        islandList.append({'name':island.name, 'id':island.id, 'running': island.game_ongoing, 'size' : island.size})
 
     size  = request.args.get('size')
     if not (size is None) and int(size) in BOARDSIZES :
@@ -83,7 +83,7 @@ def create():
 def island():
     islandList = []
     for island in islands.values() :
-        islandList.append({'name':island.name, 'id':island.id, 'running': True, 'poimts' : island.year})
+        islandList.append({'name':island.name, 'id':island.id, 'running': island.game_ongoing, 'size' : island.size})
     response = jsonify({'islands':islandList})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
