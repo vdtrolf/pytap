@@ -1,38 +1,49 @@
-from flask import Flask, redirect, url_for, request, jsonify
+from flask import Flask, redirect, url_for,  request, jsonify
+from datetime import datetime
 
 from island import *
 from util import *
+from context import *
+
+
+context = Context()
+initiate_names()
 
 Flaskapp = Flask(__name__)
-islands = {}
-initiate_names()
 
     
 @Flaskapp.route('/refresh/<islandId>')
 def refresh(islandId):
+    """ """
 
-    islandList = []
-    for island in islands.values() :
-        islandList.append({'name':island.name, 'id':island.id, 'running': island.game_ongoing, 'size' : island.size})
+    context.maintain_island_list()
+    islands = context.get_islands()
+    
+    # print (f"%%% 1 {islands}")
 
-    if islands.get(int(islandId)) :
+    islandList = context.create_island_list()
+    response = '{}'
+    
+    if islands and islands.get(int(islandId)) :
         island = islands[int(islandId)]
         island.become_older()
         response = jsonify(island.get_data(islandList))
         response.headers.add('Access-Control-Allow-Origin', '*')
-        return response
-    else:
-        return "{unknown island}"
-
+        
+    
+    return response    
+ 
 
 @Flaskapp.route('/command/<islandId>',methods = ['POST', 'GET'])
 def command(islandId):
-    if islands.get(int(islandId)) :
-        island = islands[int(islandId)]
+    """ """
 
-        islandList = []
-        for island in islands.values() :
-            islandList.append({'name':island.name, 'id':island.id, 'running': island.game_ongoing, 'poimts' : island.size})
+    islands = context.get_islands()
+    # print (f"%%% 2 {islands}")
+    islandList = context.create_island_list()
+
+    if islands and islands.get(int(islandId)) :
+        island = islands[int(islandId)]
 
         if request.method == 'POST':
             penguin_id = request.form['penguinId']
@@ -61,34 +72,45 @@ def command(islandId):
         
 @Flaskapp.route('/create')
 def create():
-
-    islandList = []
-    for island in islands.values() :
-        islandList.append({'name':island.name, 'id':island.id, 'running': island.game_ongoing, 'size' : island.size})
+    """ """
+    islands = context.get_islands()
+    # print (f"%%% 3 {islands}")
 
     size  = request.args.get('size')
-    if not (size is None) and int(size) in BOARDSIZES :
-        print(f'Size is {size}')
-        island = Island(int(size))
-    else :
-        print('no size or unknown size')
-        island = Island(BOARDSIZE)
+    if size is None or not (int(size) in BOARDSIZES) :
+        size = BOARDSIZE
+    
+    print(f'Size is {size}')
+    island = context.create_island(Island(int(size)))
+    context.maintain_island_list()
+    islandList = context.create_island_list()
 
-    islands[island.id] = island
     response = jsonify(island.get_data(islandList))
     response.headers.add('Access-Control-Allow-Origin', '*')
+
     return response
 
 @Flaskapp.route('/islands')
 def island():
-    islandList = []
-    for island in islands.values() :
-        islandList.append({'name':island.name, 'id':island.id, 'running': island.game_ongoing, 'size' : island.size})
+    """ """
+
+    # print (f"%%% 4 ")
+    islandList = context.create_island_list()
+
     response = jsonify({'islands':islandList})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-  
-if __name__ == '__main__':
+
+if __name__ == "__main__":
+    # Quick test configuration. Please use proper Flask configuration options
+    # in production settings, and use a separate file or environment variables
+    # to manage the secret key!
+
+    
+    Flaskapp.debug = True
     Flaskapp.run(use_reloader=False, debug=True)
+
+    
+
 
