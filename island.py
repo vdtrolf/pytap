@@ -271,6 +271,7 @@ class Island :
             if penguin.id == penguin_id or penguin.key == penguin_id:
                 penguin.receive_commands(commands)
                 command = interpret_commands(commands,0,0,self.fishes,self.gems,self.garbages)
+                print(command)
                 append_event_to_log(f"{penguin.name.title()}: {command['activityName']} {command['directionName']}")    
     
     def show_penguin_details(self,penguin_id):

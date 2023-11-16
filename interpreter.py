@@ -76,7 +76,7 @@ def interpret_commands(commands,vpos,hpos,fishes,gems,garbages):
                 move = moves[foundDirection]
                 return {
                     'activity': ACTIVITY_FISHING,
-                    'activityName': activity_names[ACTIVITY_EATING],
+                    'activityName': activity_names[ACTIVITY_FISHING],
                     'directionNum': foundDirection,
                     'vmove': move[0],
                     'hmove': move[1],

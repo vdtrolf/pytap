@@ -85,6 +85,7 @@ while True:
         if int(commands[0]) > 0:
             if len(commands) > 1:
                 island.transmit_commands(int(commands[0]), commands[1:])
+                
                 show_island(island)
             else:
                 island.show_penguin_details(int(commands[0]))
