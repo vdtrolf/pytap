@@ -67,6 +67,13 @@ show_island(island)
 while True:
     command = input("? ")
     commands = command.split(" ")
+
+    if len(commands) == 1 and len(commands[0]) == 2:
+        tmpcommands = []
+        tmpcommands.append(commands[0][0:1])
+        tmpcommands.append(commands[0][1:2])
+        commands = tmpcommands
+
     if commands[0] == "q":
         break
     elif commands[0] == "n":

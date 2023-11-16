@@ -5,7 +5,7 @@ from interpreter import *
 
 genders=("M","F")
 asciiEyes = {"M":"[oo]","F":"(ôô)"}
-activities_ascii = {ACTIVITY_NONE: "\\/",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "/|", ACTIVITY_LOVING: "<3", ACTIVITY_GETING: "-^",ACTIVITY_BUILDING : "-#",ACTIVITY_CLEANING : "-u", ACTIVITY_MOVING:"\\/"}
+activities_ascii = {ACTIVITY_NONE: "\\/",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "/|", ACTIVITY_LOVING: "<3", ACTIVITY_GETING: "-^",ACTIVITY_BUILDING : "-#",ACTIVITY_CLEANING : "-u", ACTIVITY_FLEE: "\\/", ACTIVITY_MOVING:"\\/"}
 figures = {0:"Slim", 1:"Fit", 2:"Fat"}
 
 
@@ -291,6 +291,7 @@ class Penguin:
                 carries = " ^ "
         
             if self.alive:
+                #  print(f'%%%% {self.activity}')
                 return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activity_names[self.activity]}                    ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],f'{tempText} {hungerText} {carries}']     
             else:
                 return [f'{convert_to_alpha(self.id)}:{self.name.title()} - Dead                  ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],f'{tempText} {hungerText} {carries}']     

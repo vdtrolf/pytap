@@ -88,6 +88,7 @@ activity_names = {
     ACTIVITY_BUILDING: "Building",
     ACTIVITY_MOVING: "Going",
     ACTIVITY_CLEANING: "Cleaning",
+    ACTIVITY_FLEE: "Flee",
     ACTIVITY_DEAD: "Dead"
 }
 weathers = {
