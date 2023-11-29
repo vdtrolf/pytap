@@ -7,7 +7,7 @@ from fish import *
 from garbage import *
 from gem import *
 from util import *
-from interpreter import *
+from use_cases.interpreter import *
 
 islands = {}
 
