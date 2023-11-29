@@ -1,7 +1,7 @@
 import random
 from json import JSONEncoder
 from util import *
-from use_cases.interpreter import *
+from interpreter import *
 
 genders=("M","F")
 asciiEyes = {"M":"[oo]","F":"(ôô)"}
