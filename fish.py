@@ -1,7 +1,4 @@
 import random
-from json import JSONEncoder
-import json
-
 from util import *
 
 class Fish:
@@ -14,6 +11,7 @@ class Fish:
         self.isDead = False
         self.angle = random.randint(0,1)
         self.direction = DIRECTION_NONE
+        self.last_direction = DIRECTION_NONE
 
     def get_ascii(self):
         """ returns the ascii image of the fish """
@@ -32,6 +30,7 @@ class Fish:
                 self.vpos = move['vpos']
                 self.hpos = move['hpos']
                 self.direction = move['direction']
+                self.last_direction = move['direction']
             else:
                 self.direction = DIRECTION_NONE
             
@@ -42,5 +41,6 @@ class Fish:
             'hpos' : self.hpos,
             'onHook' : self.onHook,
             'isDead' : self.isDead,
-            'direction' : self.direction
+            'direction' : self.direction,
+            'lastDirection' : self.last_direction
         }

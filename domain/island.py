@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from cell import Cell
-from penguin import Penguin
-from fish import Fish
-from gem import Gem
-from garbage import Garbage
+from use_cases.cell import Cell
+from use_cases.penguin import Penguin
+from use_cases.fish import Fish
+from use_cases.gem import Gem
+from use_cases.garbage import Garbage
 
 @dataclass
 class Island:

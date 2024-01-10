@@ -1,7 +1,4 @@
 import random
-from json import JSONEncoder
-import json
-
 from util import *
 
 cellTypes1 = ('      ', f'{SHADE_L}  {SHADE_L}  ',f'{SHADE_L}  {SHADE_L}  ',f'  {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', f'{SHADE_L} {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M, SHADES_H, SHADES_H, SHADES_H, SHADES_H)
@@ -38,6 +35,10 @@ class Cell:
         """Returns the left and right characters to be used as background"""
         return [cellTypes1[self.cellType][0:1],cellTypes1[self.cellType][5:4],cellTypes2[self.cellType][0:1],cellTypes2[self.cellType][5:4],cellTypes3[self.cellType][0:1],cellTypes3[self.cellType][5:4]]
 
+    def isIce(self):
+        """Returns true if the content of the cell is Ice (celltype > 0 and celltype <10)"""
+        return self.cellType > 0 and self.cellType < 10
+    
     def isGround(self):
         """Returns true if the content of the cell is ground (celltype > 0)"""
         return self.cellType > 0

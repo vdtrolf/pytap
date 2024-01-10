@@ -1,6 +1,5 @@
 from util import *
 
-
 def get_direction(command, activity):
     """Returns a direction based on an order - in the form of vpos/hpos coords"""
     

@@ -1,7 +1,4 @@
 import random
-from json import JSONEncoder
-import json
-
 from util import *
 
 class Gem:

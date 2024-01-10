@@ -1,7 +1,5 @@
 from pathlib import Path
-import json
 import random
-#from xtermcolor import colorize
 
 # CONSTANTS
 

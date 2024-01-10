@@ -1,5 +1,3 @@
-# from xtermcolor import colorize
-
 from island import *
 from util import *
 

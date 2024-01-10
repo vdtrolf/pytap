@@ -239,7 +239,7 @@ class Island :
             if len(self.gems) < self.size:
                 v = random.randint(0,self.size-1)
                 h = random.randint(0,self.size-1)
-                if self.cells[v][h].isGround() and not self.penguins.get(v*100+h) and not self.gems.get(v*100+h):
+                if self.cells[v][h].isIce() and not self.penguins.get(v*100+h) and not self.gems.get(v*100+h):
                     self.gems[v*100+h]=Gem(v,h)
 
     def execute_commands(self) :

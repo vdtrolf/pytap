@@ -1,5 +1,4 @@
 import random
-from json import JSONEncoder
 from util import *
 from interpreter import *
 
@@ -36,6 +35,8 @@ class Penguin:
         self.hasGem = False
         self.inLove = False
         self.activity_done = False
+        self.can_love = True
+        self.love_time = 0
 
     def execute_commands(self,cells,size,penguins,newpenguins,fishes,gems,garbages):
         
@@ -65,19 +66,23 @@ class Penguin:
                     self.activity_direction = DIRECTION_NONE        
             elif command['activity'] == ACTIVITY_LOVING:
                 if penguins.get(coord):
-                    # if penguins[coord].activity == ACTIVITY_NONE and penguins[coord].gender != self.gender :
+                    # if penguins[coord].activity == ACTIVITY_NONE and penguins[coord].gender != self.gender and penguins[coord].age > 4 :
                     penguins[coord].activity_time = 3
+                    penguins[coord].love_time = 10
+                    penguins[coord].can_love = False
                     penguins[coord].activity = command['activity']
                     penguins[coord].goal = command['activity']
+                    self.love_time = 10
+                    self.can_love = False
                     self.inLove=True
                     self.activity_time = 3
                     self.activity = command['activity']
                     self.goal = command['activity']
                     self.acivityTarget = coord
                     self.activity_direction = command['directionNum']      
-                    #else:      
-                    #    self.activity = ACTIVITY_NONE  
-                    #    self.activity_direction = DIRECTION_NONE                        
+                    # else:      
+                    #     self.activity = ACTIVITY_NONE  
+                    #     self.activity_direction = DIRECTION_NONE                        
                 else:      
                     self.activity = ACTIVITY_NONE  
                     self.activity_direction = DIRECTION_NONE                        
@@ -187,6 +192,11 @@ class Penguin:
 
         if self.alive :
                      
+            if (self.love_time > 0) :
+                self.love_time -= 1
+            else :
+                self.can_love = True
+
             self.age += 0.05
             if not hasNeighbour :  
                 self.temp += weather / (6 - evolution_speed)
@@ -320,7 +330,8 @@ class Penguin:
             'activityDone' : self.activity_done,
             'goal' : self.goal,
             'hasFish' : self.hasFish,
-            'hasGem' : self.hasGem            
+            'hasGem' : self.hasGem,
+            'canLove' : self.can_love            
         }
  
 
