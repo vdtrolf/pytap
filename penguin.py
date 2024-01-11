@@ -3,8 +3,9 @@ from util import *
 from interpreter import *
 
 genders=("M","F")
-asciiEyes = {"M":"[oo]","F":"(ôô)"}
-activities_ascii = {ACTIVITY_NONE: "\\/",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "/|", ACTIVITY_LOVING: "<3", ACTIVITY_GETING: "-^",ACTIVITY_BUILDING : "-#",ACTIVITY_CLEANING : "-u", ACTIVITY_FLEE: "\\/", ACTIVITY_MOVING:"\\/"}
+asciiEyes = {"M":"[oo]","F":"(ôô)","m":"oo","f":"ôô"}
+activities_ascii = {ACTIVITY_NONE: "\\/",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "-*", ACTIVITY_LOVING: "<3", ACTIVITY_GETING: "-^",ACTIVITY_BUILDING : "-#",ACTIVITY_CLEANING : "-u", ACTIVITY_FLEE: "\\/", ACTIVITY_MOVING:"\\/"}
+activities_child_ascii = {ACTIVITY_NONE: "()",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "-*", ACTIVITY_LOVING: "()", ACTIVITY_GETING: "()",ACTIVITY_BUILDING : "()",ACTIVITY_CLEANING : "()", ACTIVITY_FLEE: "()", ACTIVITY_MOVING:"()"}
 figures = {0:"Slim", 1:"Fit", 2:"Fat"}
 
 
@@ -16,6 +17,8 @@ class Penguin:
         self.id = id
         self.alive = True
         self.age = random.randint(1,3)
+        self.isChild = True
+        self.isOld = False
         self.deadAge = 0
         self.hunger = 0
         self.temp = 0
@@ -64,8 +67,8 @@ class Penguin:
                 else:      
                     self.activity = ACTIVITY_NONE  
                     self.activity_direction = DIRECTION_NONE        
-            elif command['activity'] == ACTIVITY_LOVING:
-                if penguins.get(coord):
+            elif command['activity'] == ACTIVITY_LOVING and not self.isChild and not self.isOld:
+                if penguins.get(coord) and not penguins[coord].isChild:
                     # if penguins[coord].activity == ACTIVITY_NONE and penguins[coord].gender != self.gender and penguins[coord].age > 4 :
                     penguins[coord].activity_time = 3
                     penguins[coord].love_time = 10
@@ -86,7 +89,7 @@ class Penguin:
                 else:      
                     self.activity = ACTIVITY_NONE  
                     self.activity_direction = DIRECTION_NONE                        
-            elif command['activity'] == ACTIVITY_GETING:
+            elif command['activity'] == ACTIVITY_GETING and not self.isChild and not self.isOld:
                 if gems.get(coord):
                     self.activity_time = 3  
                     self.activity = command['activity']      
@@ -96,7 +99,7 @@ class Penguin:
                 else:      
                     self.activity = ACTIVITY_NONE
                     self.activity_direction = DIRECTION_NONE
-            elif command['activity'] == ACTIVITY_CLEANING:
+            elif command['activity'] == ACTIVITY_CLEANING and not self.isChild and not self.isOld:
                 if garbages.get(coord):
                     self.activity_time = 2  
                     self.activity = command['activity']      
@@ -115,7 +118,7 @@ class Penguin:
                 else:      
                     self.activity = ACTIVITY_NONE
                     self.activity_direction = DIRECTION_NONE
-            elif command['activity'] == ACTIVITY_BUILDING:
+            elif command['activity'] == ACTIVITY_BUILDING and not self.isChild and not self.isOld:
                 if self.hasGem and cells[direction['vpos']][direction['hpos']].isSea() :        
                     self.activity_time = 3  
                     self.activityVPos = direction['vpos']
@@ -197,7 +200,14 @@ class Penguin:
             else :
                 self.can_love = True
 
-            self.age += 0.05
+            if self.isChild or self.isOld:
+                self.age += 0.2
+            else:    
+                self.age += 0.05
+            
+            self.isChild = self.age <= 3 
+            self.isOld = self.age > 13 
+                            
             if not hasNeighbour :  
                 self.temp += weather / (6 - evolution_speed)
             self.hunger += (self.figure + 1) / (6 - evolution_speed) 
@@ -262,10 +272,15 @@ class Penguin:
             carries = "~"
         elif self.hasGem :
             carries = "^"
+        gender = self.gender
         if self.alive:
-            return [f'{cell_bg[0]}{asciiEyes[self.gender]}{cell_bg[0]}',f"/|{activities_ascii[self.activity]}|\\",f"{cell_bg[4]}|{self.id}{carries}|{cell_bg[4]}"]
+            if self.isChild : 
+                gender = gender.lower()
+                return [f'{cell_bg[0]}{cell_bg[0]}{asciiEyes[gender]}{cell_bg[0]}{cell_bg[0]}',f"{cell_bg[0]}<{activities_child_ascii[self.activity]}>{cell_bg[0]}",f"{cell_bg[4]}{cell_bg[4]}|{self.id}{cell_bg[4]}{cell_bg[4]}"]
+            else : 
+                return [f'{cell_bg[0]}{asciiEyes[gender]}{cell_bg[0]}',f"/({activities_ascii[self.activity]})\\",f"{cell_bg[4]}|{self.id}{carries}|{cell_bg[4]}"]        
         elif self.deadAge < 6:
-            return [f'{cell_bg[0]}<xx>{cell_bg[0]}',"/|\\/|\\",f"{cell_bg[4]}|{self.id} |{cell_bg[4]}"]
+            return [f'{cell_bg[0]}<xx>{cell_bg[0]}',"/(\\/)\\",f"{cell_bg[4]}|{self.id} |{cell_bg[4]}"]
             
     def get_details(self):
         """Returns the details of the penguin (name,age...)"""
@@ -299,12 +314,16 @@ class Penguin:
                 carries = " ~ "
             elif self.hasGem:
                 carries = " ^ "
-        
+            
+            gender = self.gender
+            if self.isChild < 4 : 
+                gender = gender.lower()        
+
             if self.alive:
                 #  print(f'%%%% {self.activity}')
-                return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activity_names[self.activity]}                    ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],f'{tempText} {hungerText} {carries}']     
+                return [f'{convert_to_alpha(self.id)}:{self.name.title()} {activity_names[self.activity]}                    ',f'  {gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],f'{tempText} {hungerText} {carries}']     
             else:
-                return [f'{convert_to_alpha(self.id)}:{self.name.title()} - Dead                  ',f'  {self.gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],f'{tempText} {hungerText} {carries}']     
+                return [f'{convert_to_alpha(self.id)}:{self.name.title()} - Dead                  ',f'  {gender}/{int(self.age)}/{figures[self.figure]}   '[0:11],f'{tempText} {hungerText} {carries}']     
         else:
             return ["","","","","",""]  
 
