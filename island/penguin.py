@@ -1,5 +1,5 @@
 import random
-from util import *
+from utilities.util import *
 from interpreter import *
 
 genders=("M","F")
@@ -45,7 +45,7 @@ class Penguin:
         
         # Is there an order to execute
         if len(self.commands) > 0:
-            command = interpret_commands(self.commands,self.vpos,self.hpos,fishes,gems,garbages)
+            command = interpret_commands(self.commands,self.vpos,self.hpos,cells,fishes,gems,garbages)
             direction = {'vpos':self.vpos + command['vmove'],'hpos':self.hpos + command['hmove']}
             coord = direction['vpos']*100 + direction['hpos']
             if command['activity'] == ACTIVITY_MOVING:
@@ -82,10 +82,7 @@ class Penguin:
                     self.activity = command['activity']
                     self.goal = command['activity']
                     self.acivityTarget = coord
-                    self.activity_direction = command['directionNum']      
-                    # else:      
-                    #     self.activity = ACTIVITY_NONE  
-                    #     self.activity_direction = DIRECTION_NONE                        
+                    self.activity_direction = command['directionNum']                       
                 else:      
                     self.activity = ACTIVITY_NONE  
                     self.activity_direction = DIRECTION_NONE                        
@@ -335,6 +332,8 @@ class Penguin:
             'id' : self.id,
             'alive' : self.alive,
             'age' : self.age,
+            'isChild' : self.isChild,
+            'isOld' : self.isOld,
             'deadAge' : self.deadAge,
             'hunger' : self.hunger,
             'temp' : self.temp,

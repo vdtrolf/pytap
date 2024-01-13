@@ -1,4 +1,4 @@
-from util import *
+from utilities.util import *
 
 def get_direction(command, activity):
     """Returns a direction based on an order - in the form of vpos/hpos coords"""
@@ -57,7 +57,7 @@ def findItem(vpos,hpos,items):
     return -1
 
 
-def interpret_commands(commands,vpos,hpos,fishes,gems,garbages):
+def interpret_commands(commands,vpos,hpos,cells,fishes,gems,garbages):
     """returns the given activity as a CONSTANT value"""
     if len(commands) == 1:
         if commands[0].title()[0:1] == "E":
@@ -85,13 +85,17 @@ def interpret_commands(commands,vpos,hpos,fishes,gems,garbages):
             direction = get_direction(commands[0], ACTIVITY_MOVING)
             if fishes.get((vpos + direction['vmove'])*100 + hpos + direction['hmove']):
                 direction['activity'] = ACTIVITY_FISHING
-                direction['activityName'] = ACTIVITY_FISHING
+                direction['activityName'] = activity_names[ACTIVITY_FISHING]
             elif gems.get((vpos + direction['vmove'])*100 + hpos + direction['hmove']):
                 direction['activity'] = ACTIVITY_GETING
-                direction['activityName'] = ACTIVITY_GETING    
+                direction['activityName'] = activity_names[ACTIVITY_GETING]    
             elif garbages.get((vpos + direction['vmove'])*100 + hpos + direction['hmove']):
                 direction['activity'] = ACTIVITY_CLEANING
-                direction['activityName'] = ACTIVITY_CLEANING                 
+                direction['activityName'] = activity_names[ACTIVITY_CLEANING]  
+            elif cells[vpos + direction['vmove']][hpos + direction['hmove']].isSea():
+                direction['activity'] = ACTIVITY_BUILDING
+                direction['activityName'] = activity_names[ACTIVITY_BUILDING] 
+
             return direction
             
     elif len(commands) == 2:

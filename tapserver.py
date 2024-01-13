@@ -1,8 +1,8 @@
 from flask import Flask, redirect, url_for,  request, jsonify
 from datetime import datetime
 
-from island import *
-from util import *
+from domain.island import *
+from utilities.util import *
 from context import *
 
 

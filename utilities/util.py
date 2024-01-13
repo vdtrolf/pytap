@@ -43,26 +43,49 @@ DIRECTION_RIGHT = 2
 DIRECTION_UP = 3
 DIRECTION_DOWN = 4
 
-DL_V = '\u2551'
-DL_DR = "\u2554"
-DL_HD = "\u2566"
-DL_UR = "\u255a"
-DL_VH = "\u256c"
-DL_DL = "\u2557"
-DL_VL = "\u2563"
-DL_UL = "\u255d"
-DL_VR = "\u2560"
-DL_HU = "\u2569"
+DL_V = '|'
+DL_DR = "+"
+DL_HD = "+"
+DL_UR = "+"
+DL_VH = "+"
+DL_DL = "+"
+DL_VL = "+"
+DL_UL = "+"
+DL_VR = "+"
+DL_HU = "+"
 
-SHADE_L = "\u2591"
-SHADE_M = "\u2592"
-SHADE_H = "\u2593"
+SHADE_L = "."
+SHADE_M = ":"
+SHADE_H = "%"
 
-SHADES_L = "\u2591\u2591\u2591\u2591\u2591\u2591"
-SHADES_M = "\u2592\u2592\u2592\u2592\u2592\u2592"
-SHADES_H = "\u2593\u2593\u2593\u2593\u2593\u2593"
+SHADES_L = "......"
+SHADES_M = "::::::"
+SHADES_H = "%%%%%%"
 
-DL_H_STR = '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550'
+DL_H_STR = '----------------------'
+
+
+
+# DL_V = '\u2551'
+# DL_DR = "\u2554"
+# DL_HD = "\u2566"
+# DL_UR = "\u255a"
+# DL_VH = "\u256c"
+# DL_DL = "\u2557"
+# DL_VL = "\u2563"
+# DL_UL = "\u255d"
+# DL_VR = "\u2560"
+# DL_HU = "\u2569"
+
+# SHADE_L = "\u2591"
+# SHADE_M = "\u2592"
+# SHADE_H = "\u2593"
+
+# SHADES_L = "\u2591\u2591\u2591\u2591\u2591\u2591"
+# SHADES_M = "\u2592\u2592\u2592\u2592\u2592\u2592"
+# SHADES_H = "\u2593\u2593\u2593\u2593\u2593\u2593"
+
+# DL_H_STR = '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550'
 
 moves = {
     DIRECTION_NONE: [0,0],
@@ -105,7 +128,7 @@ keys = []
 
 def initiate_names():
     """Reads the names into the _male, _female and _islands lists"""
-    names_file = open('prenoms-hf.txt',
+    names_file = open('data/prenoms-hf.txt',
                       encoding="latin-1",
                       errors="surrogateescape")
     for entry in names_file:
@@ -115,7 +138,7 @@ def initiate_names():
                 names_males.append(words[0])
             elif words[1] == 'f' and len(words[0]) < 9:
                 names_females.append(words[0])
-    islands_file = open('iles.txt',
+    islands_file = open('data/iles.txt',
                         encoding="latin-1",
                         errors="surrogateescape")
     for entry in islands_file:
