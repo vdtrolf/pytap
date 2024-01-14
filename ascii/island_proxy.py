@@ -15,11 +15,11 @@ class Island_proxy :
         """get the cell color scheme"""
         return get_cell_bg(self.island.cells[vpos][hpos])
 
-    def get_cell_ascii(self,vpos,hpos):
+    def get_cell_ascii(self,vpos,hpos,selected_penguin):
         """get the ascii value at a given position"""
         cell_bg = get_cell_bg(self.island.cells[vpos][hpos]) 
         if self.island.penguins.get(vpos*100+hpos) :
-            return get_penguin_ascii(self.island.penguins[vpos*100+hpos],cell_bg)
+            return get_penguin_ascii(self.island.penguins[vpos*100+hpos],cell_bg,selected_penguin)
         elif self.island.fishes.get(vpos*100+hpos) :
             return get_fish_ascii(self.island.fishes[vpos*100+hpos])
         elif self.island.garbages.get(vpos*100+hpos) :

@@ -1,7 +1,9 @@
+from colorama import Fore
+
 def get_fish_ascii(fish):
     """ returns the ascii image of the fish """
     if fish.onHook :
-        return [["   __ ","|\\/ x\\","|/\\__/"],[" __   ","/x \\/|","\\__/\\|",]][fish.angle]
+        return [[Fore.BLUE + "   __ ",Fore.BLUE + "|\\/ x\\",Fore.BLUE + "|/\\__/"],[Fore.BLUE + " __   ",Fore.BLUE + "/x \\/|",Fore.BLUE + "\\__/\\|",]][fish.angle]
     else :
-        return [["   __ ","|\\/ o\\","|/\\__/"],[" __   ","/o \\/|","\\__/\\|",]][fish.angle]
+        return [[Fore.BLUE + "   __ ",Fore.BLUE + "|\\/ o\\",Fore.BLUE + "|/\\__/"],[Fore.BLUE + " __   ",Fore.BLUE + "/o \\/|",Fore.BLUE + "\\__/\\|",]][fish.angle]
     

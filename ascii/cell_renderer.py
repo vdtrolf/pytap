@@ -1,4 +1,5 @@
 from utilities.util import *
+from colorama import Fore
 
 cellTypes1 = ('      ', f'{SHADE_L}  {SHADE_L}  ',f'{SHADE_L}  {SHADE_L}  ',f'  {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', f'{SHADE_L} {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M)
 cellTypes2 = ('      ', f'  {SHADE_L}  {SHADE_L}',f'  {SHADE_L}  {SHADE_L}',f' {SHADE_L}   {SHADE_L}',f' {SHADE_L} {SHADE_L} {SHADE_L}', f' {SHADE_L} {SHADE_L} {SHADE_L}',f' {SHADE_L} {SHADE_L} {SHADE_L}', SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M)
@@ -7,7 +8,7 @@ cellTypes3 = ('      ', f'{SHADE_L}  {SHADE_L}  ',f'{SHADE_L}  {SHADE_L}  ',f'  
 def get_cell_ascii(cell):
     """ returns the ascii image of the cell """
     return [
-        cellTypes1[cell.cellType], cellTypes2[cell.cellType], cellTypes3[cell.cellType]
+       Fore.GREEN + cellTypes1[cell.cellType], Fore.GREEN + cellTypes2[cell.cellType], Fore.GREEN + cellTypes3[cell.cellType]
     ]
 
 def get_cell_bg(cell):

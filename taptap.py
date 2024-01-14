@@ -4,18 +4,21 @@ from ascii.island_proxy import *
 from ascii.penguin_renderer import *
 import os
 from pytimedinput import *
+from colorama import Fore, init
 
 boardSize = BOARDSIZE
+selected_penguin = 0
 
+init(autoreset=True)
 initiate_names()
 
 def show_island(an_island):
-
+    os.system('clear')
     island_proxy = Island_proxy(an_island) 
 
-    headerLine = DL_DR
-    numberedLine = DL_VR
-    downLine = DL_UR
+    headerLine = Fore.GREEN + DL_DR
+    numberedLine = Fore.GREEN + DL_VR
+    downLine = Fore.GREEN + DL_UR
     for i in range(boardSize):
           headerLine += DL_H_STR[0:6]
           downLine += DL_H_STR[0:6]
@@ -26,31 +29,47 @@ def show_island(an_island):
 
     """Displays an image of the island in ascii format"""
     print(headerLine)
-    print(f"{DL_V} {island_proxy.get_info()}"[0:boardSize * 6 + 1] +
+    print(Fore.GREEN + f"{DL_V} {island_proxy.get_info()}"[0:boardSize * 6 + 1] +
                  f"{DL_V} Penguins             {DL_V}")
     print(numberedLine)
     infoList = []
     penguinCnt = 0
+
+    selected_line0 = ""
+    selected_line1 = ""
+    selected_line2 = ""
+
     for penguin in an_island.penguins.values():
         if penguin.alive or penguin.deadAge < 6:
-            infoList.append(f'{DL_V}{get_penguin_info(penguin)[0][0:22]}{DL_V}')
-            infoList.append(f'{DL_V}{get_penguin_info(penguin)[1][0:11]}{(get_penguin_info(penguin)[2]+ "             ")[0:11]}{DL_V}')
+            infoList.append(f'{Fore.GREEN}{DL_V}{Fore.CYAN}{get_penguin_oneliner(penguin)[0][0:22]}{Fore.GREEN}{DL_V}')
+            if penguin.id == selected_penguin:
+                selected_line0 = f' {penguin.name.title()} ({penguin.id})                       '
+                selected_line1 = get_penguin_info(penguin)[0]
+                selected_line2 = get_penguin_info(penguin)[1]
             penguinCnt += 1
-    infoList.append(f"{DL_VR}{DL_H_STR}{DL_VL}")
+    infoList.append(f"{Fore.GREEN}{DL_VR}{DL_H_STR}{DL_VL}")
+    
+    if selected_penguin > 0 :
+        infoList.append(f"{Fore.GREEN}{DL_V}{Fore.WHITE}{selected_line0[0:22]}{Fore.GREEN}{DL_V}")
+        infoList.append(f"{Fore.GREEN}{DL_V}{Fore.WHITE}{selected_line1[0:22]}{Fore.GREEN}{DL_V}")
+        infoList.append(f"{Fore.GREEN}{DL_V}{Fore.WHITE}{selected_line2[0:22]}{Fore.GREEN}{DL_V}")
+        infoList.append(f"{Fore.GREEN}{DL_VR}{DL_H_STR}{DL_VL}")
+        penguinCnt += 4
+    
     cntlog = 1
-    while cntlog < 27 - penguinCnt * 2 :
-        infoList.append(f'{DL_V}{get_event_log(cntlog)[0:22]}{DL_V}')
+    while cntlog < 27 - penguinCnt :
+        infoList.append(f'{Fore.GREEN}{DL_V}{Fore.CYAN} {get_event_log(cntlog)[0:21]}{Fore.GREEN}{DL_V}')
         cntlog += 1
     
     for i in range(boardSize):
-        lane1 = DL_V
-        lane2 = f'{convert_to_alpha(i)}'
-        lane3 = DL_V
+        lane1 = f'{Fore.GREEN}{DL_V}'
+        lane2 = f'{Fore.GREEN}{convert_to_alpha(i)}'
+        lane3 = f'{Fore.GREEN}{DL_V}'
         for j in range(boardSize):
             bg = island_proxy.get_cell_bg(i, j)
-            lane1 += island_proxy.get_cell_ascii(i, j)[0]
-            lane2 += island_proxy.get_cell_ascii(i, j)[1]
-            lane3 += island_proxy.get_cell_ascii(i, j)[2]                     
+            lane1 += island_proxy.get_cell_ascii(i, j, selected_penguin)[0]
+            lane2 += island_proxy.get_cell_ascii(i, j, selected_penguin)[1]
+            lane3 += island_proxy.get_cell_ascii(i, j, selected_penguin)[2]                     
                                      
         lane1 += f'{infoList[i*3]}'
         lane2 += f'{infoList[i*3 +1]}'
@@ -100,12 +119,18 @@ while True:
         if int(commands[0]) > 0:
             if len(commands) > 1:
                 island.transmit_commands(int(commands[0]), commands[1:])
-                os.system('clear')
+                selected_penguin = int(commands[0])
                 show_island(island)
             else:
-                island.show_penguin_details(int(commands[0]))
+                if int(commands[0]) == selected_penguin:
+                    selected_penguin = 0
+                else:
+                    selected_penguin = int(commands[0])
+                show_island(island)
+    elif len(commands) == 1 and len(commands[0]) == 1  and selected_penguin > 0:
+        island.transmit_commands(selected_penguin, commands[0])
+        show_island(island)
     else:
         island.become_older(True)
-        os.system('clear')
         show_island(island)
 
