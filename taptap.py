@@ -3,17 +3,18 @@ from domain.island import *
 from ascii.island_proxy import *
 from ascii.penguin_renderer import *
 import os
-from pytimedinput import *
+# from pytimedinput import *
 from colorama import Fore, init
 
 boardSize = BOARDSIZE
 selected_penguin = 0
+timed = False
 
 init(autoreset=True)
 initiate_names()
 
 def show_island(an_island):
-    os.system('clear')
+    if timed : os.system('clear')
     island_proxy = Island_proxy(an_island) 
 
     headerLine = Fore.GREEN + DL_DR
@@ -41,7 +42,9 @@ def show_island(an_island):
 
     for penguin in an_island.penguins.values():
         if penguin.alive or penguin.deadAge < 6:
-            infoList.append(f'{Fore.GREEN}{DL_V}{Fore.CYAN}{get_penguin_oneliner(penguin)[0][0:22]}{Fore.GREEN}{DL_V}')
+            color = Fore.CYAN
+            if penguin.id == selected_penguin : color = Fore.WHITE
+            infoList.append(f'{Fore.GREEN}{DL_V}{color}{get_penguin_oneliner(penguin)[0][0:22]}{Fore.GREEN}{DL_V}')
             if penguin.id == selected_penguin:
                 selected_line0 = f' {penguin.name.title()} ({penguin.id})                       '
                 selected_line1 = get_penguin_info(penguin)[0]
@@ -85,11 +88,7 @@ def show_island(an_island):
 island = Island(boardSize)
 
 # print(island.get_data())
-
-os.system('clear')
 show_island(island)
-
-timed = True
 
 while True:
 
@@ -113,6 +112,7 @@ while True:
     elif commands[0] == "n":
         if len(commands) > 1 and commands[1].isdigit():
             boardSize = int(commands[1])
+        selected_penguin = 0
         island = Island(boardSize)
         show_island(island)
     elif commands[0].isdigit():
