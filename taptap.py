@@ -48,13 +48,15 @@ def show_island(an_island):
             color = Fore.CYAN
             if penguin.id == selected_penguin : color = Fore.WHITE
             infoList.append(f'{Fore.GREEN}{DL_V}{color}{get_penguin_oneliner(penguin)[0][0:22]}{Fore.GREEN}{DL_V}')
-            if penguin.id == selected_penguin:
+            penguinCnt += 1     
+            
+        if penguin.id == selected_penguin:
+            if penguin.alive:
                 selected_line0 = f' {penguin.name.title()} ({penguin.id})                       '
                 selected_line1 = get_penguin_info(penguin)[0]
                 selected_line2 = get_penguin_info(penguin)[1]
-            penguinCnt += 1
-        elif penguin.id == selected_penguin:
-            selected_penguin = 0
+            else:
+                selected_penguin = 0
     
     infoList.append(f"{Fore.GREEN}{DL_VR}{DL_H_STR}{DL_VL}")
     
@@ -135,9 +137,13 @@ while True:
                     selected_penguin = 0
                 else:
                     selected_penguin = int(commands[0])
+                if not timed:
+                    island.become_older(True)
                 show_island(island)
     elif len(commands) == 1 and len(commands[0]) == 1  and selected_penguin > 0:
         island.transmit_commands(selected_penguin, commands[0])
+        if not timed:
+            island.become_older(True)
         show_island(island)
     else:
         island.become_older(True)

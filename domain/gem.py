@@ -3,7 +3,7 @@ from utilities.util import *
 
 class Gem:
 
-    def __init__(self,vpos,hpos,hasShowel=False):
+    def __init__(self,vpos,hpos,hasShowel):
         self.key = get_next_key()
         self.vpos = vpos
         self.hpos = hpos
