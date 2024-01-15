@@ -3,7 +3,7 @@ from domain.island import *
 from ascii.island_proxy import *
 from ascii.penguin_renderer import *
 import os
-# from pytimedinput import *
+from pytimedinput import *
 from colorama import Fore, init
 
 boardSize = BOARDSIZE
@@ -14,6 +14,9 @@ init(autoreset=True)
 initiate_names()
 
 def show_island(an_island):
+    global selected_penguin
+    print(selected_penguin)
+
     if timed : os.system('clear')
     island_proxy = Island_proxy(an_island) 
 
@@ -50,6 +53,9 @@ def show_island(an_island):
                 selected_line1 = get_penguin_info(penguin)[0]
                 selected_line2 = get_penguin_info(penguin)[1]
             penguinCnt += 1
+        elif penguin.id == selected_penguin:
+            selected_penguin = 0
+    
     infoList.append(f"{Fore.GREEN}{DL_VR}{DL_H_STR}{DL_VL}")
     
     if selected_penguin > 0 :
@@ -59,8 +65,11 @@ def show_island(an_island):
         infoList.append(f"{Fore.GREEN}{DL_VR}{DL_H_STR}{DL_VL}")
         penguinCnt += 4
     
+
+    infoList.append(f"{Fore.GREEN}{DL_V} Log                  {DL_V}")
+    infoList.append(f"{Fore.GREEN}{DL_VR}{DL_H_STR}{DL_VL}")
     cntlog = 1
-    while cntlog < 27 - penguinCnt :
+    while cntlog < 25 - penguinCnt :
         infoList.append(f'{Fore.GREEN}{DL_V}{Fore.CYAN} {get_event_log(cntlog)[0:21]}{Fore.GREEN}{DL_V}')
         cntlog += 1
     

@@ -42,24 +42,24 @@ def get_penguin_ascii(penguin,cell_bg, selected_penguin):
 def get_penguin_info(penguin):
     """Returns the two lines info of the penguin (name,age...)"""
     if penguin.alive or penguin.deadAge < 6:
-        tempText = "Tmp ++"
+        tempText = "Tmp++"
         if penguin.temp > 80:
-            tempText = "Tmp --"
+            tempText = "Tmp--"
         elif penguin.temp > 60:
-            tempText = "Tmp - " 
+            tempText = "Tmp- " 
         elif penguin.temp > 40:
-            tempText = "Tmp +-" 
+            tempText = "Tmp+-" 
         elif penguin.temp > 20:
-            tempText = "Tmp + " 
-        hungerText = "Hng ++"
+            tempText = "Tmp+ " 
+        hungerText = "Hng++"
         if penguin.hunger > 80:
-            hungerText = "Hng --"
+            hungerText = "Hng--"
         elif penguin.hunger > 60:
-            hungerText = "Hng - "  
+            hungerText = "Hng- "  
         elif penguin.hunger > 40:
-            hungerText = "Hng +-"  
+            hungerText = "Hng+-"  
         elif penguin.hunger > 20:
-            hungerText = "Hng + "  
+            hungerText = "Hng+ "  
         carries = "   "
         if penguin.hasFish and penguin.hasGem:
             carries = " <> >o"
@@ -67,6 +67,10 @@ def get_penguin_info(penguin):
             carries = " >o "
         elif penguin.hasGem:
             carries = " <> "
+        if penguin.hasShowel:
+            carries += '-u'
+        else:
+            carries += '  '    
         
         gender = penguin.gender
         if penguin.isChild: 
@@ -76,7 +80,7 @@ def get_penguin_info(penguin):
             #  print(f'%%%% {penguin.activity}')
             return [f' {gender_text[gender]}/{int(penguin.age)}y/{figures[penguin.figure]} {activity_names[penguin.activity]}                   ',f' {tempText} {hungerText} {carries}         ','']     
         else:
-            return [f' {gender_text[gender]}/{int(penguin.age)}y/{figures[penguin.figure]} - Dead                 ',f' {tempText} {hungerText} {carries}                     ','']     
+            return [f' {gender_text[gender]}/{int(penguin.age)}y/{figures[penguin.figure]} Dead                    ',f' {tempText} {hungerText} {carries}                     ','']     
     else:
         return ["","","","","",""]  
 
@@ -108,7 +112,10 @@ def get_penguin_oneliner(penguin):
             carries = " ~ "
         elif penguin.hasGem:
             carries = " ^ "
-        
+        if penguin.hasShowel:
+            carries += 'u'
+        else:
+            carries += ' '
         gender = penguin.gender
         if penguin.isChild < 4 : 
             gender = gender.lower()        

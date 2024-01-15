@@ -31,6 +31,7 @@ class Penguin:
         self.commands = []
         self.hasFish = False
         self.hasGem = False
+        self.hasShowel = False
         self.inLove = False
         self.activity_done = False
         self.can_love = True
@@ -91,7 +92,7 @@ class Penguin:
                 else:      
                     self.activity = ACTIVITY_NONE
                     self.activity_direction = DIRECTION_NONE
-            elif command['activity'] == ACTIVITY_CLEANING and not self.isChild and not self.isOld:
+            elif command['activity'] == ACTIVITY_CLEANING and not self.isChild and not self.isOld and self.hasShowel:
                 if garbages.get(coord):
                     self.activity_time = 2  
                     self.activity = command['activity']      
@@ -280,6 +281,7 @@ class Penguin:
             'goal' : self.goal,
             'hasFish' : self.hasFish,
             'hasGem' : self.hasGem,
+            'hasShowel' : self.hasShowel,
             'canLove' : self.can_love            
         }
  

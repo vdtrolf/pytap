@@ -1,8 +1,8 @@
 from colorama import Fore
 
-garbageTypes1 = ('  xx  ', '   xx ', ' xxx  ', '   xx ','  xxx ')
-garbageTypes2 = (' xxx  ', '  xx  ', '  xx  ', '  xxx ',' xxx  ') 
-garbageTypes3 = ('    x ', '   xx ', ' xx   ', '   xx ','  x x ')
+garbageTypes1 = ('x xxxx', 'xxx  x', 'xxxx  ', 'xx xx ','x  xxx')
+garbageTypes2 = ('xxxx  ', 'x xx  ', 'x x xx', 'x xxx ',' xxx x') 
+garbageTypes3 = ('x  xxx', 'xx xx ', 'x xx x', 'xx xxx','x x xx')
     
 def get_garbage_ascii(self):
     """ returns the ascii image of the garbage """
