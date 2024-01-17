@@ -68,7 +68,7 @@ def get_penguin_info(penguin):
         elif penguin.hasGem:
             carries = " <> "
         if penguin.hasShowel:
-            carries += '-u'
+            carries += ' -u'
         else:
             carries += '  '    
         

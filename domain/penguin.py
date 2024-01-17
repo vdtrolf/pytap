@@ -32,6 +32,7 @@ class Penguin:
         self.hasFish = False
         self.hasGem = False
         self.hasShowel = False
+        self.showelCnt = 0
         self.inLove = False
         self.activity_done = False
         self.can_love = True
@@ -64,7 +65,7 @@ class Penguin:
                     self.activity = ACTIVITY_NONE  
                     self.activity_direction = DIRECTION_NONE        
             elif command['activity'] == ACTIVITY_LOVING and not self.isChild and not self.isOld:
-                if penguins.get(coord) and not penguins[coord].isChild:
+                if penguins.get(coord) and not penguins[coord].isChild and not penguins[coord].isOld:
                     # if penguins[coord].activity == ACTIVITY_NONE and penguins[coord].gender != self.gender and penguins[coord].age > 4 :
                     penguins[coord].activity_time = 3
                     penguins[coord].love_time = 10
@@ -159,11 +160,17 @@ class Penguin:
                     self.activity_direction = DIRECTION_NONE
                     if gems.get(self.acivityTarget):
                         gems[self.acivityTarget].isTaken = True
+                        if gems[self.acivityTarget].hasShowel:
+                            self.hasShowel = True
+                            self.showelCnt = 2
+                            gems[self.acivityTarget].hasShowel == False
                 elif self.activity == ACTIVITY_CLEANING:
                     self.activity = ACTIVITY_NONE
                     self.activity_direction = DIRECTION_NONE
                     if garbages.get(self.acivityTarget):
-                        garbages[self.acivityTarget].isTaken = True        
+                        garbages[self.acivityTarget].isTaken = True    
+                    self.showelCnt -= 1
+                    self.hasShowel = self.showelCnt > 0         
                 elif self.activity == ACTIVITY_EATING:
                     self.hunger = 0
                     self.hasFish = False
