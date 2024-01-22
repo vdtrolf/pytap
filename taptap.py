@@ -8,7 +8,7 @@ from colorama import Fore, init
 
 boardSize = BOARDSIZE
 selected_penguin = 0
-timed = False
+timed = True
 
 init(autoreset=True)
 initiate_names()
