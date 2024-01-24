@@ -20,4 +20,4 @@ jobs:
     - name: connect and pull
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git pull origin ${{ secrets.MAIN_BRANCH }} && nohup ../starttap.sh && exit"
     - name: cleanup
-      run: rm -rf ~/.ssh
+      # run: rm -rf ~/.ssh
