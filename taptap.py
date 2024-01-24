@@ -6,6 +6,8 @@ import os
 from pytimedinput import *
 from colorama import Fore, init
 
+# this is the local terminal version
+
 boardSize = BOARDSIZE
 selected_penguin = 0
 timed = True
