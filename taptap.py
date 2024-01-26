@@ -10,14 +10,14 @@ from colorama import Fore, init
 
 boardSize = BOARDSIZE
 selected_penguin = 0
-timed = True
+timed = False
 
 init(autoreset=True)
 initiate_names()
 
 def show_island(an_island):
     global selected_penguin
-    print(selected_penguin)
+    # print(selected_penguin)
 
     if timed : os.system('clear')
     island_proxy = Island_proxy(an_island) 
