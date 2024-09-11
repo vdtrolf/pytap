@@ -10,24 +10,25 @@ class Island_proxy :
     def __init__(self,island):
         """Initiate an island proxy with it's island instance"""
         self.island = island
+        self.cellSize = 6
 
     def get_cell_bg(self,vpos,hpos):
         """get the cell color scheme"""
         return get_cell_bg(self.island.cells[vpos][hpos])
 
-    def get_cell_ascii(self,vpos,hpos,selected_penguin):
+    def get_cell_ascii(self,vpos,hpos,selected_penguin,cellSize):
         """get the ascii value at a given position"""
-        cell_bg = get_cell_bg(self.island.cells[vpos][hpos]) 
+        cell_bg = get_cell_bg(self.island.cells[vpos][hpos], cellSize) 
         if self.island.penguins.get(vpos*100+hpos) :
-            return get_penguin_ascii(self.island.penguins[vpos*100+hpos],cell_bg,selected_penguin)
+            return get_penguin_ascii(self.island.penguins[vpos*100+hpos],cell_bg,selected_penguin,cellSize)
         elif self.island.fishes.get(vpos*100+hpos) :
-            return get_fish_ascii(self.island.fishes[vpos*100+hpos])
+            return get_fish_ascii(self.island.fishes[vpos*100+hpos],cellSize)
         elif self.island.garbages.get(vpos*100+hpos) :
-            return get_garbage_ascii(self.island.garbages[vpos*100+hpos])
+            return get_garbage_ascii(self.island.garbages[vpos*100+hpos],cellSize)
         elif self.island.gems.get(vpos*100+hpos) :
-            return get_gem_ascii(self.island.gems[vpos*100+hpos],cell_bg)
+            return get_gem_ascii(self.island.gems[vpos*100+hpos],cell_bg,cellSize)
         else:   
-            return get_cell_ascii(self.island.cells[vpos][hpos])
+            return get_cell_ascii(self.island.cells[vpos][hpos],cellSize)
 
     def get_info(self):
         """Returns the name and status of the island"""

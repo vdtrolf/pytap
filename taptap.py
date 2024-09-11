@@ -3,12 +3,15 @@ from domain.island import *
 from ascii.island_proxy import *
 from ascii.penguin_renderer import *
 import os
-from pytimedinput import *
+# from pytimedinput import *
 from colorama import Fore, init
 
 # this is the local terminal version
 
 boardSize = BOARDSIZE
+cellSize = 6
+if boardSize == 12 :
+    cellSize = 4
 selected_penguin = 0
 timed = False
 
@@ -26,9 +29,9 @@ def show_island(an_island):
     numberedLine = Fore.GREEN + DL_VR
     downLine = Fore.GREEN + DL_UR
     for i in range(boardSize):
-          headerLine += DL_H_STR[0:6]
-          downLine += DL_H_STR[0:6]
-          numberedLine += f"{DL_H_STR[0:2]}{convert_to_alpha(i)}{DL_H_STR[0:3]}"
+          headerLine += DL_H_STR[0:cellSize]
+          downLine += DL_H_STR[0:cellSize]
+          numberedLine += f"{DL_H_STR[0:2]}{convert_to_alpha(i)}{DL_H_STR[0:3]}"[:cellSize]
     headerLine += f"{DL_HD}{DL_H_STR}{DL_DL}"
     numberedLine += f"{DL_VH}{DL_H_STR}{DL_VL}"
     downLine += f"{DL_HU}{DL_H_STR}{DL_UL}"
@@ -77,23 +80,38 @@ def show_island(an_island):
         infoList.append(f'{Fore.GREEN}{DL_V}{Fore.CYAN} {get_event_log(cntlog)[0:21]}{Fore.GREEN}{DL_V}')
         cntlog += 1
     
-    for i in range(boardSize):
-        lane1 = f'{Fore.GREEN}{DL_V}'
-        lane2 = f'{Fore.GREEN}{convert_to_alpha(i)}'
-        lane3 = f'{Fore.GREEN}{DL_V}'
-        for j in range(boardSize):
-            bg = island_proxy.get_cell_bg(i, j)
-            lane1 += island_proxy.get_cell_ascii(i, j, selected_penguin)[0]
-            lane2 += island_proxy.get_cell_ascii(i, j, selected_penguin)[1]
-            lane3 += island_proxy.get_cell_ascii(i, j, selected_penguin)[2]                     
+    if cellSize == 4:
+        for i in range(boardSize):
+            lane1 = f'{Fore.GREEN}{DL_V}'
+            lane2 = f'{Fore.GREEN}{convert_to_alpha(i)}'
+            for j in range(boardSize):
+                bg = island_proxy.get_cell_bg(i, j)
+                lane1 += island_proxy.get_cell_ascii(i, j, selected_penguin,cellSize)[0]
+                lane2 += island_proxy.get_cell_ascii(i, j, selected_penguin,cellSize)[2]
                                      
-        lane1 += f'{infoList[i*3]}'
-        lane2 += f'{infoList[i*3 +1]}'
-        lane3 += f'{infoList[i*3 +2]}'
+            lane1 += f'{infoList[i*2]}'
+            lane2 += f'{infoList[i*2 +1]}'
 
-        print(lane1)
-        print(lane2)
-        print(lane3)
+            print(lane1)
+            print(lane2)
+    else:        
+        for i in range(boardSize):
+            lane1 = f'{Fore.GREEN}{DL_V}'
+            lane2 = f'{Fore.GREEN}{convert_to_alpha(i)}'
+            lane3 = f'{Fore.GREEN}{DL_V}'
+            for j in range(boardSize):
+                bg = island_proxy.get_cell_bg(i, j)
+                lane1 += island_proxy.get_cell_ascii(i, j, selected_penguin,cellSize)[0]
+                lane2 += island_proxy.get_cell_ascii(i, j, selected_penguin,cellSize)[1]
+                lane3 += island_proxy.get_cell_ascii(i, j, selected_penguin,cellSize)[2]                     
+                                     
+            lane1 += f'{infoList[i*3]}'
+            lane2 += f'{infoList[i*3 +1]}'
+            lane3 += f'{infoList[i*3 +2]}'
+
+            print(lane1)
+            print(lane2)
+            print(lane3)
     print(downLine)
 
 

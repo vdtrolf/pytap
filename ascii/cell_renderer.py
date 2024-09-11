@@ -5,10 +5,10 @@ cellTypes1 = ('      ', f'{SHADE_L}  {SHADE_L}  ',f'{SHADE_L}  {SHADE_L}  ',f'  
 cellTypes2 = ('      ', f'  {SHADE_L}  {SHADE_L}',f'  {SHADE_L}  {SHADE_L}',f' {SHADE_L}   {SHADE_L}',f' {SHADE_L} {SHADE_L} {SHADE_L}', f' {SHADE_L} {SHADE_L} {SHADE_L}',f' {SHADE_L} {SHADE_L} {SHADE_L}', SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M)
 cellTypes3 = ('      ', f'{SHADE_L}  {SHADE_L}  ',f'{SHADE_L}  {SHADE_L}  ',f'  {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', f'{SHADE_L} {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M)
 
-def get_cell_ascii(cell):
+def get_cell_ascii(cell,cellSize):
     """ returns the ascii image of the cell """
     return [
-       Fore.GREEN + cellTypes1[cell.cellType], Fore.GREEN + cellTypes2[cell.cellType], Fore.GREEN + cellTypes3[cell.cellType]
+       Fore.GREEN + cellTypes1[cell.cellType][:cellSize], Fore.GREEN + cellTypes2[cell.cellType][:cellSize], Fore.GREEN + cellTypes3[cell.cellType][:cellSize]
     ]
 
 def get_cell_bg(cell):
