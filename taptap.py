@@ -3,7 +3,7 @@ from domain.island import *
 from ascii.island_proxy import *
 from ascii.penguin_renderer import *
 import os
-# from pytimedinput import *
+from pytimedinput import *
 from colorama import Fore, init
 
 # this is the local terminal version
@@ -38,7 +38,7 @@ def show_island(an_island):
 
     """Displays an image of the island in ascii format"""
     print(headerLine)
-    print(Fore.GREEN + f"{DL_V} {island_proxy.get_info()}"[0:boardSize * 6 + 1] +
+    print(Fore.GREEN + f"{DL_V} {island_proxy.get_info()}"[0:boardSize * cellSize + 1] +
                  f"{DL_V} Penguins             {DL_V}")
     print(numberedLine)
     infoList = []
@@ -87,7 +87,7 @@ def show_island(an_island):
             for j in range(boardSize):
                 bg = island_proxy.get_cell_bg(i, j)
                 lane1 += island_proxy.get_cell_ascii(i, j, selected_penguin,cellSize)[0]
-                lane2 += island_proxy.get_cell_ascii(i, j, selected_penguin,cellSize)[2]
+                lane2 += island_proxy.get_cell_ascii(i, j, selected_penguin,cellSize)[1]
                                      
             lane1 += f'{infoList[i*2]}'
             lane2 += f'{infoList[i*2 +1]}'

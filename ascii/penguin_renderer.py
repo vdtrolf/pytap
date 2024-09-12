@@ -19,9 +19,7 @@ def get_penguin_ascii(penguin,cell_bg, selected_penguin,cellSize):
     """Returns the ascii image of the penguin """
     carries = " "
     color = Fore.CYAN
-    st = 0
-    if cellSize == 4:
-        st=1
+    
     if penguin.id == selected_penguin:
         color = Fore.WHITE
     if penguin.hasFish and penguin.hasGem :
@@ -33,15 +31,31 @@ def get_penguin_ascii(penguin,cell_bg, selected_penguin,cellSize):
     gender = penguin.gender
     if penguin.isChild : 
             gender = gender.lower()
-    if penguin.alive:
-        
-        if penguin.isChild : 
-            return [f'{Fore.GREEN}{cell_bg[0]}{cell_bg[0]}{color}{asciiEyes[gender]}{Fore.GREEN}{cell_bg[0]}{cell_bg[0]}'[st:cellSize],f"{Fore.GREEN}{cell_bg[0]}{color}<{activities_child_ascii[penguin.activity]}>{Fore.GREEN}{cell_bg[0]}"[st:cellSize],f"{Fore.GREEN}{cell_bg[4]}{cell_bg[4]}{color}|{penguin.id}{Fore.GREEN}{cell_bg[4]}{cell_bg[4]}"[st:cellSize]]
-        else : 
-            return [f'{Fore.GREEN}{cell_bg[0]}{color}{asciiEyes[gender]}{Fore.GREEN}{cell_bg[0]}'[st:cellSize],f"{color}/({activities_ascii[penguin.activity]})\\"[st:cellSize],f"{Fore.GREEN}{cell_bg[4]}{color}|{penguin.id}{carries}|{Fore.GREEN}{cell_bg[4]}"][st:cellSize]        
-    elif penguin.deadAge < 6:
-        return [f'{cell_bg[0]}{deadEyes[gender]}{cell_bg[0]}'[st:cellSize],"/(\\/)\\"[st:cellSize],f"{cell_bg[4]}|{penguin.id} |{cell_bg[4]}"[st:cellSize]]
-        
+
+    ascii_img = []        
+    if cellSize == 4:
+        if penguin.alive:
+            if penguin.isChild : 
+                ascii_img = [f'{Fore.GREEN}{cell_bg[0]}{color}{asciiEyes[gender]}{Fore.GREEN}{cell_bg[2]}',f'{Fore.GREEN}{cell_bg[2]}{color}|{penguin.id}{Fore.GREEN}{cell_bg[4]}','']
+            else : 
+                if penguin.activity > 0 :
+                    ascii_img = [f'{color}{asciiEyes[gender]}',f'{color}|{activities_ascii[penguin.activity]}|','']     
+                else:
+                    ascii_img = [f'{color}{asciiEyes[gender]}',f'{color}|{penguin.id}{carries}|','']     
+           
+        elif penguin.deadAge < 6:
+            ascii_img [f'{deadEyes[gender]}',f'|{penguin.id} |','']
+    else:
+        if penguin.alive:
+            if penguin.isChild : 
+                ascii_img = [f'{Fore.GREEN}{cell_bg[0]}{cell_bg[0]}{color}{asciiEyes[gender]}{Fore.GREEN}{cell_bg[0]}{cell_bg[0]}',f'{Fore.GREEN}{cell_bg[0]}{color}<{activities_child_ascii[penguin.activity]}>{Fore.GREEN}{cell_bg[0]}',f'{Fore.GREEN}{cell_bg[4]}{cell_bg[4]}{color}|{penguin.id}{Fore.GREEN}{cell_bg[4]}{cell_bg[4]}']
+            else : 
+                ascii_img = [f'{Fore.GREEN}{cell_bg[0]}{color}{asciiEyes[gender]}{Fore.GREEN}{cell_bg[0]}',f'{color}/({activities_ascii[penguin.activity]})\\',f'{Fore.GREEN}{cell_bg[4]}{color}|{penguin.id}{carries}|{Fore.GREEN}{cell_bg[4]}']        
+        elif penguin.deadAge < 6:
+            ascii_img [f'{cell_bg[0]}{deadEyes[gender]}{cell_bg[0]}',"/(\\/)\\",f"{cell_bg[4]}|{penguin.id} |{cell_bg[4]}"]
+
+    return ascii_img
+
 def get_penguin_info(penguin):
     """Returns the two lines info of the penguin (name,age...)"""
     if penguin.alive or penguin.deadAge < 6:

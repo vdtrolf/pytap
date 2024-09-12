@@ -18,7 +18,7 @@ class Island_proxy :
 
     def get_cell_ascii(self,vpos,hpos,selected_penguin,cellSize):
         """get the ascii value at a given position"""
-        cell_bg = get_cell_bg(self.island.cells[vpos][hpos], cellSize) 
+        cell_bg = get_cell_bg(self.island.cells[vpos][hpos]) 
         if self.island.penguins.get(vpos*100+hpos) :
             return get_penguin_ascii(self.island.penguins[vpos*100+hpos],cell_bg,selected_penguin,cellSize)
         elif self.island.fishes.get(vpos*100+hpos) :

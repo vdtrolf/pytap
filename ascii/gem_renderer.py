@@ -8,9 +8,9 @@ def get_gem_ascii(gem,cell_bg,cellSize):
 
     if cellSize == 4:
         if gem.age > 6:
-            return [f'{Fore.CYAN}/{color}/\\{Fore.CYAN}\\','',f'{Fore.CYAN}\\{color}\\/{Fore.CYAN}/',231,231]
+            return [f'{Fore.CYAN}/{color}/\\{Fore.CYAN}\\',f'{Fore.CYAN}\\{color}\\/{Fore.CYAN}/','',231,231]
         else :
-            return [f'{Fore.GREEN}{cell_bg[0]}{color}/\\{Fore.GREEN}{cell_bg[0]}','',f'{Fore.GREEN}{cell_bg[2]}{color}\\/{Fore.GREEN}{cell_bg[2]}',231,231]
+            return [f'{Fore.GREEN}{cell_bg[0]}{color}/\\{Fore.GREEN}{cell_bg[0]}',f'{Fore.GREEN}{cell_bg[2]}{color}\\/{Fore.GREEN}{cell_bg[2]}','',231,231]
     else:
         if gem.age > 6:
             return [f'{Fore.GREEN}{cell_bg[0]}{Fore.CYAN}/{color}/\\{Fore.CYAN}\\{Fore.GREEN}{cell_bg[0]}',f'{Fore.GREEN}{cell_bg[2]}{Fore.CYAN}\\{color}\\/{Fore.CYAN}/{Fore.GREEN}{cell_bg[2]}',f'{Fore.GREEN}{cell_bg[4]}{cell_bg[4]}{cell_bg[4]}{cell_bg[4]}{cell_bg[4]}{cell_bg[4]}',231,231]

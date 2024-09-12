@@ -29,7 +29,7 @@ class Island :
             tmpland[v][h] = 15
        
         # add some land around the mountains 
-        for i in range(4) :
+        for i in range(2 + int(size / 3)) :
             for j in range(int(size * i)):
                 v = 1 + random.randint(0,size-3)
                 h = 1 + random.randint(0,size-3)
