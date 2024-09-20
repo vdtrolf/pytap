@@ -4,8 +4,8 @@ cellTypes1 = ('      ', f'{SHADE_L}  {SHADE_L}  ',f'{SHADE_L}  {SHADE_L}  ',f'  
 cellTypes2 = ('      ', f'  {SHADE_L}  {SHADE_L}',f'  {SHADE_L}  {SHADE_L}',f' {SHADE_L}   {SHADE_L}',f' {SHADE_L} {SHADE_L} {SHADE_L}', f' {SHADE_L} {SHADE_L} {SHADE_L}',f' {SHADE_L} {SHADE_L} {SHADE_L}', SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M)
 cellTypes3 = ('      ', f'{SHADE_L}  {SHADE_L}  ',f'{SHADE_L}  {SHADE_L}  ',f'  {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', f'{SHADE_L} {SHADE_L} {SHADE_L} ',f'{SHADE_L} {SHADE_L} {SHADE_L} ', SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_L, SHADES_M, SHADES_M, SHADES_M, SHADES_M)
 
-cellbg = ('[cyan on black]', '[black on grey30]','[black on grey35]','[black on grey39]','[black on grey42]','[black on grey46]','[black on grey50]','[black on grey54]','[black on grey58]','[black on grey66]','[black on grey70]','[black on grey74]','[black on grey78]','[black on grey82]','[black on grey85]','[black on grey89]','[black on grey93]')
-cellbg_h = ('[cyan on black]', '[red on grey30]','[red on grey35]','[red on grey39]','[red on grey42]','[red on grey46]','[red on grey50]','[red on grey54]','[red on grey58]','[red on grey66]','[red on grey70]','[red on grey74]','[red on grey78]','[red on grey82]','[red on grey85]','[red on grey89]','[red on grey93]')
+cellbg = ('[green on black]', '[black on grey30]','[black on grey35]','[black on grey39]','[black on grey42]','[black on grey46]','[black on grey50]','[black on grey54]','[black on grey58]','[black on grey66]','[black on grey70]','[black on grey74]','[black on grey78]','[black on grey82]','[black on grey85]','[black on grey89]','[black on grey93]')
+cellbg_h = ('[green on black]', '[red on grey30]','[red on grey35]','[red on grey39]','[red on grey42]','[red on grey46]','[red on grey50]','[red on grey54]','[red on grey58]','[red on grey66]','[red on grey70]','[red on grey74]','[red on grey78]','[red on grey82]','[red on grey85]','[red on grey89]','[red on grey93]')
 
 
 def get_cell_ascii(cell,cellSize):

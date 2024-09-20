@@ -48,9 +48,9 @@ def get_penguin_ascii(penguin,cell_bg,cell_bg_h, selected_penguin,cellSize):
     else:
         if penguin.alive:
             if penguin.isChild : 
-                ascii_img = [f'{color}  {asciiEyes[gender]}  ',f'{color}<{activities_child_ascii[penguin.activity]}> ',f'{color}  {color}|{penguin.id}  ']
+                ascii_img = [f'{color}  {asciiEyes[gender]}  ',f'{color} <{activities_child_ascii[penguin.activity]}> ',f'{color}  |{penguin.id}  ']
             else : 
-                ascii_img = [f'{color} |{asciiEyes[gender]}| ',f'{color}<({activities_ascii[penguin.activity]})>',f'{color}{color}|{penguin.id}{carries}|']        
+                ascii_img = [f'{color} |{asciiEyes[gender]}| ',f'{color}<({activities_ascii[penguin.activity]})>',f'{color} |{penguin.id}{carries}| ']        
         elif penguin.deadAge < 6:
             ascii_img = [f'{color} |{deadEyes[gender]}| ',"{color}<(\\/)>",f"{color} |{penguin.id} | "]
 
