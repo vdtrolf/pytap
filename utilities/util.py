@@ -3,7 +3,7 @@ import random
 
 # CONSTANTS
 
-BOARDSIZE = 9
+BOARDSIZE = 6
 
 BOARDSIZE_SMALL = 6
 BOARDSIZE_MEDIUM = 9
@@ -75,7 +75,7 @@ DL_H_STR = '----------------------'
 # DL_VL = "\u2563"
 # DL_UL = "\u255d"
 # DL_VR = "\u2560"
-# DL_HU = "\u2569"
+# DL_HU = "\u2569"BUILDING
 
 # SHADE_L = "\u2591"
 # SHADE_M = "\u2592"

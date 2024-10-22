@@ -83,6 +83,9 @@ def interpret_commands(commands,vpos,hpos,cells,fishes,gems,garbages):
                }
         else:
             direction = get_direction(commands[0], ACTIVITY_MOVING)
+
+            print(direction)
+
             if fishes.get((vpos + direction['vmove'])*100 + hpos + direction['hmove']):
                 direction['activity'] = ACTIVITY_FISHING
                 direction['activityName'] = activity_names[ACTIVITY_FISHING]
