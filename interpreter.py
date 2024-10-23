@@ -99,6 +99,8 @@ def interpret_commands(commands,vpos,hpos,cells,fishes,gems,garbages):
                 direction['activity'] = ACTIVITY_BUILDING
                 direction['activityName'] = activity_names[ACTIVITY_BUILDING] 
 
+            print(direction)
+
             return direction
             
     elif len(commands) == 2:

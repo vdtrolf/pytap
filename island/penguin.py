@@ -46,6 +46,7 @@ class Penguin:
         # Is there an order to execute
         if len(self.commands) > 0:
             command = interpret_commands(self.commands,self.vpos,self.hpos,cells,fishes,gems,garbages)
+            print('@@@3')
             direction = {'vpos':self.vpos + command['vmove'],'hpos':self.hpos + command['hmove']}
             coord = direction['vpos']*100 + direction['hpos']
             if command['activity'] == ACTIVITY_MOVING:
