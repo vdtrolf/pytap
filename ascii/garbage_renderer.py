@@ -6,4 +6,4 @@ garbageTypes3 = ('x  xxx', 'xx xx ', 'x xx x', 'xx xxx','x x xx')
     
 def get_garbage_ascii(self):
     """ returns the ascii image of the garbage """
-    return [Fore.MAGENTA + garbageTypes1[self.kind],Fore.MAGENTA + garbageTypes2[self.kind],Fore.MAGENTA + garbageTypes3[self.kind],231,231]
+    return [Fore.LIGHTBLACK_EX + garbageTypes1[self.kind],Fore.LIGHTBLACK_EX + garbageTypes2[self.kind],Fore.LIGHTBLACK_EX + garbageTypes3[self.kind],231,231]

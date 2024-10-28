@@ -265,8 +265,10 @@ class Island :
 
         cellsData = []
         for vpos in range(self.size):
+            cellsLine = []
             for hpos in range(self.size):
-                cellsData.append(self.cells[vpos][hpos].get_data())
+                cellsLine.append(self.cells[vpos][hpos].get_data())
+            cellsData.append(cellsLine)
                         
         islandData = {
             'key' : self.key,

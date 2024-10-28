@@ -30,7 +30,6 @@ def refresh(islandId):
         response = jsonify(island.get_data(islandList))
         response.headers.add('Access-Control-Allow-Origin', '*')
         
-    
     return response    
  
 

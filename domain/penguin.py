@@ -239,24 +239,109 @@ class Penguin:
                 append_event_to_log(f'{self.name.title()} died (sunk)')
                 return
 
+            if len(self.commands) == 0 and self.activity_time == 0:
+                force = self.do_something(size,penguins,newpenguins,cells,fishes,gems)
+            
             if force:
                     self.execute_commands(cells,size,penguins,newpenguins,fishes,gems,garbages)
 
-            # if not and if the penguin is on smelting ice: try to escape
-            if cells[self.vpos][self.hpos].cellType < 3 :
-                direction = random_direction(self.vpos,self.hpos)
-                coord = direction['vpos']*100 + direction['hpos']
-                if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and cells[direction['vpos']][direction['hpos']].cellType > cells[self.vpos][self.hpos].cellType and not penguins.get(coord) and not newpenguins.get(coord):
-                    self.vpos = direction['vpos']
-                    self.hpos = direction['hpos']
-                    self.activity = ACTIVITY_FLEE
-                    self.goal = ACTIVITY_FLEE
-                    self.activity_time = 1
-                    self.activity_direction = direction['directionNum']
+            
+            # if cells[self.vpos][self.hpos].cellType < 3 :
+            #     direction = random_direction(self.vpos,self.hpos)
+            #     coord = direction['vpos']*100 + direction['hpos']
+            #     if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and cells[direction['vpos']][direction['hpos']].cellType > cells[self.vpos][self.hpos].cellType and not penguins.get(coord) and not newpenguins.get(coord):
+            #         self.vpos = direction['vpos']
+            #         self.hpos = direction['hpos']
+            #         self.activity = ACTIVITY_FLEE
+            #         self.goal = ACTIVITY_FLEE
+            #         self.activity_time = 1
+            #         self.activity_direction = direction['directionNum']
                     
         else :
             self.deadAge += 1
         return hasChild
+
+    def do_something(self,size,penguins,newpenguins,cells,fishes,gems) :
+
+        # if the penguin is on smelting ice: try to escape
+        if cells[self.vpos][self.hpos].cellType < 3 :
+            direction = random_direction(self.vpos,self.hpos)
+            coord = direction['vpos']*100 + direction['hpos']
+            if direction['vpos'] > 0 and direction['vpos'] < size and direction['hpos'] > 0 and direction['hpos'] < size and cells[direction['vpos']][direction['hpos']].cellType > cells[self.vpos][self.hpos].cellType and not penguins.get(coord) and not newpenguins.get(coord):
+                self.vpos = direction['vpos']
+                self.hpos = direction['hpos']
+                self.activity = ACTIVITY_FLEE
+                self.goal = ACTIVITY_FLEE
+                self.activity_time = 1
+                self.activity_direction = direction['directionNum']
+            return False
+
+        coordleft = self.vpos * 100 + self.hpos - 1
+        coordright = self.vpos * 100 + self.hpos + 1
+        coordup = (self.vpos - 1 ) * 100 + self.hpos 
+        coorddown = (self.vpos + 1 ) * 100 + self.hpos
+
+        if self.hasFish and self.hunger > 60:
+            self.commands.append("E")
+        else :
+            
+            if not self.hasFish: 
+                if fishes.get(coordleft) :
+                    self.commands.append("L")
+                elif fishes.get(coordright) :
+                    self.commands.append("R")
+                elif fishes.get(coordup) :
+                    self.commands.append("U")
+                elif fishes.get(coorddown) :
+                    self.commands.append("D")
+            if len(self.commands) == 0 and not self.hasGem: 
+                if gems.get(coordleft) :
+                    self.commands.append("L")
+                elif gems.get(coordright) :
+                    self.commands.append("R")
+                elif gems.get(coordup) :
+                    self.commands.append("U")
+                elif gems.get(coorddown) :
+                    self.commands.append("D")
+        if len(self.commands) > 0:
+            return True
+        else:
+            furtherleft = self.vpos * 100 + self.hpos - 2
+            furtherright = self.vpos * 100 + self.hpos + 2
+            furtherup = (self.vpos - 2 ) * 100 + self.hpos 
+            furtherdown = (self.vpos + 2 ) * 100 + self.hpos
+            if self.hpos > 1 and cells[self.vpos][self.hpos-1].isGround and not penguins.get(coordleft) and not newpenguins.get(coordleft):
+                if not self.hasFish and fishes.get(furtherleft) :
+                    self.commands.append("L")
+                elif not self.hasGem and gems.get(furtherleft) :
+                    self.commands.append("L")
+                if len(self.commands) > 0:
+                    return True
+                
+            if self.hpos < size - 1 and cells[self.vpos][self.hpos +1].isGround and not penguins.get(coordright) and not newpenguins.get(coordright):
+                if not self.hasFish and fishes.get(furtherright) :
+                    self.commands.append("R")
+                elif not self.hasGem and gems.get(furtherright) :
+                    self.commands.append("R")
+                if len(self.commands) > 0:
+                    return True
+
+            if self.vpos >  1 and cells[self.vpos-1][self.hpos].isGround and not penguins.get(coordup) and not newpenguins.get(coordup):
+                if not self.hasFish and fishes.get(furtherup) :
+                    self.commands.append("U")
+                elif not self.hasGem and gems.get(furtherup) :
+                    self.commands.append("U")
+                if len(self.commands) > 0:
+                    return True
+        
+            if self.vpos < size - 1 and cells[self.vpos+1][self.hpos].isGround and not penguins.get(coorddown) and not newpenguins.get(coorddown):
+                if not self.hasFish and fishes.get(furtherdown) :
+                    self.commands.append("D")
+                elif not self.hasGem and gems.get(furtherdown) :
+                    self.commands.append("D")
+                if len(self.commands) > 0:
+                    return True
+
 
     def receive_commands(self,commands) :
         """Receives an order to move or perform an activity"""

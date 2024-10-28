@@ -3,14 +3,14 @@ from domain.island import *
 from ascii.island_proxy import *
 from ascii.penguin_renderer import *
 import os
-# from pytimedinput import *
+from pytimedinput import *
 from colorama import Fore, init
 
 # this is the local terminal version
 
 boardSize = BOARDSIZE
 selected_penguin = 0
-timed = False
+timed = True
 
 init(autoreset=True)
 initiate_names()
