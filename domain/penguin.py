@@ -40,10 +40,11 @@ class Penguin:
 
     def execute_commands(self,cells,size,penguins,newpenguins,fishes,gems,garbages):
         
+        print("@@@11")
+
         # Is there an order to execute
         if len(self.commands) > 0:
             command = interpret_commands(self.commands,self.vpos,self.hpos,cells,fishes,gems,garbages)
-            print('@@@2')
             direction = {'vpos':self.vpos + command['vmove'],'hpos':self.hpos + command['hmove']}
             coord = direction['vpos']*100 + direction['hpos']
             if command['activity'] == ACTIVITY_MOVING:
@@ -132,6 +133,11 @@ class Penguin:
 
             self.activity_text = activity_names[self.activity] 
             self.commands = []
+
+            print(f"{self.name.title()}: {activity_names[self.activity]} {self.activity_direction}")
+            return f"{self.name.title()}: {activity_names[self.activity]} {self.activity_direction}"
+        else:
+            return None
 
 
     def become_older(self,cells,size,penguins,newpenguins,fishes,gems,garbages,weather,evolution_speed,force):

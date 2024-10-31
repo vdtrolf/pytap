@@ -107,7 +107,7 @@ activity_names = {
     ACTIVITY_LOVING: "Loving",
     ACTIVITY_GETING: "Diging",
     ACTIVITY_BUILDING: "Building",
-    ACTIVITY_MOVING: "Going",
+    ACTIVITY_MOVING: "Moving",
     ACTIVITY_CLEANING: "Cleaning",
     ACTIVITY_FLEE: "Flee",
     ACTIVITY_DEAD: "Dead"

@@ -227,8 +227,12 @@ class Island :
 
     def execute_commands(self) :
         for penguin in self.penguins.values():
-            penguin.execute_commands(self.cells,self.size,self.penguins,self.penguins,self.fishes,self.gems,self.garbages)
-        
+            log = penguin.execute_commands(self.cells,self.size,self.penguins,self.penguins,self.fishes,self.gems,self.garbages)
+            # if log :
+            print(log)
+            append_event_to_log(log)
+
+
         # penguins become_older, notably to make them older, execute commands and get childs
         tmppenguins = {}
         for penguin in self.penguins.values():
@@ -242,8 +246,8 @@ class Island :
             if penguin.id == penguin_id or penguin.key == penguin_id:
                 penguin.receive_commands(commands)
                 command = interpret_commands(commands,0,0,self.cells,self.fishes,self.gems,self.garbages)
-                print('@@@1')
-                append_event_to_log(f"{penguin.name.title()}: {command['activityName']} {command['directionName']}")    
+                # print('@@@1')
+                # append_event_to_log(f"{penguin.name.title()}: {command['activityName']} {command['directionName']}")    
                 
     def get_data(self,islandList):
         

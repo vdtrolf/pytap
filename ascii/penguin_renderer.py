@@ -7,7 +7,7 @@ asciiEyes = {"M":"[oo]","F":"(00)","m":"oo","f":"00"}
 deadEyes = {"M":"[xx]","F":"(xx)","m":" xx ","f":" xx "}
 activities_ascii = {ACTIVITY_NONE: "--",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "-x", ACTIVITY_LOVING: "<3", ACTIVITY_GETING: "-^",ACTIVITY_BUILDING : "-#",ACTIVITY_CLEANING : "-u", ACTIVITY_FLEE: "()", ACTIVITY_MOVING:"--"}
 activities_child_ascii = {ACTIVITY_NONE: "()",ACTIVITY_EATING: "<>", ACTIVITY_FISHING: "-x", ACTIVITY_LOVING: "()", ACTIVITY_GETING: "()",ACTIVITY_BUILDING : "()",ACTIVITY_CLEANING : "()", ACTIVITY_FLEE: "()", ACTIVITY_MOVING:"()"}
-activities_short = {ACTIVITY_NONE: "   ",ACTIVITY_EATING: "Eat", ACTIVITY_FISHING: "Fsh", ACTIVITY_LOVING: "Lov", ACTIVITY_GETING: "Get",ACTIVITY_BUILDING : "Bld",ACTIVITY_CLEANING : "Cln", ACTIVITY_FLEE: "Fle", ACTIVITY_MOVING:"MOv"}
+activities_short = {ACTIVITY_NONE: "   ",ACTIVITY_EATING: "Eat", ACTIVITY_FISHING: "Fsh", ACTIVITY_LOVING: "Lov", ACTIVITY_GETING: "Get",ACTIVITY_BUILDING : "Bld",ACTIVITY_CLEANING : "Cln", ACTIVITY_FLEE: "Fle", ACTIVITY_MOVING:"Mov"}
 figures = {0:"Slim", 1:"Fit", 2:"Fat"}
 
 
