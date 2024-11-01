@@ -11,6 +11,7 @@ from interpreter import *
 
 islands = {}
 
+
 class Island :
   
     def build_island(self,size):
@@ -108,6 +109,7 @@ class Island :
         self.evolution_speed = 1
         self.game_ongoing = True
         self.game_end_datetime = None
+        self.events_log = []
 
     def cleanGems(self):
         """ gems become_older, notably to make them smelt over time """
@@ -229,8 +231,7 @@ class Island :
         for penguin in self.penguins.values():
             log = penguin.execute_commands(self.cells,self.size,self.penguins,self.penguins,self.fishes,self.gems,self.garbages)
             # if log :
-            print(log)
-            append_event_to_log(log)
+            self.append_event_to_log(log)
 
 
         # penguins become_older, notably to make them older, execute commands and get childs
@@ -247,8 +248,21 @@ class Island :
                 penguin.receive_commands(commands)
                 command = interpret_commands(commands,0,0,self.cells,self.fishes,self.gems,self.garbages)
                 # print('@@@1')
-                # append_event_to_log(f"{penguin.name.title()}: {command['activityName']} {command['directionName']}")    
-                
+                # self.append_event_to_log(f"{penguin.name.title()}: {command['activityName']} {command['directionName']}")    
+
+    def append_event_to_log(self,event):
+        """Appends an event to the event log"""
+        self.events_log.append(event)
+        print(f'==>> {event} {len(self.events_log)} : {self.events_log}')
+
+    def get_event_log(self,cntlog):
+        """Gets the n-1 event log"""
+        # print(f'{self.events_log}')
+        if cntlog <= len(self.events_log):
+            return self.events_log[cntlog * -1] + '                                 '
+        else:
+            return '                                     '
+
     def get_data(self,islandList):
         
         penguinsData = []

@@ -40,8 +40,6 @@ class Penguin:
 
     def execute_commands(self,cells,size,penguins,newpenguins,fishes,gems,garbages):
         
-        print("@@@11")
-
         # Is there an order to execute
         if len(self.commands) > 0:
             command = interpret_commands(self.commands,self.vpos,self.hpos,cells,fishes,gems,garbages)

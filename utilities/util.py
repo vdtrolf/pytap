@@ -123,7 +123,7 @@ letters = ("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
 names_males = []
 names_females = []
 names_islands = []
-events_log = []
+
 keys = []
 
 def initiate_names():
@@ -193,20 +193,6 @@ def convert_to_alpha(number):
     elif number < 36:
         return letters[number - 10]
     return '?'
-
-
-def append_event_to_log(event):
-    """Appends an event to the event log"""
-    events_log.append(event)
-
-
-def get_event_log(cntlog):
-    """Gets the n-1 event log"""
-    if cntlog <= len(events_log):
-        return events_log[cntlog * -1] + '                                 '
-    else:
-        return '                                   '
-
 
 def print_format_table():
     """Prints the available colors"""
