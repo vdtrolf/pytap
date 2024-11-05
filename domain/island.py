@@ -6,6 +6,7 @@ from domain.cell import *
 from domain.fish import *
 from domain.garbage import *
 from domain.gem import *
+from domain.log import *
 from utilities.util import *
 from interpreter import *
 
@@ -67,7 +68,7 @@ class Island :
             v = random.randint(1,size-2)
             h = random.randint(1,size-2)
             if self.cells[v][h].isGround() and not self.penguins.get(v*100+h):
-                self.penguins[v*100+h]=Penguin(cntpenguins + 1,v,h)
+                self.penguins[v*100+h]=Penguin(cntpenguins + 1,v,h,self.log)
                 cntpenguins +=1
 
         # add some garbage
@@ -99,6 +100,7 @@ class Island :
         self.fishes = {}
         self.gems = {}
         self.garbages = {}
+        self.log = Log()
         self.counter = 0
         self.build_island(size)   
         weather = random_weather(0,0,True)    
@@ -109,7 +111,6 @@ class Island :
         self.evolution_speed = 1
         self.game_ongoing = True
         self.game_end_datetime = None
-        self.events_log = []
 
     def cleanGems(self):
         """ gems become_older, notably to make them smelt over time """
@@ -229,10 +230,7 @@ class Island :
 
     def execute_commands(self) :
         for penguin in self.penguins.values():
-            log = penguin.execute_commands(self.cells,self.size,self.penguins,self.penguins,self.fishes,self.gems,self.garbages)
-            # if log :
-            self.append_event_to_log(log)
-
+            penguin.execute_commands(self.cells,self.size,self.penguins,self.penguins,self.fishes,self.gems,self.garbages)
 
         # penguins become_older, notably to make them older, execute commands and get childs
         tmppenguins = {}
@@ -246,22 +244,6 @@ class Island :
         for penguin in self.penguins.values():
             if penguin.id == penguin_id or penguin.key == penguin_id:
                 penguin.receive_commands(commands)
-                command = interpret_commands(commands,0,0,self.cells,self.fishes,self.gems,self.garbages)
-                # print('@@@1')
-                # self.append_event_to_log(f"{penguin.name.title()}: {command['activityName']} {command['directionName']}")    
-
-    def append_event_to_log(self,event):
-        """Appends an event to the event log"""
-        self.events_log.append(event)
-        print(f'==>> {event} {len(self.events_log)} : {self.events_log}')
-
-    def get_event_log(self,cntlog):
-        """Gets the n-1 event log"""
-        # print(f'{self.events_log}')
-        if cntlog <= len(self.events_log):
-            return self.events_log[cntlog * -1] + '                                 '
-        else:
-            return '                                     '
 
     def get_data(self,islandList):
         

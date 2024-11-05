@@ -1,5 +1,6 @@
 from utilities.util import *
 from domain.island import *
+from domain.log import *
 from ascii.island_proxy import *
 from ascii.penguin_renderer import *
 import os
@@ -74,7 +75,7 @@ def show_island(an_island):
     infoList.append(f"{Fore.GREEN}{DL_VR}{DL_H_STR}{DL_VL}")
     cntlog = 1
     while cntlog < 25 - penguinCnt :
-        infoList.append(f'{Fore.GREEN}{DL_V}{Fore.CYAN} {an_island.get_event_log(cntlog)[0:21]}{Fore.GREEN}{DL_V}')
+        infoList.append(f'{Fore.GREEN}{DL_V}{Fore.CYAN} {an_island.log.get_event_log(cntlog)[0:21]}{Fore.GREEN}{DL_V}')
         cntlog += 1
     
     for i in range(boardSize):

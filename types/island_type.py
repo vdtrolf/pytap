@@ -1,9 +1,11 @@
 from dataclasses import dataclass
-from use_cases.cell import Cell
-from use_cases.penguin import Penguin
-from use_cases.fish import Fish
-from use_cases.gem import Gem
-from use_cases.garbage import Garbage
+from cell_type import Cell
+from penguin_type import Penguin
+from fish_type import Fish
+from gem_type import Gem
+from garbage_type import Garbage
+from log_type import Log
+
 
 @dataclass
 class Island:
@@ -25,6 +27,7 @@ class Island:
     fishes: dict[int,Fish]
     gems: dict[int,Gem]
     garbages: dict[int,Garbage]
+    log : Log
 
 
 

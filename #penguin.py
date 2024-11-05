@@ -1,13 +1,12 @@
 import random
 from utilities.util import *
 from interpreter import *
-from domain.log import *
 
 genders=("M","F")
 
 class Penguin:
     
-    def __init__(self,id,vpos,hpos,log):
+    def __init__(self,id,vpos,hpos):
         """Initiate a penguin with it's id and position"""
         self.key = get_next_key()
         self.id = id
@@ -38,7 +37,6 @@ class Penguin:
         self.activity_done = False
         self.can_love = True
         self.love_time = 0
-        self.log = log
 
     def execute_commands(self,cells,size,penguins,newpenguins,fishes,gems,garbages):
         
@@ -134,8 +132,8 @@ class Penguin:
             self.activity_text = activity_names[self.activity] 
             self.commands = []
 
-            if not self.activity == ACTIVITY_NONE:
-                self.log.append_event_to_log(f"{self.id}: {activity_names[self.activity]} - {direction_names[self.activity_direction]}")
+            print(f"{self.name.title()}: {activity_names[self.activity]} {self.activity_direction}")
+            return f"{self.name.title()}: {activity_names[self.activity]} {self.activity_direction}"
         else:
             return None
 
@@ -224,25 +222,25 @@ class Penguin:
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
                 self.activity_text = f'Died (age)'
-                self.log.append_event_to_log(f'{self.name.title()} died (age)')
+                append_event_to_log(f'{self.name.title()} died (age)')
                 return
             elif self.temp > 99:
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
                 self.activity_text = f'Died (cold)'
-                self.log.append_event_to_log(f'{self.name.title()} died (cold)')
+                append_event_to_log(f'{self.name.title()} died (cold)')
                 return
             elif self.hunger > 99:
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
                 self.activity_text = f'Died (hunger)'
-                self.log.append_event_to_log(f'{self.name.title()} died (hunger)')    
+                append_event_to_log(f'{self.name.title()} died (hunger)')    
                 return
             elif cells[self.vpos][self.hpos].cellType == 0:
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
                 self.activity_text = f'Died (sunk)'
-                self.log.append_event_to_log(f'{self.name.title()} died (sunk)')
+                append_event_to_log(f'{self.name.title()} died (sunk)')
                 return
 
             if len(self.commands) == 0 and self.activity_time == 0:
