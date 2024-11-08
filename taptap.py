@@ -55,7 +55,7 @@ def show_island(an_island):
             
         if penguin.id == selected_penguin:
             if penguin.alive:
-                selected_line0 = f' {penguin.name.title()} ({penguin.id})                       '
+                selected_line0 = f' {penguin.id}: {penguin.name.title()}                       '
                 selected_line1 = get_penguin_info(penguin)[0]
                 selected_line2 = get_penguin_info(penguin)[1]
             else:
@@ -134,6 +134,8 @@ while True:
             if len(commands) > 1:
                 island.transmit_commands(int(commands[0]), commands[1:])
                 selected_penguin = int(commands[0])
+                if not timed:
+                    island.become_older(True)
                 show_island(island)
             else:
                 if int(commands[0]) == selected_penguin:

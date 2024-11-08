@@ -31,7 +31,7 @@ class Island :
             tmpland[v][h] = 15
        
         # add some land around the mountains 
-        for i in range(4) :
+        for i in range(int(size * 0.6)) :
             for j in range(int(size * i)):
                 v = 1 + random.randint(0,size-3)
                 h = 1 + random.randint(0,size-3)
@@ -55,7 +55,8 @@ class Island :
                         cnt += 1
                     if cnt > 2 :
                         tmpland[v][h] = 1
-            
+
+        # create the cells matrix    
         for i in range(size):   
             tmplane = []
             for j in range(size):

@@ -21,7 +21,7 @@ class Penguin:
         self.figure = random.randint(0,2)
         self.vpos=vpos
         self.hpos=hpos
-        self.gender = genders[random.randint(0,1)]
+        self.gender = genders[id%2]
         self.name = generate_penguin_name(self.gender)
         self.activity = ACTIVITY_NONE
         self.activity_time = 0
@@ -135,7 +135,10 @@ class Penguin:
             self.commands = []
 
             if not self.activity == ACTIVITY_NONE:
-                self.log.append_event_to_log(f"{self.id}: {activity_names[self.activity]} - {direction_names[self.activity_direction]}")
+                if self.activity_direction :
+                    self.log.append_event_to_log(f"{self.id}: {activity_names[self.activity]} - {direction_names[self.activity_direction]}")
+                else :
+                    self.log.append_event_to_log(f"{self.id}: {activity_names[self.activity]}")
         else:
             return None
 
@@ -224,25 +227,25 @@ class Penguin:
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
                 self.activity_text = f'Died (age)'
-                self.log.append_event_to_log(f'{self.name.title()} died (age)')
+                self.log.append_event_to_log(f'{self.id}: {self.name.title()} -+ age')
                 return
             elif self.temp > 99:
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
                 self.activity_text = f'Died (cold)'
-                self.log.append_event_to_log(f'{self.name.title()} died (cold)')
+                self.log.append_event_to_log(f'{self.id}: {self.name.title()} -+ cold')
                 return
             elif self.hunger > 99:
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
                 self.activity_text = f'Died (hunger)'
-                self.log.append_event_to_log(f'{self.name.title()} died (hunger)')    
+                self.log.append_event_to_log(f'{self.id}: {self.name.title()} -+ hunger')    
                 return
             elif cells[self.vpos][self.hpos].cellType == 0:
                 self.alive = False
                 self.activity = ACTIVITY_DEAD
                 self.activity_text = f'Died (sunk)'
-                self.log.append_event_to_log(f'{self.name.title()} died (sunk)')
+                self.log.append_event_to_log(f'{self.id}: {self.name.title()} -+ sunk')
                 return
 
             if len(self.commands) == 0 and self.activity_time == 0:
@@ -354,6 +357,7 @@ class Penguin:
         for command in commands:
             if len(command) > 0:
                 self.commands.append(command)
+                print(f"==> {command}")
      
     def get_data(self):
         return {

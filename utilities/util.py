@@ -95,6 +95,7 @@ moves = {
     DIRECTION_DOWN: [1, 0]
 }
 direction_names = {
+    DIRECTION_NONE: "",
     DIRECTION_UP: "up",
     DIRECTION_DOWN: "down",
     DIRECTION_LEFT: "left",
