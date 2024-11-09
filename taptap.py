@@ -37,7 +37,7 @@ def show_island(an_island):
     """Displays an image of the island in ascii format"""
     print(headerLine)
     print(Fore.GREEN + f"{DL_V} {island_proxy.get_info()}"[0:boardSize * 6 + 1] +
-                 f"{DL_V} Penguins             {DL_V}")
+                 f"{DL_V} {island_proxy.get_points()[0:20]} {DL_V}")
     print(numberedLine)
     infoList = []
     penguinCnt = 0

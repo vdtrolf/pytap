@@ -31,8 +31,12 @@ class Island_proxy :
 
     def get_info(self):
         """Returns the name and status of the island"""
-        return f'{self.island.name} - run {int(self.island.year)} - {self.island.weather_name} - speed: {self.island.evolution_speed}                                               '
-        
+        return f'{self.island.name[0:self.island.size+8]} - {monthes[self.island.counter%12 +1]} {int(self.island.year)} - {self.island.weather_name}                                           '
+  
+    def get_points(self):
+        """Returns the name and status of the island"""
+        return f'{self.island.game_points} points - {self.island.gen_temp}o          '
+   
     def get_penguin_info(self,penguin_id):
         """Search a penguin by id and return the two lines info"""
         result = ['','']

@@ -39,6 +39,7 @@ class Penguin:
         self.can_love = True
         self.love_time = 0
         self.log = log
+        self.points = 0
 
     def execute_commands(self,cells,size,penguins,newpenguins,fishes,gems,garbages):
         
@@ -62,7 +63,8 @@ class Penguin:
                     self.activity = command['activity']
                     self.goal = command['activity']
                     self.acivityTarget = coord
-                    self.activity_direction = command['directionNum']     
+                    self.activity_direction = command['directionNum']  
+                    self.points += 10
                 else:      
                     self.activity = ACTIVITY_NONE  
                     self.activity_direction = DIRECTION_NONE        
@@ -81,7 +83,8 @@ class Penguin:
                     self.activity = command['activity']
                     self.goal = command['activity']
                     self.acivityTarget = coord
-                    self.activity_direction = command['directionNum']                       
+                    self.activity_direction = command['directionNum']   
+                    self.points += 50
                 else:      
                     self.activity = ACTIVITY_NONE  
                     self.activity_direction = DIRECTION_NONE                        
@@ -91,7 +94,8 @@ class Penguin:
                     self.activity = command['activity']      
                     self.goal = command['activity']
                     self.acivityTarget = coord
-                    self.activity_direction = command['directionNum']      
+                    self.activity_direction = command['directionNum'] 
+                    self.points += 10
                 else:      
                     self.activity = ACTIVITY_NONE
                     self.activity_direction = DIRECTION_NONE
@@ -101,7 +105,8 @@ class Penguin:
                     self.activity = command['activity']      
                     self.goal = command['activity']
                     self.acivityTarget = coord
-                    self.activity_direction = command['directionNum']      
+                    self.activity_direction = command['directionNum']  
+                    self.points += 10
                 else:      
                     self.activity = ACTIVITY_NONE
                     self.activity_direction = DIRECTION_NONE        
@@ -123,6 +128,7 @@ class Penguin:
                     self.activity = command['activity']
                     self.goal = command['activity']
                     self.activity_direction = command['directionNum']
+                    self.points += 10
 
                 else:      
                     self.activity = ACTIVITY_NONE    
@@ -211,9 +217,9 @@ class Penguin:
                 self.can_love = True
 
             if self.isChild or self.isOld:
-                self.age += 0.2
+                self.age += ( 1 /12 )
             else:    
-                self.age += 0.05
+                self.age += ( 1 /12 )
             
             self.isChild = self.age <= 3 
             self.isOld = self.age > 13 
@@ -358,7 +364,12 @@ class Penguin:
             if len(command) > 0:
                 self.commands.append(command)
                 print(f"==> {command}")
-     
+    
+    def get_points(self) :
+      points = self.points
+      self.points = 0
+      return points
+      
     def get_data(self):
         return {
             'key' : self.key,

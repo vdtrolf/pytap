@@ -108,10 +108,12 @@ class Island :
         self.weather = weather[0]
         self.weather_age = weather[1]
         self.weather_name = weather[2]
-        self.year = 2000
+        self.year = 2000 + (1/12)
         self.evolution_speed = 1
         self.game_ongoing = True
         self.game_end_datetime = None
+        self.game_points = 0
+        self.gen_temp = 20.0
 
     def cleanGems(self):
         """ gems become_older, notably to make them smelt over time """
@@ -154,7 +156,7 @@ class Island :
             if self.evolution_speed > 5:
                 self.evolution_speed = 5
 
-            self.year += 0.05
+            self.year += (1 / 12)
             
             weather = random_weather(self.year,self.weather,self.weather_age)    
             self.weather = weather[0]
@@ -184,6 +186,9 @@ class Island :
                             break
                         counter += 1    
 
+            for penguin in self.penguins.values():
+                self.game_points += penguin.get_points()
+            
             self.penguins = tmppenguins
 
             self.cleanFishes()

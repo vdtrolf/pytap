@@ -3,7 +3,7 @@ import random
 
 # CONSTANTS
 
-BOARDSIZE = 6
+BOARDSIZE = 9
 
 BOARDSIZE_SMALL = 6
 BOARDSIZE_MEDIUM = 9
@@ -119,6 +119,29 @@ weathers = {
     WEATHER_SNOW: 'Snow',
     WEATHER_COLD: 'Cold'
 }
+
+seasons = {
+    SEASON_WINTER: "Win",
+    SEASON_SPRING: "Spr",
+    SEASON_SUMMER: "Sum",
+    SEASON_AUTUMN: "Aut"
+}
+
+monthes = {
+    1: "Jan",
+    2: "Feb",
+    3: "Mar",
+    4: "Apr",
+    5: "May",
+    6: "Jun",
+    7: "Jul",
+    8: "Aug",
+    9: "Sep",
+    10: "Oct",
+    11: "Nov",
+    12: "Dec"
+}
+
 letters = ("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")
 names_males = []
